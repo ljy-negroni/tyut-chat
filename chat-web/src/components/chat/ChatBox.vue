@@ -823,19 +823,24 @@ export default {
 	.el-header {
 		display: flex;
 		justify-content: space-between;
-		padding: 0 12px;
-		line-height: 50px;
-		font-size: var(--im-font-size-larger);
-		border-bottom: var(--im-border);
-
+		padding: 0 16px;
+		line-height: 52px;
+		font-size: 15px;
+		font-weight: 600;
+		border-bottom: 1px solid var(--im-color-primary-light-7);
+		background: #FFFFFF;
 
 		.btn-side {
 			position: absolute;
 			right: 20px;
-			line-height: 50px;
-			font-size: 20px;
+			line-height: 52px;
+			font-size: 18px;
 			cursor: pointer;
-			color: var(--im-text-color-light);
+			color: var(--im-text-color-lighter);
+
+			&:hover {
+				color: var(--im-color-primary);
+			}
 		}
 	}
 
@@ -844,11 +849,11 @@ export default {
 
 		.im-chat-main {
 			padding: 0;
-			background-color: #f4f5f6;
+			background-color: #F4F5FA;
 
 			.im-chat-box {
 				>ul {
-					padding: 0 20px;
+					padding: 0 16px;
 
 					li {
 						list-style-type: none;
@@ -860,23 +865,22 @@ export default {
 		.locate-tip {
 			text-align: center;
 			position: absolute;
-			right: 20px;
+			right: 24px;
 			bottom: 230px;
 			color: var(--im-color-primary);
-			font-size: var(--im-font-size);
+			font-size: 12px;
 			font-weight: 600;
-			background: white;
-			padding: 8px 16px;
-			border-radius: 18px;
+			background: #FFFFFF;
+			padding: 8px 18px;
+			border-radius: 20px;
 			cursor: pointer;
 			z-index: 99;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-			transition: all 0.3s ease;
-			border: 1px solid rgba(0, 0, 0, 0.06);
+			box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+			transition: all 0.25s ease;
 
 			&:hover {
 				transform: translateY(-1px);
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 			}
 		}
 
@@ -885,48 +889,45 @@ export default {
 			display: flex;
 			flex-direction: column;
 			padding: 0;
+			background: #FFFFFF;
 
 			.chat-tool-bar {
 				display: flex;
 				position: relative;
 				width: 100%;
-				height: 44px;
+				height: 42px;
 				text-align: left;
 				box-sizing: border-box;
-				border-top: 2px solid #EBEEF5;
-				padding: 6px 8px;
+				border-top: 1px solid var(--im-color-primary-light-7);
+				padding: 4px 12px;
 				align-items: center;
-				background: var(--im-background-active);
-				color: black;
-				gap: 8px;
-				opacity: 0.85;
+				background: #FAFBFF;
+				color: var(--im-text-color);
+				gap: 6px;
 
-				// 统一所有按钮的样式，参考新版本
 				>div {
-					font-size: 20px;
+					font-size: 19px;
 					cursor: pointer;
 					width: 32px;
 					height: 32px;
 					line-height: 32px;
 					text-align: center;
-					border-radius: 6px;
+					border-radius: 8px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					position: relative;
-					transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+					transition: all 0.2s ease;
+					color: var(--im-text-color-lighter);
 
 					&.chat-tool-active {
 						color: var(--im-color-primary);
-						background: var(--im-background-active-dark);
-						transform: scale(1.02);
+						background: var(--im-color-primary-light-8);
 					}
 
 					&:hover {
 						color: var(--im-color-primary);
-						background: var(--im-background-active);
-						transform: translateY(-1px);
-						box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+						background: var(--im-color-primary-light-9);
 					}
 				}
 			}
@@ -936,13 +937,13 @@ export default {
 				display: flex;
 				flex-direction: column;
 				height: 100%;
-				background-color: white !important;
+				background-color: #FFFFFF !important;
 
 				.send-btn-area {
-					padding: 10px;
+					padding: 8px 12px;
 					position: absolute;
 					bottom: 4px;
-					right: 6px;
+					right: 8px;
 				}
 			}
 
@@ -952,26 +953,27 @@ export default {
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background: #f8f8f8d0;
-				font-size: var(--im-font-size-large);
+				background: rgba(248, 249, 253, 0.92);
+				font-size: 14px;
 				color: var(--im-text-color-light);
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				border-radius: 10px;
-				border: 1px solid #ddd;
+				border-radius: 12px;
 				z-index: 10;
 
 				.icon {
-					font-size: var(--im-font-size-larger);
-					margin-right: 3px;
+					font-size: 16px;
+					margin-right: 6px;
+					color: var(--im-color-warning);
 				}
 			}
 		}
 	}
 
 	.side-box {
-		border-left: var(--im-border);
+		border-left: 1px solid var(--im-color-primary-light-7);
+		background: #FFFFFF;
 	}
 
 }

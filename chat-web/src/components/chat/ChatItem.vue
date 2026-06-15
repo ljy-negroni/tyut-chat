@@ -116,23 +116,29 @@ export default {
 
 <style lang="scss" scoped>
 .chat-item {
-	height: 56px;
+	height: 58px;
 	display: flex;
 	position: relative;
-	margin: 0 3px;
-	padding: 5px 8px;
+	margin: 2px 6px;
+	padding: 5px 10px;
 	align-items: center;
-	background-color: var(--im-background);
+	background-color: transparent;
 	white-space: nowrap;
 	cursor: pointer;
 	border-radius: 10px;
+	transition: background-color 0.2s ease;
 
 	&:hover {
 		background-color: var(--im-background-active);
 	}
 
 	&.active {
-		background-color: var(--im-background-active-dark);
+		background: linear-gradient(135deg, var(--im-color-primary-light-7), var(--im-color-primary-light-8));
+
+		.chat-name-text {
+			color: var(--im-color-primary);
+			font-weight: 600;
+		}
 	}
 
 	.chat-left {
@@ -140,68 +146,83 @@ export default {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		flex-shrink: 0;
 
 		.unread-text {
 			position: absolute;
-			background-color: #f56c6c;
-			right: -4px;
-			top: -8px;
-			color: white;
-			border-radius: 30px;
+			background-color: #FF3B30;
+			right: -6px;
+			top: -6px;
+			color: #FFFFFF;
+			border-radius: 10px;
 			padding: 1px 5px;
 			font-size: 10px;
+			font-weight: 700;
 			text-align: center;
 			white-space: nowrap;
-			border: 1px solid #f1e5e5;
+			border: 2px solid #FFFFFF;
+			min-width: 18px;
+			height: 18px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+			z-index: 2;
 		}
 	}
-
 
 	.chat-right {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		padding-left: 10px;
+		padding-left: 12px;
 		text-align: left;
 		overflow: hidden;
+		min-width: 0;
 
 		.chat-name {
 			display: flex;
-			line-height: 26px;
-			height: 26px;
+			line-height: 24px;
+			height: 24px;
 
 			.chat-name-text {
 				flex: 1;
 				display: flex;
 				align-items: center;
+				gap: 4px;
 				font-size: var(--im-font-size);
+				font-weight: 500;
 				white-space: nowrap;
 				overflow: hidden;
+				color: var(--im-text-color);
 			}
 
 			.chat-time-text {
-				font-size: var(--im-font-size-smaller);
+				font-size: 11px;
 				text-align: right;
-				color: var(--im-text-color-light);
+				color: var(--im-text-color-lighter);
 				white-space: nowrap;
 				overflow: hidden;
-				padding-left: 10px;
+				padding-left: 8px;
+				flex-shrink: 0;
 			}
 		}
 
 		.chat-content {
 			display: flex;
-			line-height: 24px;
-			height: 24px;
+			line-height: 22px;
+			height: 22px;
 
 			.chat-at-text {
-				color: #c70b0b;
-				font-size: var(--im-font-size-smaller);
+				color: #FF3B30;
+				font-size: 11px;
+				flex-shrink: 0;
 			}
 
 			.chat-send-name {
 				font-size: var(--im-font-size-small);
-				color: var(--im-text-color-light);
+				color: var(--im-text-color-lighter);
+				flex-shrink: 0;
 			}
 
 			.chat-content-text {
@@ -209,12 +230,16 @@ export default {
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
-				font-size: var(--im-font-size-small);
-				color: var(--im-text-color-light);
+				font-size: 12px;
+				color: var(--im-text-color-lighter);
+				min-width: 0;
 			}
 
 			.icon {
-				color: var(--im-text-color-light);
+				color: var(--im-text-color-lighter);
+				font-size: 14px;
+				flex-shrink: 0;
+				margin-left: 4px;
 			}
 		}
 	}
