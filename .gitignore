@@ -1,0 +1,22 @@
+/.idea/
+/tyut-chat.iml
+
+# IDEA 模块文件
+/chat-platform/chat-platform.iml
+/chat-server/chat-server.iml
+/chat-client/chat-client.iml
+/chat-common/chat-common.iml
+
+# Maven 构建产物
+/chat-platform/target/
+/chat-server/target/
+/chat-client/target/
+/chat-common/target/
+
+# 前端依赖与构建产物
+/chat-web/node_modules/
+/chat-web/dist/
+
+# 工具元数据与本地产物
+/.spec-workflow/
+/.claude/
