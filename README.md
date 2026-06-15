@@ -67,7 +67,3 @@ npm run serve
 ```
 
 访问 http://localhost:8080
-
-## 致谢
-
-本项目基于开源项目 [box-im](https://github.com/bluexsx/box-im)（MIT License）二次开发。
