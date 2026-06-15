@@ -1,6 +1,56 @@
-// 主题色
-$--color-primary: #2830d3;
-//$--color-primary: #687ff0;
-//$--color-primary: #096bff;
+// ============================================
+// 太理朋友圈 · 主题色彩系统
+// 品牌主色：温润靛蓝，区别于模板蓝
+// ============================================
+
+// 品牌色
+$--color-primary: #3748C7;
+$--color-primary-light-1: #5B68D3;
+$--color-primary-light-2: #7F89DF;
+$--color-primary-light-3: #A3AAEB;
+$--color-primary-light-4: #BFC4F1;
+$--color-primary-light-5: #D1D4F5;
+$--color-primary-light-6: #E0E2F8;
+$--color-primary-light-7: #ECEDFA;
+$--color-primary-light-8: #F4F5FC;
+$--color-primary-light-9: #F8F9FD;
+
+// 功能色
+$--color-success: #34C759;
+$--color-success-light: #DBF5E2;
+$--color-warning: #FF9500;
+$--color-warning-light: #FFF0D9;
+$--color-danger: #FF3B30;
+$--color-danger-light: #FFE5E5;
+$--color-info: #8E8E93;
+
+// 文字
+$--color-text-primary: #1C1C1E;
+$--color-text-regular: #2C2C2E;
+$--color-text-secondary: #6E6E73;
+$--color-text-placeholder: #AEAEB2;
+
+// 边框
+$--border-color-base: #E5E5EA;
+$--border-color-light: #F0F0F5;
+$--border-color-lighter: #F5F5FA;
+$--border-color-extra-light: #FAFAFD;
+
+// 字号
 $--font-size-base: 14px;
-$--color-text-regular: #000000;
+$--font-size-small: 12px;
+$--font-size-extra-small: 11px;
+$--font-size-medium: 16px;
+$--font-size-large: 18px;
+
+// 字体
+$--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+
+// 圆角
+$--border-radius-base: 8px;
+$--border-radius-small: 4px;
+$--border-radius-round: 20px;
+
+// 阴影
+$--box-shadow-base: 0 2px 8px rgba(0, 0, 0, 0.08);
+$--box-shadow-light: 0 2px 12px rgba(0, 0, 0, 0.06);
