@@ -104,18 +104,16 @@
           <router-link class="link" to="/login">已有账号，前往登录</router-link>
         </div>
       </div>
-      <icp></icp>
     </div>
   </div>
 </template>
 
 <script>
-import Icp from '../components/common/Icp.vue'
 import { saveLoginSession } from '../api/auth.js'
 
 export default {
   name: "register",
-  components: { Icp },
+  components: {},
   data() {
     var checkUserName = (rule, value, callback) => {
       if (!value) return callback(new Error('请输入用户名'));

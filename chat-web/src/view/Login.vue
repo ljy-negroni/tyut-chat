@@ -111,18 +111,16 @@
           <router-link class="link" to="/register">没有账号，前往注册</router-link>
         </div>
       </div>
-      <icp></icp>
     </div>
   </div>
 </template>
 
 <script>
-import Icp from '../components/common/Icp.vue'
 import * as auth from '../api/auth.js'
 
 export default {
   name: "login",
-  components: { Icp },
+  components: {},
   data() {
     var checkUsername = (rule, value, callback) => {
       if (!value) return callback(new Error('请输入用户名'));
