@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<div class="content-box">
-				<router-view></router-view>
+				<transition name="tab" mode="out-in"><router-view></router-view></transition>
 			</div>
 			<setting :visible="showSettingDialog" @close="closeSetting()"></setting>
 			<user-info ref="userInfo"></user-info>
@@ -712,7 +712,7 @@ export default {
 	align-items: center;
 	border-radius: 4px;
 	overflow: hidden;
-	background: var(--im-color-primary-light-9);
+	background: radial-gradient(ellipse 60% 50% at 50% 40%, #E8ECF7 0%, #DFE4F2 60%, #D5DBEB 100%);
 
 	.app-container {
 		width: 62vw;
@@ -723,7 +723,7 @@ export default {
 		position: absolute;
 		border-radius: 4px;
 		overflow: hidden;
-		box-shadow: var(--im-box-shadow-dark);
+		box-shadow: 0 8px 48px rgba(0,0,0,.1), 0 2px 12px rgba(0,0,0,.06);
 		transition: 0.2s;
 
 		&.fullscreen {
@@ -737,10 +737,10 @@ export default {
 		--icon-font-size: 22px;
 		--width: 70px;
 		width: var(--width);
-		background: linear-gradient(175deg, #4F5BD5 0%, #3748C7 60%, #2830B8 100%);
+		background: linear-gradient(175deg, rgba(79,91,213,.92) 0%, rgba(55,72,199,.92) 60%, rgba(40,48,184,.92) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
 		padding-top: 25px;
 		position: relative;
-		box-shadow: 2px 0 16px rgba(0, 0, 0, 0.12);
+		box-shadow: 2px 0 24px rgba(0,0,0,.08);
 
 		.navi-bar-box {
 			height: 100%;
@@ -789,7 +789,7 @@ export default {
 
 			.router-link-active .menu-item {
 				color: #FFFFFF;
-				background: rgba(255, 255, 255, 0.18);
+				background: rgba(255,255,255,.18); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(4px);
 				box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
 				transform: none;
 
@@ -819,7 +819,7 @@ export default {
 				justify-content: center;
 				align-items: center;
 				border-radius: 12px;
-				transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+				transition: all 0.2s cubic-bezier(.4,0,.2,1);
 				cursor: pointer;
 
 				&::before {
@@ -831,7 +831,7 @@ export default {
 					background: #FFFFFF;
 					border-radius: 0 3px 3px 0;
 					opacity: 0;
-					transform: scaleY(0.6);
+					transform: translateY(0) scaleY(1);
 					transition: all 0.25s ease;
 				}
 
@@ -892,10 +892,17 @@ export default {
 		}
 	}
 
-	.content-box {
+	
+
+	.tab-enter-active { transition: all .22s cubic-bezier(.4,0,.2,1) }
+.tab-leave-active { transition: all .16s cubic-bezier(.55,0,1,1) }
+.tab-enter { opacity: 0; transform: translateX(14px) }
+.tab-leave-to { opacity: 0; transform: translateX(-6px) }
+
+.content-box {
 		flex: 1;
 		padding: 0;
-		background-color: #fff;
+		background: rgba(255,255,255,.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 		text-align: center;
 	}
 }

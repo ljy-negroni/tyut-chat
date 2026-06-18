@@ -1,361 +1,84 @@
-<template>
-  <div class="login-view">
-    <!-- 左侧品牌面板 -->
-    <div class="brand-panel">
-      <div class="brand-illustration">
-        <svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
-          <!-- 社交网络节点与连线 -->
-          <g stroke="#A3AAEB" stroke-width="1.2" fill="none" opacity="0.5">
-            <line x1="180" y1="200" x2="320" y2="160"/>
-            <line x1="180" y1="200" x2="280" y2="380"/>
-            <line x1="180" y1="200" x2="80" y2="340"/>
-            <line x1="320" y1="160" x2="420" y2="280"/>
-            <line x1="320" y1="160" x2="400" y2="100"/>
-            <line x1="280" y1="380" x2="420" y2="280"/>
-            <line x1="280" y1="380" x2="180" y2="520"/>
-            <line x1="80" y1="340" x2="180" y2="520"/>
-            <line x1="80" y1="340" x2="120" y2="160"/>
-            <line x1="420" y1="280" x2="500" y2="380"/>
-            <line x1="180" y1="520" x2="280" y2="620"/>
-            <line x1="280" y1="620" x2="400" y2="560"/>
-            <line x1="500" y1="380" x2="400" y2="560"/>
-          </g>
-          <!-- 主要节点 -->
-          <g fill="#3748C7" opacity="0.15">
-            <circle cx="180" cy="200" r="48"/>
-            <circle cx="320" cy="160" r="52"/>
-            <circle cx="420" cy="280" r="44"/>
-            <circle cx="280" cy="380" r="56"/>
-            <circle cx="80" cy="340" r="40"/>
-            <circle cx="180" cy="520" r="50"/>
-            <circle cx="500" cy="380" r="42"/>
-          </g>
-          <!-- 节点边线 -->
-          <g fill="none" stroke="#3748C7" stroke-width="2" opacity="0.3">
-            <circle cx="180" cy="200" r="48"/>
-            <circle cx="320" cy="160" r="52"/>
-            <circle cx="420" cy="280" r="44"/>
-            <circle cx="280" cy="380" r="56"/>
-            <circle cx="80" cy="340" r="40"/>
-            <circle cx="180" cy="520" r="50"/>
-            <circle cx="500" cy="380" r="42"/>
-          </g>
-          <!-- 小节点 -->
-          <g fill="#5B68D3" opacity="0.5">
-            <circle cx="120" cy="160" r="5"/>
-            <circle cx="400" cy="100" r="4"/>
-            <circle cx="280" cy="620" r="5"/>
-            <circle cx="400" cy="560" r="4"/>
-            <circle cx="250" cy="280" r="3"/>
-            <circle cx="160" cy="440" r="3"/>
-            <circle cx="340" cy="260" r="4"/>
-            <circle cx="460" cy="340" r="3"/>
-          </g>
-          <!-- 装饰菱形 -->
-          <g fill="none" stroke="#7F89DF" stroke-width="1.5" opacity="0.25">
-            <rect x="370" y="420" width="28" height="28" rx="3" transform="rotate(45 384 434)"/>
-            <rect x="80" y="500" width="20" height="20" rx="2" transform="rotate(45 90 510)"/>
-            <rect x="440" y="160" width="22" height="22" rx="2" transform="rotate(45 451 171)"/>
-          </g>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <h1 class="brand-name">太理朋友圈</h1>
-        <p class="brand-desc">TYUT Campus · 即时通讯</p>
-      </div>
-    </div>
+<template><div class="root" @mousemove="mv"><div ref="bg" class="bg"></div><div class="ui">
+<img :src="emblemUrl" class="em" alt="TYUT" /><h1 class="ti"><span v-for="(c,i) in '太理朋友圈'" :key="i" :style="'--c:'+i">{{c}}</span></h1>
+<div class="cd"><el-form :model="f" :rules="rl" ref="rf" @keyup.enter.native="login"><el-form-item prop="terminal" v-show="false"><el-input v-model="f.terminal"></el-input></el-form-item>
+<el-form-item prop="userName" class="li" style="--n:0"><span class="iw"><i class="el-icon-user"></i><el-input v-model="f.userName" autocomplete="username" placeholder="用户名"></el-input></span></el-form-item>
+<el-form-item prop="password" class="li" style="--n:1"><span class="iw"><i class="el-icon-lock"></i><el-input type="password" v-model="f.password" autocomplete="current-password" placeholder="密码"></el-input></span></el-form-item>
+<div class="li ex" style="--n:2"><el-checkbox v-model="auto">自动登录</el-checkbox></div>
+<div class="li" style="--n:3"><el-button class="bt" type="primary" :loading="ing" @click="login">登录</el-button></div></el-form>
+<router-link class="lk" to="/register">没有账号？<b>前往注册 →</b></router-link></div>
+<p class="ft">连接校园每一刻</p></div></div></template>
 
-    <!-- 右侧登录表单 -->
-    <div class="form-panel">
-      <div class="form-card">
-        <div class="form-logo">
-          <svg viewBox="0 0 512 512" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="miniGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#5B68D3"/>
-                <stop offset="100%" stop-color="#3748C7"/>
-              </linearGradient>
-            </defs>
-            <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#miniGrad)"/>
-            <path d="M155 195C155 165 180 140 210 140L340 140C370 140 390 160 390 190L390 290C390 320 370 340 340 340L270 340L215 390L215 340L210 340C180 340 155 320 155 290Z" fill="rgba(255,255,255,0.18)"/>
-            <path d="M125 175C125 148 148 125 175 125L355 125C382 125 400 143 400 170L400 285C400 312 382 330 355 330L255 330L195 390L195 330L175 330C148 330 125 312 125 285Z" fill="white"/>
-            <circle cx="195" cy="245" r="18" fill="#3748C7"/>
-            <circle cx="255" cy="245" r="18" fill="#5B68D3" opacity="0.65"/>
-            <circle cx="315" cy="245" r="18" fill="#7F89DF" opacity="0.35"/>
-          </svg>
-        </div>
-        <div class="form-header">
-          <h2>欢迎登录</h2>
-          <p>校园即时通讯解决方案</p>
-        </div>
-        <el-form class="form" :model="loginForm" status-icon :rules="rules" ref="loginForm"
-          @keyup.enter.native="submitForm('loginForm')">
-          <el-form-item prop="terminal" v-show="false">
-            <el-input type="terminal" v-model="loginForm.terminal" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item prop="userName">
-            <el-input type="userName" v-model="loginForm.userName" autocomplete="username" placeholder="用户名"
-              prefix-icon="el-icon-user"></el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input type="password" v-model="loginForm.password" autocomplete="current-password"
-              placeholder="密码" prefix-icon="el-icon-lock"></el-input>
-          </el-form-item>
-          <el-form-item class="nav-tool-bar">
-            <el-checkbox v-model="isAutoLogin">自动登录</el-checkbox>
-          </el-form-item>
-          <el-button class="submit-btn" type="primary" :loading="submitting"
-            @click="submitForm('loginForm')">登录</el-button>
-        </el-form>
-        <div class="footer-links">
-          <router-link class="link" to="/register">没有账号，前往注册</router-link>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-import * as auth from '../api/auth.js'
-
-export default {
-  name: "login",
-  components: {},
-  data() {
-    var checkUsername = (rule, value, callback) => {
-      if (!value) return callback(new Error('请输入用户名'));
-      callback();
-    };
-    var checkPassword = (rule, value, callback) => {
-      if (value === '') callback(new Error('请输入密码'));
-      callback();
-    };
-    return {
-      loginForm: {
-        terminal: this.$enums.TERMINAL_TYPE.WEB,
-        userName: '',
-        password: ''
-      },
-      isAutoLogin: true,
-      submitting: false,
-      rules: {
-        userName: [{ validator: checkUsername, trigger: 'blur' }],
-        password: [{ validator: checkPassword, trigger: 'blur' }]
-      }
-    };
-  },
-  methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (!valid) return;
-        this.submitting = true;
-        this.$http({
-          url: "/login", method: 'post', data: this.loginForm
-        }).then((data) => {
-          auth.saveLoginSession(data, {
-            autoLogin: this.isAutoLogin, userName: this.loginForm.userName
-          });
-          this.$message.success("登录成功");
-          this.$router.push("/home/chat");
-        }).finally(() => { this.submitting = false; });
-      });
-    },
-    tryTokenAutoLogin() {
-      if (!auth.isAutoLoginEnabled()) return;
-      this.submitting = true;
-      auth.refreshLogin(this.$http).then(() => {
-        this.$router.push("/home/chat");
-      }).catch(() => {
-        auth.clearLoginSession(true);
-        this.isAutoLogin = false;
-      }).finally(() => { this.submitting = false; });
-    }
-  },
-  mounted() {
-    auth.removeLegacyPassword();
-    if (localStorage.getItem("isAutoLogin") != null) {
-      this.isAutoLogin = auth.isAutoLoginEnabled();
-    }
-    this.loginForm.userName = auth.getSavedUsername();
-    this.tryTokenAutoLogin();
-  }
-}
-</script>
+<script>import * as auth from'../api/auth.js';import emblemImg from'@/assets/image/school-emblem.webp';const T3='https://unpkg.com/three@0.160.0/build/three.min.js'
+export default{name:'login',data(){return{emblemUrl:emblemImg,mx:0,my:0,f:{terminal:1,userName:'',password:''},auto:!0,ing:!1,rl:{userName:[{required:!0,message:'请输入用户名',trigger:'blur'}],password:[{required:!0,message:'请输入密码',trigger:'blur'}]}}},methods:{mv(e){const r=e.currentTarget.getBoundingClientRect();this.mx=(e.clientX/r.width-.5)*2;this.my=(e.clientY/r.height-.5)*2},login(){this.$refs.rf.validate(o=>{if(!o)return;this.ing=!0;this.$http({url:'/login',method:'post',data:this.f}).then(d=>{auth.saveLoginSession(d,{autoLogin:this.auto,userName:this.f.userName});this.$message.success('登录成功');this.$router.push('/home/chat')}).finally(()=>{this.ing=!1})})},tryAuto(){if(!auth.isAutoLoginEnabled())return;this.ing=!0;auth.refreshLogin(this.$http).then(()=>this.$router.push('/home/chat')).catch(()=>{auth.clearLoginSession(!0);this.auto=!1}).finally(()=>{this.ing=!1})},
+init3(th){const el=this.$refs.bg,W=el.clientWidth,H=el.clientHeight,R=new th.WebGLRenderer({antialias:!0,alpha:!0});R.setSize(W,H);R.setPixelRatio(Math.min(devicePixelRatio,2));R.toneMapping=th.ACESFilmicToneMapping;R.toneMappingExposure=1.1;el.appendChild(R.domElement)
+const S=new th.Scene();S.background=new th.Color('#ebeef7');S.fog=new th.Fog('#ebeef7',32,130)
+const C=new th.PerspectiveCamera(44,W/H,.5,200);C.position.set(0,2,26);C.lookAt(0,0,0)
+S.add(new th.AmbientLight('#d8ddf2',2.6));const dl=new th.DirectionalLight('#fff',3);dl.position.set(6,16,8);S.add(dl);S.add(new th.DirectionalLight('#9999dd',1.4).translateX(-5).translateY(2).translateZ(-3))
+// grid — 光场地面
+const gc=document.createElement('canvas');gc.width=gc.height=512;const gx=gc.getContext('2d');gx.strokeStyle='rgba(56,32,200,.08)';gx.lineWidth=1
+for(let i=0;i<=512;i+=34){gx.beginPath();gx.moveTo(i,0);gx.lineTo(i,512);gx.stroke();gx.beginPath();gx.moveTo(0,i);gx.lineTo(512,i);gx.stroke()}
+const gt=new th.CanvasTexture(gc);gt.wrapS=gt.wrapT=th.RepeatWrapping;gt.repeat.set(6,6)
+const fl=new th.Mesh(new th.PlaneGeometry(110,110),new th.MeshBasicMaterial({map:gt,transparent:!0,opacity:.42,side:th.DoubleSide,depthWrite:!1}));fl.rotation.x=-Math.PI/2;fl.position.y=-6;S.add(fl)
+// aurora 光带
+const AU=new th.Group();S.add(AU)
+const ac=['#5846E8','#7668F2','#4432D0','#6858EC','#3624C0']
+for(let i=0;i<5;i++){const vs='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}';const fs='uniform float t;uniform vec3 c;uniform float ix;varying vec2 vUv;void main(){float d=abs(vUv.y-.5)*2.;float w=sin(vUv.x*12.+t*.42+ix)*.34+cos(vUv.x*7.-t*.26+ix*2.)*.26+sin(vUv.x*20.-t*.32+ix)*.18;float a=smoothstep(.94,0.,d)*(.15+w*.1)*.5;gl_FragColor=vec4(c,a);}';const p=new th.Mesh(new th.PlaneGeometry(52,18),new th.ShaderMaterial({uniforms:{t:{value:0},c:{value:new th.Color(ac[i])},ix:{value:i}},vertexShader:vs,fragmentShader:fs,transparent:!0,depthWrite:!1,side:th.DoubleSide}));p.position.set((i-2)*9,-.6+i*.4,-5-i*6);p.rotation.x=-.25;AU.add(p)}
+// 轨道环
+const RN=[];[2.2,3.5,5.].forEach((r,i)=>{const t=new th.Mesh(new th.TorusGeometry(r,.011,16,150),new th.MeshBasicMaterial({color:new th.Color().setHSL(.67,.5,.43+i*.13),transparent:!0,opacity:.25-i*.06,side:th.DoubleSide,depthWrite:!1}));t.rotation.x=Math.PI/2+(i-1)*.08;t.userData={s:.05+i*.022};S.add(t);RN.push(t)})
+// 粒子场
+const PR=[]
+for(let ri=0;ri<4;ri++){const pg=new th.BufferGeometry();const cnt=100+ri*28;const ps=new Float32Array(cnt*3),cs=new Float32Array(cnt*3);const r=4.4+ri*3.
+for(let i=0;i<cnt;i++){const a=(i/cnt)*Math.PI*2,y=(Math.random()-.5)*6;ps[i*3]=Math.cos(a)*(r+(Math.random()-.5)*2.5);ps[i*3+1]=y;ps[i*3+2]=Math.sin(a)*(r+(Math.random()-.5)*2.5);const cc=new th.Color().setHSL(.67,.55,.43+Math.random()*.3);cs[i*3]=cc.r;cs[i*3+1]=cc.g;cs[i*3+2]=cc.b}
+pg.setAttribute('position',new th.BufferAttribute(ps,3));pg.setAttribute('color',new th.BufferAttribute(cs,3));const pm=new th.Points(pg,new th.PointsMaterial({size:.06,vertexColors:!0,transparent:!0,opacity:.22,blending:th.AdditiveBlending,depthWrite:!1}));pm.userData={s:.03+ri*.01};S.add(pm);PR.push(pm)}
+// 浮游体
+const FT=[]
+for(let i=0;i<9;i++){const gs=[new th.IcosahedronGeometry(.1,1),new th.OctahedronGeometry(.08,0),new th.TetrahedronGeometry(.09,0),new th.TorusKnotGeometry(.07,.025,36,6)];const m=new th.Mesh(gs[i%4],new th.MeshStandardMaterial({color:new th.Color().setHSL(.66,.45,.37+i*.06),metalness:.4,roughness:.62,side:th.DoubleSide}));const ang=(i/9)*Math.PI*2,dist=7.+i*.5;m.position.set(Math.cos(ang)*dist,(Math.random()-.5)*7,Math.sin(ang)*dist);m.userData={bx:m.position.x,bz:m.position.z,by:m.position.y,ph:i,dist};S.add(m);FT.push(m)}
+// 中轴 + 辉光
+S.add(new th.Mesh(new th.CylinderGeometry(.02,.02,42,8),new th.MeshBasicMaterial({color:'#6040e0',transparent:!0,opacity:.045,depthWrite:!1})))
+const gl=new th.Mesh(new th.RingGeometry(.9,2.8,64),new th.MeshBasicMaterial({color:'#7050e0',side:th.DoubleSide,transparent:!0,opacity:.045,depthWrite:!1}));gl.rotation.x=-Math.PI/2;gl.position.y=.06;S.add(gl)
+// animate
+const ck=new th.Clock(),af=()=>{if(!this._alive)return;requestAnimationFrame(af);const t=ck.getElapsedTime(),mx=this.mx*.5,my=this.my*.5;AU.children.forEach(p=>{p.material.uniforms.t.value=t});RN.forEach(r=>{r.rotation.z+=r.userData.s*.2});PR.forEach(p=>{p.rotation.y+=p.userData.s});FT.forEach(f=>{f.position.x=f.userData.bx+Math.sin(t*.3+f.userData.ph)*2.2;f.position.z=f.userData.bz+Math.cos(t*.27+f.userData.ph)*2.2;f.position.y=f.userData.by+Math.sin(t*.5+f.userData.ph*1.2)*1.6;f.rotation.x+=.004;f.rotation.y+=.005});gl.scale.setScalar(1+Math.sin(t*.7)*.22);C.position.x+=(mx*5-C.position.x)*.025;C.position.y+=(2+my*2.2-C.position.y)*.025;C.lookAt(0,0,0);R.render(S,C)};this._alive=!0;af();const rs=()=>{const w=el.clientWidth,h=el.clientHeight;R.setSize(w,h);C.aspect=w/h;C.updateProjectionMatrix()};window.addEventListener('resize',rs);this._clean=()=>{this._alive=!1;window.removeEventListener('resize',rs);R.dispose()}}},mounted(){auth.removeLegacyPassword();if(localStorage.getItem('isAutoLogin')!=null)this.auto=auth.isAutoLoginEnabled();const s=document.createElement('script');s.src=T3;s.onload=()=>{this.init3(window.THREE)};document.head.appendChild(s);this.tryAuto()},beforeDestroy(){if(this._clean)this._clean();this._alive=!1}}</script>
 
 <style scoped lang="scss">
-.login-view {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #ECEDFA 0%, #F8F9FD 50%, #FFFFFF 100%);
-  overflow: hidden;
 
-  // === 左侧品牌面板 ===
-  .brand-panel {
-    flex: 0 0 42%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+/* ===== 布局节奏 ===== */
+.root{width:100%;height:100%;position:relative;overflow:hidden}
+.bg{position:absolute;inset:0;z-index:0}
+.ui{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:24px;animation:in .75s cubic-bezier(.22,.61,.36,1) both}
+@keyframes in{0%{opacity:0}100%{opacity:1}}
 
-    .brand-illustration {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+/* ===== 校徽 ===== */
+.em{width:120px;height:120px;border-radius:50%;object-fit:contain;filter:drop-shadow(0 4px 28px rgba(48,0,240,.12));animation:ei .7s cubic-bezier(.22,.61,.36,1) both}
+@keyframes ei{0%{opacity:0;translate:0 16px}100%{opacity:1;translate:0 0}}
 
-      svg {
-        width: 90%;
-        max-width: 540px;
-        height: auto;
-      }
-    }
+/* ===== 标题 ===== */
+.ti{font-size:44px;font-weight:800;letter-spacing:10px;span{display:inline-block;background:linear-gradient(135deg,#2E1CB8,#5848E0,#2E1CB8);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:tc .42s calc(.32s + var(--c)*.045s) cubic-bezier(.22,.61,.36,1) both,tw 3s ease-in-out infinite}}
+@keyframes tc{0%{opacity:0;translate:0 10px}100%{opacity:1;translate:0 0}}
+@keyframes tw{0%,100%{background-position:0% center}50%{background-position:100% center}}
 
-    .brand-text {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      margin-top: auto;
-      padding-bottom: 60px;
+/* ===== 登录卡 ===== */
+.cd{width:450px;background:rgba(96,60,230,.03);backdrop-filter:blur(50px);-webkit-backdrop-filter:blur(50px);border-radius:26px;padding:38px 42px 24px;border:1px solid rgba(96,48,240,.06);box-shadow:0 0 48px rgba(96,48,240,.025),inset 0 1px 0 rgba(255,255,255,.15);animation:ci .55s .2s cubic-bezier(.22,.61,.36,1) both;transition:transform .4s cubic-bezier(.4,0,.2,1),box-shadow .4s ease,background .4s ease;&:hover{transform:translateY(-4px);box-shadow:0 16px 52px rgba(96,48,240,.06),inset 0 1px 0 rgba(255,255,255,.2);background:rgba(96,60,230,.05)}}
+@keyframes ci{0%{opacity:0;translate:0 14px}100%{opacity:1;translate:0 0}}
 
-      .brand-name {
-        margin: 0;
-        font-size: 32px;
-        font-weight: 700;
-        color: #3748C7;
-        letter-spacing: 2px;
-      }
+.li{animation:ri .38s calc(.28s + var(--n)*.065s) cubic-bezier(.22,.61,.36,1) both}
+@keyframes ri{0%{opacity:0;translate:0 10px}100%{opacity:1;translate:0 0}}
 
-      .brand-desc {
-        margin: 8px 0 0;
-        font-size: 14px;
-        color: #7F89DF;
-        letter-spacing: 1px;
-      }
-    }
-  }
+/* ===== 输入框 ===== */
+::v-deep .el-input__inner{height:54px;border-radius:16px;border:1px solid rgba(96,48,240,.08);background:rgba(96,60,230,.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding-left:48px;font-size:15px;color:rgba(30,20,50,.85);transition:all .35s cubic-bezier(.4,0,.2,1);&::placeholder{color:rgba(96,48,240,.2)}&:focus{background:rgba(96,60,230,.06);border-color:rgba(96,48,240,.2);box-shadow:0 0 32px rgba(96,48,240,.05),0 4px 14px rgba(96,48,240,.02),inset 0 1px 0 rgba(255,255,255,.1)}}
+/* ===== 图标容器 ===== */
+.iw{position:relative;display:block}.iw .el-icon-user,.iw .el-icon-lock{position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:2;color:rgba(96,48,240,.25);font-size:15px;pointer-events:none;width:16px;text-align:center}
+.iw .el-input__inner{padding-left:48px !important}
+::v-deep .el-form-item{margin-bottom:16px}
 
-  // === 右侧表单面板 ===
-  .form-panel {
-    flex: 0 0 58%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #FFFFFF;
-    position: relative;
+/* ===== 按钮 ===== */
+.bt{width:100%;height:54px;margin-top:4px;border-radius:16px;font-size:16px;font-weight:600;letter-spacing:6px;border:none;position:relative;overflow:hidden;background:transparent;transition:all .4s cubic-bezier(.4,0,.2,1);&::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#5B48E8,#3824D0);z-index:0;opacity:.92;transition:all .4s}&::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);transform:translateX(-100%)}&:hover{translate:0 -3px;box-shadow:0 14px 34px rgba(56,36,208,.22),0 0 56px rgba(56,36,208,.06);&::before{opacity:1}&::after{transform:translateX(100%);transition:transform .7s ease}}&:active{translate:0 0}::v-deep span{position:relative;z-index:2}}
 
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 10%;
-      bottom: 10%;
-      width: 1px;
-      background: linear-gradient(180deg, transparent, #E5E5EA 20%, #E5E5EA 80%, transparent);
-    }
-  }
+/* ===== 链接 ===== */
+.lk{display:block;text-align:center;text-decoration:none;font-size:14px;color:rgba(96,48,240,.28);transition:all .25s;b{font-weight:500}&:hover{color:rgba(58,36,208,.5);b{letter-spacing:1px}}}
 
-  .form-card {
-    width: 380px;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* ===== 底部 ===== */
+.ft{font-size:12px;letter-spacing:5px;color:rgba(96,48,240,.11);animation:fti 1s .65s cubic-bezier(.22,.61,.36,1) both}
+@keyframes fti{0%{opacity:0}100%{opacity:1}}
+@media(max-width:500px){.cd{width:92vw}.ti{font-size:28px}}
 
-    .form-logo {
-      margin-bottom: 20px;
-      filter: drop-shadow(0 4px 12px rgba(55, 72, 199, 0.2));
-    }
-
-    .form-header {
-      text-align: center;
-      margin-bottom: 32px;
-
-      h2 {
-        margin: 0 0 6px;
-        font-size: 24px;
-        font-weight: 700;
-        color: #1C1C1E;
-      }
-
-      p {
-        margin: 0;
-        font-size: 14px;
-        color: #8E8E93;
-      }
-    }
-  }
-
-  .form {
-    width: 100%;
-
-    ::v-deep .el-form-item {
-      margin-bottom: 18px;
-    }
-
-    ::v-deep .el-input__inner {
-      height: 48px;
-      border-radius: 12px;
-      border: 1px solid #E5E5EA;
-      background: #F8F9FD;
-      padding-left: 44px;
-      font-size: 14px;
-      transition: all 0.25s ease;
-
-      &:focus {
-        background: #FFFFFF;
-        border-color: #5B68D3;
-        box-shadow: 0 0 0 3px rgba(55, 72, 199, 0.08);
-      }
-    }
-
-    ::v-deep .el-input__prefix {
-      left: 16px;
-      .el-input__icon { color: #A3AAEB; font-size: 18px; }
-    }
-  }
-
-  .nav-tool-bar {
-    ::v-deep .el-form-item__content {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-
-  .submit-btn {
-    width: 100%;
-    height: 48px;
-    margin-top: 4px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
-
-  .footer-links {
-    margin-top: 20px;
-    text-align: center;
-
-    .link {
-      text-decoration: none;
-      color: #8E8E93;
-      font-size: 13px;
-      transition: color 0.2s;
-      &:hover { color: #3748C7; }
-    }
-  }
-}
-
-// === 响应式 ===
-@media (max-width: 860px) {
-  .login-view .brand-panel { display: none; }
-  .login-view .form-panel {
-    flex: 1;
-    &::before { display: none; }
-  }
-}
 </style>

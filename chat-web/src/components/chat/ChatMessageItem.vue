@@ -235,7 +235,7 @@ export default {
 	transition: background 0.3s ease;
 
 	&.active {
-		background: var(--im-background-active-dark);
+		background: rgba(55,72,199,.06);
 	}
 
 	.message-tip {

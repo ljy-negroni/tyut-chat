@@ -827,7 +827,7 @@ export default {
 		line-height: 52px;
 		font-size: 15px;
 		font-weight: 600;
-		border-bottom: 1px solid var(--im-color-primary-light-7);
+		border-bottom: 1px solid rgba(55,72,199,.05);
 		background: #FFFFFF;
 
 		.btn-side {
@@ -849,7 +849,7 @@ export default {
 
 		.im-chat-main {
 			padding: 0;
-			background-color: #F4F5FA;
+			background: rgba(244,245,250,.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 
 			.im-chat-box {
 				>ul {
@@ -898,10 +898,10 @@ export default {
 				height: 42px;
 				text-align: left;
 				box-sizing: border-box;
-				border-top: 1px solid var(--im-color-primary-light-7);
+				border-top: 1px solid rgba(55,72,199,.05);
 				padding: 4px 12px;
 				align-items: center;
-				background: #FAFBFF;
+				background: rgba(250,251,255,.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 				color: var(--im-text-color);
 				gap: 6px;
 

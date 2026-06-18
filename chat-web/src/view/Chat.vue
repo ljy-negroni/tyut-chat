@@ -141,7 +141,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.chat-page {
+.chat-page { background: transparent; 
 
   .header {
     height: 50px;
@@ -152,7 +152,7 @@ export default {
 
   .chat-loading {
     height: 50px;
-    background-color: #eee;
+    background: rgba(55,72,199,.04); backdrop-filter: blur(4px);
 
     .el-icon-loading {
       font-size: 24px;
