@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-dialogDrag title="邀请好友" :visible.sync="show" width="620px" :before-close="close">
+	<el-dialog v-dialogDrag title="邀请好友" :visible.sync="show" width="620px" :before-close="close" :append-to-body="true" :modal-append-to-body="true">
 		<div class="add-group-member">
 			<div class="left-box">
 				<div class="search">
