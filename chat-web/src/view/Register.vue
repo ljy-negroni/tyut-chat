@@ -1,5 +1,5 @@
 <template><div class="root" @mousemove="mv"><div ref="bg" class="bg"></div><div class="ui">
-<img :src="emblemUrl" class="em" alt="TYUT" /><h1 class="ti"><span v-for="(c,i) in '创建账号'" :key="i" :style="'--c:'+i">{{c}}</span></h1>
+<div class="em"></div><h1 class="ti"><span v-for="(c,i) in '创建账号'" :key="i" :style="'--c:'+i">{{c}}</span></h1>
 <div class="cd"><el-form :model="f" :rules="rl" ref="rf">
 <el-form-item prop="userName" class="li" style="--n:0"><span class="iw"><i class="el-icon-user"></i><el-input v-model="f.userName" autocomplete="username" placeholder="用户名" ></el-input></span></el-form-item>
 <el-form-item prop="password" class="li" style="--n:1"><span class="iw"><i class="el-icon-lock"></i><el-input type="password" v-model="f.password" autocomplete="current-password" placeholder="密码" ></el-input></span></el-form-item>
@@ -8,8 +8,8 @@
 <router-link class="lk" to="/login">已有账号？<b>前往登录 →</b></router-link></div>
 <p class="ft">加入太原理工大学校园社区</p></div></div></template>
 
-<script>import{saveLoginSession}from'../api/auth.js';import emblemImg from'@/assets/image/school-emblem.webp';const T3='https://unpkg.com/three@0.160.0/build/three.min.js'
-export default{name:'register',data(){return{emblemUrl:emblemImg,mx:0,my:0,f:{userName:'',password:'',confirmPassword:''},ing:!1,rl:{userName:[{required:!0,message:'请输入用户名',trigger:'blur'}],password:[{required:!0,message:'请输入密码',trigger:'blur'}],confirmPassword:[{required:!0,message:'请确认密码',trigger:'blur'},{validator:(r,v,cb)=>v!==this.f.password?cb(new Error('两次密码输入不一致')):cb(),trigger:'blur'}]}}},methods:{mv(e){const r=e.currentTarget.getBoundingClientRect();this.mx=(e.clientX/r.width-.5)*2;this.my=(e.clientY/r.height-.5)*2},register(){this.$refs.rf.validate(o=>{if(!o)return;this.$http({url:'/register',method:'post',data:this.f}).then(()=>this.$http({url:'/login',method:'post',data:{terminal:1,userName:this.f.userName,password:this.f.password}})).then(d=>{saveLoginSession(d,{autoLogin:!0,userName:this.f.userName});this.$message.success('注册成功');this.$router.push('/home/chat')})})},
+<script>import{saveLoginSession}from'../api/auth.js';import emblemImg from'@/assets/image/school-emblem.webp';import emblemTex from"@/assets/image/emblem_deep.png";const T3='https://unpkg.com/three@0.160.0/build/three.min.js'
+export default{name:'register',data(){return{mx:0,my:0,f:{userName:'',password:'',confirmPassword:''},ing:!1,rl:{userName:[{required:!0,message:'请输入用户名',trigger:'blur'}],password:[{required:!0,message:'请输入密码',trigger:'blur'}],confirmPassword:[{required:!0,message:'请确认密码',trigger:'blur'},{validator:(r,v,cb)=>v!==this.f.password?cb(new Error('两次密码输入不一致')):cb(),trigger:'blur'}]}}},methods:{mv(e){const r=e.currentTarget.getBoundingClientRect();this.mx=(e.clientX/r.width-.5)*2;this.my=(e.clientY/r.height-.5)*2},register(){this.$refs.rf.validate(o=>{if(!o)return;this.$http({url:'/register',method:'post',data:this.f}).then(()=>this.$http({url:'/login',method:'post',data:{terminal:1,userName:this.f.userName,password:this.f.password}})).then(d=>{saveLoginSession(d,{autoLogin:!0,userName:this.f.userName});this.$message.success('注册成功');this.$router.push('/home/chat')})})},
 init3(th){const el=this.$refs.bg,W=el.clientWidth,H=el.clientHeight,R=new th.WebGLRenderer({antialias:!0,alpha:!0});R.setSize(W,H);R.setPixelRatio(Math.min(devicePixelRatio,2));R.toneMapping=th.ACESFilmicToneMapping;R.toneMappingExposure=1.1;el.appendChild(R.domElement)
 const S=new th.Scene();S.background=new th.Color('#ebeef7');S.fog=new th.Fog('#ebeef7',32,130)
 const C=new th.PerspectiveCamera(44,W/H,.5,200);C.position.set(0,2,26);C.lookAt(0,0,0)
@@ -36,8 +36,16 @@ for(let i=0;i<9;i++){const gs=[new th.IcosahedronGeometry(.1,1),new th.Octahedro
 // 中轴 + 辉光
 S.add(new th.Mesh(new th.CylinderGeometry(.02,.02,42,8),new th.MeshBasicMaterial({color:'#6040e0',transparent:!0,opacity:.045,depthWrite:!1})))
 const gl=new th.Mesh(new th.RingGeometry(.9,2.8,64),new th.MeshBasicMaterial({color:'#7050e0',side:th.DoubleSide,transparent:!0,opacity:.045,depthWrite:!1}));gl.rotation.x=-Math.PI/2;gl.position.y=.06;S.add(gl)
+							const EMB=new th.Group()
+	EMB.add(new th.Mesh(new th.CircleGeometry(2.2,128),new th.MeshBasicMaterial({color:0xF5F7F9,side:th.DoubleSide,depthWrite:!1})))
+	const ei=new Image();ei.src=emblemTex;ei.onload=()=>{
+		const tt=new th.Texture(ei);tt.magFilter=th.LinearFilter;tt.minFilter=th.LinearFilter;
+		tt.needsUpdate=!0;
+		EMB.add(new th.Mesh(new th.CircleGeometry(2.2,128),new th.MeshBasicMaterial({map:tt,transparent:!0,side:th.DoubleSide,depthWrite:!1})));
+	};
+	EMB.position.set(0,5.6,5);S.add(EMB)
 // animate
-const ck=new th.Clock(),af=()=>{if(!this._alive)return;requestAnimationFrame(af);const t=ck.getElapsedTime(),mx=this.mx*.5,my=this.my*.5;AU.children.forEach(p=>{p.material.uniforms.t.value=t});RN.forEach(r=>{r.rotation.z+=r.userData.s*.2});PR.forEach(p=>{p.rotation.y+=p.userData.s});FT.forEach(f=>{f.position.x=f.userData.bx+Math.sin(t*.3+f.userData.ph)*2.2;f.position.z=f.userData.bz+Math.cos(t*.27+f.userData.ph)*2.2;f.position.y=f.userData.by+Math.sin(t*.5+f.userData.ph*1.2)*1.6;f.rotation.x+=.004;f.rotation.y+=.005});gl.scale.setScalar(1+Math.sin(t*.7)*.22);C.position.x+=(mx*5-C.position.x)*.025;C.position.y+=(2+my*2.2-C.position.y)*.025;C.lookAt(0,0,0);R.render(S,C)};this._alive=!0;af();const rs=()=>{const w=el.clientWidth,h=el.clientHeight;R.setSize(w,h);C.aspect=w/h;C.updateProjectionMatrix()};window.addEventListener('resize',rs);this._clean=()=>{this._alive=!1;window.removeEventListener('resize',rs);R.dispose()}}},mounted(){const s=document.createElement('script');s.src=T3;s.onload=()=>{this.init3(window.THREE)};document.head.appendChild(s)},beforeDestroy(){if(this._clean)this._clean();this._alive=!1}}</script>
+const ck=new th.Clock(),af=()=>{if(!this._alive)return;requestAnimationFrame(af);const t=ck.getElapsedTime(),mx=this.mx*.5,my=this.my*.5;AU.children.forEach(p=>{p.material.uniforms.t.value=t});RN.forEach(r=>{r.rotation.z+=r.userData.s*.2});PR.forEach(p=>{p.rotation.y+=p.userData.s});FT.forEach(f=>{f.position.x=f.userData.bx+Math.sin(t*.3+f.userData.ph)*2.2;f.position.z=f.userData.bz+Math.cos(t*.27+f.userData.ph)*2.2;f.position.y=f.userData.by+Math.sin(t*.5+f.userData.ph*1.2)*1.6;f.rotation.x+=.004;f.rotation.y+=.005});gl.scale.setScalar(1+Math.sin(t*.7)*.22);EMB.rotation.x=-my*.12;EMB.rotation.y=mx*.14;EMB.position.y=5.6+my*.15;C.position.x+=(mx*5-C.position.x)*.025;C.position.y+=(2+my*2.2-C.position.y)*.025;C.lookAt(0,0,0);R.render(S,C)};this._alive=!0;af();const rs=()=>{const w=el.clientWidth,h=el.clientHeight;R.setSize(w,h);C.aspect=w/h;C.updateProjectionMatrix()};window.addEventListener('resize',rs);this._clean=()=>{this._alive=!1;window.removeEventListener('resize',rs);R.dispose()}}},mounted(){const s=document.createElement('script');s.src=T3;s.onload=()=>{this.init3(window.THREE)};document.head.appendChild(s)},beforeDestroy(){if(this._clean)this._clean();this._alive=!1}}</script>
 
 <style scoped lang="scss">
 
@@ -48,7 +56,7 @@ const ck=new th.Clock(),af=()=>{if(!this._alive)return;requestAnimationFrame(af)
 @keyframes in{0%{opacity:0}100%{opacity:1}}
 
 /* ===== 校徽 ===== */
-.em{width:120px;height:120px;border-radius:50%;object-fit:contain;filter:drop-shadow(0 4px 28px rgba(48,0,240,.12));animation:ei .7s cubic-bezier(.22,.61,.36,1) both}
+.em{width:120px;height:120px;border-radius:50%;pointer-events:none;animation:ei .7s cubic-bezier(.22,.61,.36,1) both}
 @keyframes ei{0%{opacity:0;translate:0 16px}100%{opacity:1;translate:0 0}}
 
 /* ===== 标题 ===== */
