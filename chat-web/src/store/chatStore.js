@@ -116,9 +116,9 @@ export default defineStore('chatStore', {
 			conv.optTime = m.sendTime;
 			// 其他成员发的消息显示发送昵称
 			conv.sendNickName = m.selfSend ? '' : m.sendNickName;
-			// 记录会话最大消息id
-			if (m.id && m.seqNo) {
-				conv.maxSeqNo = Math.max(conv.maxSeqNo, m.seqNo);
+			// 记录会话最大消息序号（本地消息也需递增，否则多条同seqNo刷新后乱序）
+			conv.maxSeqNo = Math.max(conv.maxSeqNo, m.seqNo || 0);
+			if (m.id) {
 				conv.maxMessageId = Math.max(conv.maxMessageId, m.id);
 			}
 			// 会话未读加1

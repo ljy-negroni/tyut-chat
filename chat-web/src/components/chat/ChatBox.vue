@@ -645,7 +645,7 @@ export default {
 		buildLocalMessage(message) {
 			const m = JSON.parse(JSON.stringify(message));
 			m.convKey = this.conversation.key;
-			m.seqNo = Math.max(1, this.conversation.maxSeqNo);
+			m.seqNo = this.conversation.maxSeqNo + 1;
 			m.sendId = this.mine.id;
 			m.sendTime = new Date().getTime();
 			m.status = this.$enums.MESSAGE_STATUS.SENDING;
