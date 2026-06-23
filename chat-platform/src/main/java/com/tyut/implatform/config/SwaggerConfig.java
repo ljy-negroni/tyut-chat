@@ -24,10 +24,10 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         Contact contact = new Contact();
-        contact.setName("太理朋友圈");
+        contact.setName("TYUT CHAT");
         return new OpenAPI().info(new Info()
-            .title("太理朋友圈接口文档")
-            .description("太理朋友圈业务平台服务")
+            .title("TYUT CHAT接口文档")
+            .description("TYUT CHAT业务平台服务")
             .contact(contact)
             .version("3.0")
             .termsOfService("https://your-domain.com")

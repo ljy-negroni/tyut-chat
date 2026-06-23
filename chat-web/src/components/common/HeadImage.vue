@@ -13,8 +13,9 @@ export default {
 	name: "headImage",
 	data() {
 		return {
-			colors: ["#5daa31", "#c7515a", "#e03697", "#85029b",
-				"#c9b455", "#326eb6"]
+			// macOS Vibrancy 暗调色板：白字深底，每人一个微妙色调
+			colors: ["#3a3a3c", "#4a4a58", "#3d3848", "#3c4450",
+				"#484842", "#463a3e", "#3e4248", "#45404c"]
 		}
 	},
 	props: {
@@ -76,15 +77,15 @@ export default {
 			let w = this.width ? this.width : this.size;
 			let h = this.height ? this.height : this.size;
 			return `width:${w}px; height:${h}px;
-					border-radius: ${this.radius};`
+					border-radius: ${this.radius}; border: 1px solid rgba(0,0,0,0.06);`
 		},
 		avatarTextStyle() {
 			let w = this.width ? this.width : this.size;
 			let h = this.height ? this.height : this.size;
 			return `width: ${w}px;height:${h}px;
-				background: linear-gradient(145deg,#ffffff20 25%,#00000060),${this.textColor};
-				font-size:${w * 0.4}px;
-				border-radius: ${this.radius};`
+				background: ${this.textColor}; color: rgba(255,255,255,0.88);
+				font-size:${w * 0.42}px; font-weight: 600;
+				border-radius: ${this.radius}; border: 1px solid rgba(0,0,0,0.06);`
 		},
 		avaterText() {
 			if (!this.name) return '';
@@ -117,7 +118,6 @@ export default {
 	}
 
 	.avatar-text {
-		color: white;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -129,9 +129,9 @@ export default {
 		bottom: 0;
 		width: 12px;
 		height: 12px;
-		background: limegreen;
+		background: #30d158;
 		border-radius: 50%;
-		border: 2px solid white;
+		
 	}
 }
 </style>
