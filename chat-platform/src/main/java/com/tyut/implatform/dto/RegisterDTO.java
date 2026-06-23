@@ -23,5 +23,12 @@ public class RegisterDTO {
     @Schema(description = "用户昵称")
     private String nickName;
 
+    @NotEmpty(message = "验证码key不可为空")
+    @Schema(description = "验证码key")
+    private String captchaKey;
+
+    @NotEmpty(message = "验证码不可为空")
+    @Schema(description = "验证码")
+    private String captchaCode;
 
 }

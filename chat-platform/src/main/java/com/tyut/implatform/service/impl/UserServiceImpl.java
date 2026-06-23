@@ -31,6 +31,7 @@ import com.tyut.implatform.vo.OnlineTerminalVO;
 import com.tyut.implatform.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public LoginVO login(LoginDTO dto) {
+        // 验证码校验（提供了captchaKey时才校验，兼容注册后自动登录）
+        if (StrUtil.isNotBlank(dto.getCaptchaKey())) {
+            String captchaKey = "captcha:" + dto.getCaptchaKey();
+            String storedCode = stringRedisTemplate.opsForValue().get(captchaKey);
+            if (storedCode == null) {
+                throw new GlobalException("验证码已过期，请刷新后重试");
+            }
+            if (!storedCode.equalsIgnoreCase(dto.getCaptchaCode())) {
+                throw new GlobalException("验证码错误");
+            }
+            stringRedisTemplate.delete(captchaKey);
+        }
         User user = this.findUserByUserName(dto.getUserName());
         if (Objects.isNull(user)) {
             throw new GlobalException("用户不存在");
@@ -108,8 +121,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return vo;
     }
 
+    private final StringRedisTemplate stringRedisTemplate;
+
     @Override
     public void register(RegisterDTO dto) {
+        // 验证码校验
+        String captchaKey = "captcha:" + dto.getCaptchaKey();
+        String storedCode = stringRedisTemplate.opsForValue().get(captchaKey);
+        if (storedCode == null) {
+            throw new GlobalException("验证码已过期，请刷新后重试");
+        }
+        if (!storedCode.equalsIgnoreCase(dto.getCaptchaCode())) {
+            throw new GlobalException("验证码错误");
+        }
+        // 用后即删，防止重复使用
+        stringRedisTemplate.delete(captchaKey);
+
         // 昵称默认跟用户名保持一致
         if(StrUtil.isEmpty(dto.getNickName())){
             dto.setNickName(dto.getUserName());

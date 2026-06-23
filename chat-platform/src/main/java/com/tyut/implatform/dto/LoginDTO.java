@@ -25,4 +25,10 @@ public class LoginDTO {
     @Schema(description = "用户密码")
     private String password;
 
+    @Schema(description = "验证码key")
+    private String captchaKey;
+
+    @Schema(description = "验证码")
+    private String captchaCode;
+
 }
