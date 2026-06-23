@@ -133,7 +133,7 @@ export default {
 	}
 
 	&.active {
-		background: linear-gradient(135deg, var(--im-color-primary-light-7), var(--im-color-primary-light-8));
+		background: #2c2c2e;
 
 		.chat-name-text {
 			color: var(--im-color-primary);
@@ -160,13 +160,13 @@ export default {
 			font-weight: 700;
 			text-align: center;
 			white-space: nowrap;
-			border: 2px solid #FFFFFF;
+			border: 2px solid #1c1c1e;
 			min-width: 18px;
 			height: 18px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+			box-shadow: none;
 			z-index: 2;
 		}
 	}

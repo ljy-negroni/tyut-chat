@@ -158,14 +158,14 @@ export default {
 <style lang="scss" scoped>
 .group-page {
 	.aside-hd { height:50px; display:flex; align-items:center; padding:0 8px; .add-btn { padding:5px!important; margin:5px; font-size:16px; border-radius:50% } }
-	.group-items { flex:1; .letter { text-align:left; font-size:12px; padding:8px 16px 4px; color:rgba(55,72,199,.35) } }
-	.main { display:flex; flex-direction:column; background:rgba(248,249,253,.55); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px) }
+	.group-items { flex:1; .letter { text-align:left; font-size:12px; padding:8px 16px 4px; color:rgba(255,255,255,.28) } }
+	.main { display:flex; flex-direction:column; background:#1c1c1e }
 	.empty-hint { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--im-text-color-lighter); font-size:14px }
 	.detail { flex:1; display:flex; flex-direction:column; overflow:hidden }
 	.detail-body { flex:1 }
 
 	.profile {
-		padding:32px 32px 24px; background:rgba(255,255,255,.78); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+		padding:32px 32px 24px; background:#2c2c2e;
 		display:flex; flex-direction:column; align-items:center;
 		.pf-avatar { width:72px; height:72px; cursor:pointer; margin-bottom:14px;
 			::v-deep .el-upload { width:72px; height:72px; border-radius:18px; border:2px dashed var(--im-color-primary-light-4); display:flex; align-items:center; justify-content:center; transition:all .2s; &:hover{ border-color:var(--im-color-primary); background:var(--im-color-primary-light-9) } }
@@ -178,10 +178,10 @@ export default {
 	}
 
 	.block {
-		background:rgba(255,255,255,.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+		background:#2c2c2e; border: 1px solid rgba(255,255,255,.06);
 		border-radius:14px; padding:20px 28px; margin:16px 20px; margin-bottom:0;
-		box-shadow:0 1px 4px rgba(55,72,199,.03);
-		.block-title { font-size:14px; font-weight:600; color:var(--im-text-color); padding-bottom:12px; margin-bottom:12px; border-bottom:1px solid rgba(55,72,199,.07) }
+		box-shadow:none;
+		.block-title { font-size:14px; font-weight:600; color:var(--im-text-color); padding-bottom:12px; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,.06) }
 	}
 	.block+.block { margin-top:14px; margin-bottom:22px }
 

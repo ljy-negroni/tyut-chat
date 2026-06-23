@@ -818,7 +818,7 @@ export default {
 .chat-box {
 	position: relative;
 	width: 100%;
-	background: #fff;
+	background: #1c1c1e;
 
 	.el-header {
 		display: flex;
@@ -827,8 +827,8 @@ export default {
 		line-height: 52px;
 		font-size: 15px;
 		font-weight: 600;
-		border-bottom: 1px solid rgba(55,72,199,.05);
-		background: #FFFFFF;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		background: #1c1c1e;
 
 		.btn-side {
 			position: absolute;
@@ -849,7 +849,7 @@ export default {
 
 		.im-chat-main {
 			padding: 0;
-			background: rgba(244,245,250,.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+			background: #1c1c1e;
 
 			.im-chat-box {
 				>ul {
@@ -889,7 +889,7 @@ export default {
 			display: flex;
 			flex-direction: column;
 			padding: 0;
-			background: #FFFFFF;
+			background: #1c1c1e;
 
 			.chat-tool-bar {
 				display: flex;
@@ -898,11 +898,11 @@ export default {
 				height: 42px;
 				text-align: left;
 				box-sizing: border-box;
-				border-top: 1px solid rgba(55,72,199,.05);
+				border-top: 1px solid rgba(255, 255, 255, 0.06);
 				padding: 4px 12px;
 				align-items: center;
-				background: rgba(250,251,255,.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-				color: var(--im-text-color);
+				background: #2c2c2e;
+				color: rgba(255,255,255,.72);
 				gap: 6px;
 
 				>div {
@@ -937,7 +937,7 @@ export default {
 				display: flex;
 				flex-direction: column;
 				height: 100%;
-				background-color: #FFFFFF !important;
+				background-color: #1c1c1e !important;
 
 				.send-btn-area {
 					padding: 8px 12px;
@@ -953,7 +953,7 @@ export default {
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background: rgba(248, 249, 253, 0.92);
+				background: rgba(28, 28, 30, 0.94);
 				font-size: 14px;
 				color: var(--im-text-color-light);
 				display: flex;

@@ -2,7 +2,7 @@
 @import "element";
 
 // ============================================
-// 太理朋友圈 · 全局设计变量
+// macOS Vibrancy · 全局设计变量
 // ============================================
 :root {
   // 品牌色
@@ -49,29 +49,32 @@
   --im-border: 1px solid #{$--border-color-base};
   --im-border-light: 1px solid #{$--border-color-light};
 
-  // 阴影
-  --im-box-shadow: #{$--box-shadow-base};
-  --im-box-shadow-light: #{$--box-shadow-light};
-  --im-box-shadow-lighter: 0 0 6px rgba(0, 0, 0, 0.08);
-  --im-box-shadow-dark: 0 16px 48px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
+  // 阴影（macOS Vibrancy 禁止大阴影）
+  --im-box-shadow: none;
+  --im-box-shadow-light: none;
+  --im-box-shadow-lighter: 0 1px 0 rgba(255, 255, 255, 0.04);
+  --im-box-shadow-dark: none;
 
-  // 背景色
-  --im-background: #FFFFFF;
-  --im-background-page: #F4F5FA;
-  --im-background-active: #{$--color-primary-light-8};
-  --im-background-active-dark: #{$--color-primary-light-7};
-  --im-background-message: #{$--color-primary-light-9};
+  // 背景色（三层深灰系统）
+  --im-background: #1c1c1e;
+  --im-background-page: #161618;
+  --im-background-active: #2c2c2e;
+  --im-background-active-dark: #3a3a3c;
+  --im-background-message: #2c2c2e;
 }
 
 html {
   height: 100%;
   overflow: hidden;
+  background: #161618;
 }
 
 body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  background: #161618;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 section {
@@ -82,7 +85,7 @@ section {
   padding: 10px 20px !important;
 }
 
-// 滚动条样式
+// 滚动条样式（暗色适配）
 ::-webkit-scrollbar {
   width: 8px;
   height: 1px;
@@ -90,24 +93,23 @@ section {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background: hsla(0, 0%, 73%, .5);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 ::-webkit-scrollbar-track {
   border-radius: 4px;
+  background: transparent;
 }
 
 .el-scrollbar__thumb {
   border-radius: 4px;
-  background: var(--im-color-primary-light-9) !important;
-
+  background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .search-input {
   .el-input__inner {
     border: unset !important;
   }
-
 }
 
 .emoji-large {

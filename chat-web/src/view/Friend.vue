@@ -162,7 +162,7 @@ export default {
 }
 
 .container { display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: rgba(255,255,255,.35); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px) }
+  background:#2c2c2e;  -webkit-backdrop-filter: blur(16px) }
 
 .empty-detail { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: var(--im-text-color-lighter); font-size: 14px }
@@ -185,7 +185,7 @@ export default {
 }
 .det-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
   .el-button { transition: all .35s cubic-bezier(.4,0,.2,1);
-    &:hover { translate: 0 -3px; box-shadow: 0 10px 26px rgba(48,0,240,.15) }
+    &:hover { ; box-shadow: 0 10px 26px rgba(255,255,255,.08) }
   }
 }
 </style>

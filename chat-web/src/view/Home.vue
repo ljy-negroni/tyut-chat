@@ -712,7 +712,7 @@ export default {
 	align-items: center;
 	border-radius: 4px;
 	overflow: hidden;
-	background: radial-gradient(ellipse 60% 50% at 50% 40%, #E8ECF7 0%, #DFE4F2 60%, #D5DBEB 100%);
+	background: #161618;
 
 	.app-container {
 		width: 62vw;
@@ -737,10 +737,10 @@ export default {
 		--icon-font-size: 22px;
 		--width: 70px;
 		width: var(--width);
-		background: linear-gradient(175deg, rgba(79,91,213,.92) 0%, rgba(55,72,199,.92) 60%, rgba(40,48,184,.92) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+		background: #1c1c1e; border-right: 1px solid rgba(255, 255, 255, 0.06);
 		padding-top: 25px;
 		position: relative;
-		box-shadow: 2px 0 24px rgba(0,0,0,.08);
+		
 
 		.navi-bar-box {
 			height: 100%;
@@ -761,13 +761,13 @@ export default {
 			:deep(.head-image) {
 				border: 2.5px solid rgba(255, 255, 255, 0.25);
 				border-radius: 50%;
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
 				transition: all 0.3s ease;
 
 				&:hover {
 					border-color: rgba(255, 255, 255, 0.5);
 					transform: scale(1.06);
-					box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+					box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 				}
 			}
 		}
@@ -789,8 +789,8 @@ export default {
 
 			.router-link-active .menu-item {
 				color: #FFFFFF;
-				background: rgba(255,255,255,.18); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(4px);
-				box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+				background: #3a3a3c;
+				
 				transform: none;
 
 				.icon {
@@ -804,7 +804,7 @@ export default {
 			}
 
 			.link:not(.router-link-active) .menu-item:hover {
-				background: rgba(255, 255, 255, 0.1);
+				background: rgba(255, 255, 255, 0.06);
 				transform: none;
 				box-shadow: none;
 				color: rgba(255, 255, 255, 0.95);
@@ -818,7 +818,7 @@ export default {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				border-radius: 12px;
+				border-radius: 8px;
 				transition: all 0.2s cubic-bezier(.4,0,.2,1);
 				cursor: pointer;
 
@@ -852,7 +852,7 @@ export default {
 					font-weight: 700;
 					text-align: center;
 					white-space: nowrap;
-					border: 2px solid #4F5BD5;
+					border: 2px solid #1c1c1e;
 					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 					min-width: 18px;
 					height: 18px;
@@ -902,7 +902,7 @@ export default {
 .content-box {
 		flex: 1;
 		padding: 0;
-		background: rgba(255,255,255,.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+		background: #1c1c1e;
 		text-align: center;
 	}
 }

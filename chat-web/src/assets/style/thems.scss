@@ -1,40 +1,39 @@
 // ============================================
-// 太理朋友圈 · 主题色彩系统
-// 品牌主色：温润靛蓝，区别于模板蓝
+// macOS Vibrancy 暗色主题 · 令牌种子
 // ============================================
 
-// 品牌色
-$--color-primary: #3748C7;
-$--color-primary-light-1: #5B68D3;
-$--color-primary-light-2: #7F89DF;
-$--color-primary-light-3: #A3AAEB;
-$--color-primary-light-4: #BFC4F1;
-$--color-primary-light-5: #D1D4F5;
-$--color-primary-light-6: #E0E2F8;
-$--color-primary-light-7: #ECEDFA;
-$--color-primary-light-8: #F4F5FC;
-$--color-primary-light-9: #F8F9FD;
+// 品牌色（macOS 蓝）
+$--color-primary: #0a84ff;
+$--color-primary-light-1: #2b96ff;
+$--color-primary-light-2: #50a8ff;
+$--color-primary-light-3: #6db8ff;
+$--color-primary-light-4: #8ac8ff;
+$--color-primary-light-5: #a3d4ff;
+$--color-primary-light-6: #bce0ff;
+$--color-primary-light-7: #d1eaff;
+$--color-primary-light-8: #223344;
+$--color-primary-light-9: #1a2733;
 
 // 功能色
-$--color-success: #34C759;
-$--color-success-light: #DBF5E2;
-$--color-warning: #FF9500;
-$--color-warning-light: #FFF0D9;
-$--color-danger: #FF3B30;
-$--color-danger-light: #FFE5E5;
-$--color-info: #8E8E93;
+$--color-success: #30d158;
+$--color-success-light: #1a3a24;
+$--color-warning: #ff9f0a;
+$--color-warning-light: #3a2a10;
+$--color-danger: #ff453a;
+$--color-danger-light: #3a1a16;
+$--color-info: #8e8e93;
 
-// 文字
-$--color-text-primary: #1C1C1E;
-$--color-text-regular: #2C2C2E;
-$--color-text-secondary: #6E6E73;
-$--color-text-placeholder: #AEAEB2;
+// 文字（暗色底 = 亮文字）
+$--color-text-primary: rgba(255, 255, 255, 0.92);
+$--color-text-regular: rgba(255, 255, 255, 0.72);
+$--color-text-secondary: rgba(255, 255, 255, 0.50);
+$--color-text-placeholder: rgba(255, 255, 255, 0.28);
 
-// 边框
-$--border-color-base: #E5E5EA;
-$--border-color-light: #F0F0F5;
-$--border-color-lighter: #F5F5FA;
-$--border-color-extra-light: #FAFAFD;
+// 边框（极淡白）
+$--border-color-base: rgba(255, 255, 255, 0.10);
+$--border-color-light: rgba(255, 255, 255, 0.06);
+$--border-color-lighter: rgba(255, 255, 255, 0.04);
+$--border-color-extra-light: rgba(255, 255, 255, 0.02);
 
 // 字号
 $--font-size-base: 14px;
@@ -47,10 +46,10 @@ $--font-size-large: 18px;
 $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
 
 // 圆角
-$--border-radius-base: 8px;
+$--border-radius-base: 12px;
 $--border-radius-small: 4px;
 $--border-radius-round: 20px;
 
-// 阴影
-$--box-shadow-base: 0 2px 8px rgba(0, 0, 0, 0.08);
-$--box-shadow-light: 0 2px 12px rgba(0, 0, 0, 0.06);
+// 阴影（macOS Vibrancy 禁止大阴影）
+$--box-shadow-base: none;
+$--box-shadow-light: none;

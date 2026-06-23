@@ -2,82 +2,127 @@
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 // 文字
-$--font-family: Microsoft YaHei, 'Avenir', Helvetica, Arial, sans-serif;
+$--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
 @import "thems";
 @import "~element-ui/packages/theme-chalk/src/index";
 
 // ============================================
-// Element UI 组件定制
+// macOS Vibrancy · Element UI 组件定制
 // ============================================
 
-// --- 按钮 ---
+// --- 按钮 （macOS Vibrancy：纯色、无渐变、无阴影）---
 .el-button {
   border-radius: 8px;
   font-weight: 500;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s ease;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(55, 72, 199, 0.2);
+    transform: none;
+    box-shadow: none;
   }
 
   &:active {
-    transform: translateY(0);
+    transform: none;
+    opacity: 0.85;
   }
 
   &.el-button--primary {
-    background: linear-gradient(135deg, $--color-primary-light-1, $--color-primary);
+    background: #3a3a3c;
     border-color: transparent;
 
     &:hover {
-      background: linear-gradient(135deg, $--color-primary, darken($--color-primary, 5%));
+      background: #4a4a4d;
+      border-color: transparent;
+    }
+  }
+
+  &.el-button--default {
+    background: #2c2c2e;
+    border-color: rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.85);
+
+    &:hover {
+      background: #3a3a3c;
+      border-color: rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.95);
     }
   }
 }
 
-// --- 输入框 ---
+// --- 输入框 （macOS Vibrancy：纯黑底 + 1px 白框）---
 .el-input__inner {
   border-radius: 8px;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 0.2s ease;
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.90);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.28);
+  }
 
   &:focus {
-    box-shadow: 0 0 0 3px rgba($--color-primary, 0.1);
+    box-shadow: none;
+    border-color: rgba(255, 255, 255, 0.25);
   }
 }
 
 .el-textarea__inner {
   border-radius: 8px;
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.90);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.28);
+  }
+
+  &:focus {
+    box-shadow: none;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
 }
+
+
+	// --- disabled 输入框（覆盖 Element UI 默认白底）---
+	.el-input.is-disabled .el-input__inner,
+	.el-textarea.is-disabled .el-textarea__inner {
+	  background: #2c2c2e;
+	  border-color: rgba(255, 255, 255, 0.06);
+	  color: rgba(255, 255, 255, 0.40);
+	  cursor: not-allowed;
+	}
 
 // --- 对话框 ---
 .el-message {
   z-index: 99999999 !important;
-  background: #fff !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  border: none !important;
+  background: #2c2c2e !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   min-width: unset !important;
   border-radius: 12px !important;
   padding: 14px 18px 14px 16px !important;
 
   .el-message__content {
-    color: #000 !important;
+    color: rgba(255, 255, 255, 0.90) !important;
   }
 }
 
 .el-dialog {
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
+  background: #2c2c2e;
 }
 
 .el-dialog__header {
   padding: 16px 24px !important;
-  border-bottom: 1px solid $--border-color-light;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .el-dialog__title {
   font-size: 16px;
   font-weight: 600;
-  color: $--color-text-primary;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .el-dialog__headerbtn {
@@ -88,27 +133,39 @@ $--font-family: Microsoft YaHei, 'Avenir', Helvetica, Arial, sans-serif;
 
 .el-dialog__body {
   padding: 16px 24px !important;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .el-dialog__footer {
   padding: 12px 24px !important;
-  border-top: 1px solid $--border-color-light;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 // --- 消息提示 ---
 .el-message-box {
-  border-radius: 16px;
+  border-radius: 14px;
+  background: #2c2c2e;
+
+  .el-message-box__title {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .el-message-box__message {
+    color: rgba(255, 255, 255, 0.72);
+  }
 }
 
 // --- 滚动条 ---
 .el-scrollbar__thumb {
-  background-color: #A0A8AF !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
   border-radius: 4px;
 }
 
 // --- 复选框 ---
 .el-checkbox__inner {
   border-radius: 4px !important;
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .el-checkbox {
@@ -127,12 +184,13 @@ $--font-family: Microsoft YaHei, 'Avenir', Helvetica, Arial, sans-serif;
   }
 
   .el-checkbox__input.is-checked + .el-checkbox__label {
-    color: #333333;
+    color: rgba(255, 255, 255, 0.72);
   }
 
   .el-checkbox__label {
     line-height: 20px;
     padding-left: 8px;
+    color: rgba(255, 255, 255, 0.56);
   }
 }
 
@@ -142,7 +200,7 @@ $--font-family: Microsoft YaHei, 'Avenir', Helvetica, Arial, sans-serif;
 }
 
 .el-form-item__label {
-  color: $--color-text-regular;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 // --- 标签 ---
@@ -158,7 +216,7 @@ $--font-family: Microsoft YaHei, 'Avenir', Helvetica, Arial, sans-serif;
   color: white !important;
 
   &.el-tag--primary {
-    background: $--color-primary-light-3;
+    background: $--color-primary;
   }
 
   &.el-tag--warning {

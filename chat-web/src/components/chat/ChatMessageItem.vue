@@ -235,7 +235,7 @@ export default {
 	transition: background 0.3s ease;
 
 	&.active {
-		background: rgba(55,72,199,.06);
+		background: rgba(255,255,255,.04);
 	}
 
 	.message-tip {
@@ -316,7 +316,7 @@ export default {
 					position: relative;
 					line-height: 24px;
 					padding: 8px 14px;
-					background-color: #F4F5FC;
+					background-color: #2c2c2e;
 					border-radius: 4px 14px 14px 14px;
 					font-size: var(--im-font-size);
 					text-align: left;
@@ -328,7 +328,7 @@ export default {
 
 				.message-image {
 					border-radius: 12px;
-					border: 1px solid var(--im-color-primary-light-7);
+					border: 1px solid rgba(255, 255, 255, 0.08);
 					overflow: hidden;
 					cursor: pointer;
 					background: var(--im-background);
@@ -476,10 +476,10 @@ export default {
 					}
 
 					.message-text {
-						background: linear-gradient(135deg, #4F5BD5, #3748C7);
+						background: #0a84ff;
 						color: #FFFFFF;
 						border-radius: 14px 4px 14px 14px;
-						box-shadow: 0 2px 8px rgba(55, 72, 199, 0.2);
+						box-shadow: none;
 					}
 
 					.chat-action {
