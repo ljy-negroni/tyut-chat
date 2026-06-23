@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name="fade" mode="out-in">
+      <router-view :key="$route.path"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -21,4 +23,8 @@ export default {
   color: var(--im-text-color);
   font-family: var(--im-font-family);
 }
+
+/* 页面软切换动画 */
+.fade-enter-active, .fade-leave-active { transition: opacity .35s ease; }
+.fade-enter, .fade-leave-to { opacity: 0; }
 </style>

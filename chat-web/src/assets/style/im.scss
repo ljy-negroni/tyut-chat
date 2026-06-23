@@ -1,9 +1,11 @@
 @charset "UTF-8";
 @import "element";
 
-// im全局样式变量
+// ============================================
+// macOS Vibrancy · 全局设计变量
+// ============================================
 :root {
-  // 主色
+  // 品牌色
   --im-color-primary: #{$--color-primary};
   --im-color-primary-light-1: #{$--color-primary-light-1};
   --im-color-primary-light-2: #{$--color-primary-light-2};
@@ -15,17 +17,22 @@
   --im-color-primary-light-8: #{$--color-primary-light-8};
   --im-color-primary-light-9: #{$--color-primary-light-9};
 
-  --im-color-sucess: #{$--color-success};
+  // 功能色
+  --im-color-success: #{$--color-success};
+  --im-color-success-light: #{$--color-success-light};
   --im-color-warning: #{$--color-warning};
+  --im-color-warning-light: #{$--color-warning-light};
   --im-color-danger: #{$--color-danger};
+  --im-color-danger-light: #{$--color-danger-light};
   --im-color-info: #{$--color-info};
 
-  // 文字颜色
-  --im-text-color: #{$--color-text-regular};
-  --im-text-color-light: #999999;
-  --im-text-color-lighter: #C0C4CC;
+  // 文字色
+  --im-text-color: #{$--color-text-primary};
+  --im-text-color-regular: #{$--color-text-regular};
+  --im-text-color-light: #{$--color-text-secondary};
+  --im-text-color-lighter: #{$--color-text-placeholder};
 
-  // 文字大小
+  // 字号
   --im-font-size: #{$--font-size-base};
   --im-font-size-small: #{$--font-size-small};
   --im-font-size-smaller: #{$--font-size-extra-small};
@@ -33,31 +40,41 @@
   --im-font-size-larger: #{$--font-size-large};
   --im-font-family: #{$--font-family};
 
+  // 圆角
+  --im-radius-base: #{$--border-radius-base};
+  --im-radius-small: #{$--border-radius-small};
+  --im-radius-round: #{$--border-radius-round};
 
-  // 边框颜色
-  --im-border: 1px solid #EBEEF5;
+  // 边框
+  --im-border: 1px solid #{$--border-color-base};
+  --im-border-light: 1px solid #{$--border-color-light};
 
-  // 阴影
-  --im-box-shadow: #{$--box-shadow-base};
-  --im-box-shadow-light: #{$--box-shadow-light};
-  --im-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, .12);
-  --im-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, .08), 0px 12px 32px rgba(0, 0, 0, .12), 0px 8px 16px -8px rgba(0, 0, 0, .16);
+  // 阴影（macOS Vibrancy 禁止大阴影）
+  --im-box-shadow: none;
+  --im-box-shadow-light: none;
+  --im-box-shadow-lighter: 0 1px 0 rgba(255, 255, 255, 0.04);
+  --im-box-shadow-dark: none;
 
-  // 背景色
-  --im-background: white;
-  --im-background-active: #f4f4fc;
-  --im-background-active-dark: var(--im-color-primary-light-9);
+  // 背景色（三层深灰系统）
+  --im-background: #1c1c1e;
+  --im-background-page: #161618;
+  --im-background-active: #2c2c2e;
+  --im-background-active-dark: #3a3a3c;
+  --im-background-message: #2c2c2e;
 }
 
 html {
   height: 100%;
   overflow: hidden;
+  background: #161618;
 }
 
 body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  background: #161618;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 section {
@@ -68,7 +85,7 @@ section {
   padding: 10px 20px !important;
 }
 
-// 滚动条样式
+// 滚动条样式（暗色适配）
 ::-webkit-scrollbar {
   width: 8px;
   height: 1px;
@@ -76,24 +93,23 @@ section {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background: hsla(0, 0%, 73%, .5);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 ::-webkit-scrollbar-track {
   border-radius: 4px;
+  background: transparent;
 }
 
 .el-scrollbar__thumb {
   border-radius: 4px;
-  background: var(--im-color-primary-light-9) !important;
-
+  background: rgba(255, 255, 255, 0.12) !important;
 }
 
 .search-input {
   .el-input__inner {
     border: unset !important;
   }
-
 }
 
 .emoji-large {

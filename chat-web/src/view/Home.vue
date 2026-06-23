@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<div class="content-box">
-				<router-view></router-view>
+				<transition name="tab" mode="out-in"><router-view></router-view></transition>
 			</div>
 			<setting :visible="showSettingDialog" @close="closeSetting()"></setting>
 			<user-info ref="userInfo"></user-info>
@@ -712,7 +712,7 @@ export default {
 	align-items: center;
 	border-radius: 4px;
 	overflow: hidden;
-	background: var(--im-color-primary-light-9);
+	background: #161618;
 
 	.app-container {
 		width: 62vw;
@@ -723,7 +723,7 @@ export default {
 		position: absolute;
 		border-radius: 4px;
 		overflow: hidden;
-		box-shadow: var(--im-box-shadow-dark);
+		box-shadow: 0 8px 48px rgba(0,0,0,.1), 0 2px 12px rgba(0,0,0,.06);
 		transition: 0.2s;
 
 		&.fullscreen {
@@ -737,10 +737,10 @@ export default {
 		--icon-font-size: 22px;
 		--width: 70px;
 		width: var(--width);
-		background: linear-gradient(180deg, var(--im-color-primary-light-1) 0%, var(--im-color-primary-light-2) 100%);
+		background: #1c1c1e; border-right: 1px solid rgba(255, 255, 255, 0.06);
 		padding-top: 25px;
 		position: relative;
-		box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+		
 
 		.navi-bar-box {
 			height: 100%;
@@ -758,17 +758,16 @@ export default {
 			justify-content: center;
 			margin-bottom: 10px;
 
-			// 头像容器样式，参考新版本
 			:deep(.head-image) {
-				border: 3px solid rgba(255, 255, 255, 0.2);
+				border: 2.5px solid rgba(255, 255, 255, 0.25);
 				border-radius: 50%;
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
 				transition: all 0.3s ease;
 
 				&:hover {
-					border-color: rgba(255, 255, 255, 0.4);
-					transform: scale(1.05);
-					box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+					border-color: rgba(255, 255, 255, 0.5);
+					transform: scale(1.06);
+					box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 				}
 			}
 		}
@@ -780,7 +779,7 @@ export default {
 			align-content: center;
 			flex-wrap: wrap;
 			margin-top: 25px;
-			gap: 8px;
+			gap: 10px;
 
 			.link {
 				text-decoration: none;
@@ -789,79 +788,79 @@ export default {
 			}
 
 			.router-link-active .menu-item {
-				color: white;
-				background: linear-gradient(135deg,
-						var(--im-color-primary-light-2) 0%,
-						var(--im-color-primary) 100%);
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-				transform: translateX(2px);
+				color: #FFFFFF;
+				background: #3a3a3c;
+				
+				transform: none;
+
+				.icon {
+					filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+				}
 
 				&::before {
 					opacity: 1;
-					transform: scale(1);
+					transform: scaleY(1);
 				}
 			}
 
 			.link:not(.router-link-active) .menu-item:hover {
-				background: linear-gradient(135deg,
-						var(--im-color-primary) 0%,
-						var(--im-color-primary-light-2) 100%);
-				transform: scale(1.08) translateX(2px);
-				box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-				color: white;
+				background: rgba(255, 255, 255, 0.06);
+				transform: none;
+				box-shadow: none;
+				color: rgba(255, 255, 255, 0.95);
 			}
 
 			.menu-item {
 				position: relative;
-				color: rgba(255, 255, 255, 0.8);
-				width: 50px;
-				height: 50px;
+				color: rgba(255, 255, 255, 0.65);
+				width: 48px;
+				height: 48px;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				margin-top: 10px;
-				border-radius: 12px;
-				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				border-radius: 8px;
+				transition: all 0.2s cubic-bezier(.4,0,.2,1);
 				cursor: pointer;
 
-				// 左侧选中指示条
 				&::before {
 					content: '';
 					position: absolute;
-					left: -5px;
+					left: -6px;
 					width: 3px;
-					height: 20px;
-					background: white;
-					border-radius: 2px;
+					height: 22px;
+					background: #FFFFFF;
+					border-radius: 0 3px 3px 0;
 					opacity: 0;
-					transition: all 0.3s ease;
+					transform: translateY(0) scaleY(1);
+					transition: all 0.25s ease;
 				}
 
 				.icon {
 					font-size: var(--icon-font-size);
-					transition: all 0.3s ease;
+					transition: all 0.2s ease;
 				}
 
 				.unread-text {
 					position: absolute;
-					background: var(--im-color-danger);
+					background: #FF3B30;
 					left: 32px;
-					top: 3px;
-					color: white;
-					border-radius: 10px;
+					top: -2px;
+					color: #FFFFFF;
+					border-radius: 11px;
 					padding: 1px 6px;
 					font-size: 10px;
-					font-weight: 600;
+					font-weight: 700;
 					text-align: center;
 					white-space: nowrap;
-					border: 1px solid rgba(255, 255, 255, 0.9);
-					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-					min-width: 16px;
-					height: 16px;
+					border: 2px solid #1c1c1e;
+					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+					min-width: 18px;
+					height: 18px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					z-index: 1;
+					line-height: 1;
 				}
 			}
 		}
@@ -870,41 +869,40 @@ export default {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			height: 45px;
+			height: 44px;
 			width: 100%;
 			cursor: pointer;
-			color: rgba(255, 255, 255, 0.7);
-			font-size: var(--icon-font-size);
-			border-radius: 8px;
-			margin: 4px 0;
-			transition: all 0.3s ease;
-			position: relative;
+			color: rgba(255, 255, 255, 0.55);
+			font-size: 20px;
+			border-radius: 0;
+			margin: 2px 0;
+			transition: all 0.25s ease;
 
 			.icon {
-				font-size: var(--icon-font-size);
-				transition: all 0.3s ease;
+				font-size: 20px;
+				transition: all 0.2s ease;
 			}
 
 			&:hover {
-				color: white;
-				background: rgba(255, 255, 255, 0.1);
-				transform: scale(1.05);
-
-				.icon {
-					transform: scale(1.1);
-				}
+				color: rgba(255, 255, 255, 0.9);
+				background: rgba(255, 255, 255, 0.08);
 			}
 
-			&:active {
-				transform: scale(0.95);
-			}
+			&:active { opacity: 0.7; }
 		}
 	}
 
-	.content-box {
+	
+
+	.tab-enter-active { transition: all .22s cubic-bezier(.4,0,.2,1) }
+.tab-leave-active { transition: all .16s cubic-bezier(.55,0,1,1) }
+.tab-enter { opacity: 0; transform: translateX(14px) }
+.tab-leave-to { opacity: 0; transform: translateX(-6px) }
+
+.content-box {
 		flex: 1;
 		padding: 0;
-		background-color: #fff;
+		background: #1c1c1e;
 		text-align: center;
 	}
 }

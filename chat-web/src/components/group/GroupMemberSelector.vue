@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-dialogDrag :title="title" :visible.sync="isShow" width="700px">
+	<el-dialog v-dialogDrag :title="title" :visible.sync="isShow" width="700px" :append-to-body="true" :modal-append-to-body="true">
 		<div class="group-member-selector">
 			<div class="left-box">
 				<el-input placeholder="搜索" v-model="searchText">

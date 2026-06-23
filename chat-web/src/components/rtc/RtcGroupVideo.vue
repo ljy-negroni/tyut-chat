@@ -1,6 +1,6 @@
 <template>
 	<el-dialog v-dialogDrag top="5vh" title="语音通话" :close-on-click-modal="false" :close-on-press-escape="false"
-		:visible.sync="isShow" width="50%">
+		:visible.sync="isShow" width="50%" :append-to-body="true" :modal-append-to-body="true">
 		<div class='rtc-group-video'>
 			<div style="padding-top:60px;font-weight: 600; text-align: center;font-size: 18px;">
 				多人音视频通话

@@ -1,319 +1,55 @@
-<template>
-	<el-container class="register">
-		<div class="auth-bg">
-			<div class="auth-bg__base"></div>
-			<div class="auth-bg__glows"></div>
-			<div class="auth-bg__panels"></div>
-			<div class="auth-bg__dots"></div>
-		</div>
-		<div class="content">
-			<el-form :model="registerForm" status-icon :rules="rules" ref="registerForm" class="form">
-				<div class="form-header">
-					<h1 class="form-title">注册账号</h1>
-					<p class="form-subtitle">完善信息，开启专属即时通讯体验</p>
-				</div>
-				<div class="form-body">
-					<el-form-item prop="userName">
-						<el-input v-model="registerForm.userName" type="userName" autocomplete="off" placeholder="用户名"
-							maxlength="20" prefix-icon="el-icon-user"></el-input>
-					</el-form-item>
-					<el-form-item prop="password">
-						<el-input v-model="registerForm.password" type="password" autocomplete="off" placeholder="密码"
-							maxlength="20" prefix-icon="el-icon-lock"></el-input>
-					</el-form-item>
-					<el-form-item prop="confirmPassword">
-						<el-input v-model="registerForm.confirmPassword" type="password" autocomplete="off"
-							placeholder="确认密码" maxlength="20" prefix-icon="el-icon-lock"></el-input>
-					</el-form-item>
-					<el-form-item>
-						<el-button class="submit-btn" type="primary" @click="submitForm('registerForm')">注册</el-button>
-					</el-form-item>
-				</div>
-				<div class="footer-links">
-					<router-link class="link" to="/login">已有账号，前往登录</router-link>
-				</div>
-			</el-form>
-		</div>
-		<icp></icp>
-	</el-container>
-</template>
+<template><div class="root" @mousemove="mv"><div ref="bg" class="bg"></div><div class="ui">
+<div class="em"></div><div class="t3d-title"></div>
+<div class="cd"><el-form :model="f" ref="rf"><el-form-item prop="userName" class="li" style="--n:0"><span class="iw"><i class="el-icon-user"></i><el-input v-model="f.userName" autocomplete="off" placeholder="用户名" maxlength="20" @input="err.userName=''"></el-input></span><div class="fe" v-if="err.userName">{{err.userName}}</div></el-form-item>
+<el-form-item prop="password" class="li" style="--n:1"><span class="iw"><i class="el-icon-lock"></i><el-input type="password" v-model="f.password" autocomplete="off" placeholder="密码" maxlength="20" @input="err.password=''"></el-input></span><div class="fe" v-if="err.password">{{err.password}}</div></el-form-item>
+<el-form-item prop="confirmPassword" class="li" style="--n:2"><span class="iw"><i class="el-icon-lock"></i><el-input type="password" v-model="f.confirmPassword" autocomplete="off" placeholder="确认密码" maxlength="20" @input="err.confirmPassword=''"></el-input></span><div class="fe" v-if="err.confirmPassword">{{err.confirmPassword}}</div></el-form-item>
+<div class="li" style="--n:3"><el-button class="bt" type="primary" @click="register">注册</el-button></div></el-form>
+<router-link class="lk" to="/login">已有账号？<b>前往登录 →</b></router-link></div>
+<div class="t3d-foot"></div></div></div></template>
 
-<script>
-import Icp from '../components/common/Icp.vue'
-import { saveLoginSession } from '../api/auth.js'
-
-export default {
-	name: "register",
-	components: {
-		Icp
-	},
-	data() {
-		var checkUserName = (rule, value, callback) => {
-			if (!value) {
-				return callback(new Error('请输入用户名'));
-			}
-			callback();
-		};
-		var checkPassword = (rule, value, callback) => {
-			if (value === '') {
-				return callback(new Error('请输入密码'));
-			}
-			callback();
-		};
-
-		var checkConfirmPassword = (rule, value, callback) => {
-			if (value === '') {
-				return callback(new Error('请输入密码'));
-			}
-			if (value != this.registerForm.password) {
-				return callback(new Error('两次密码输入不一致'));
-			}
-			callback();
-		};
-
-
-		return {
-			registerForm: {
-				userName: '',
-				password: '',
-				confirmPassword: ''
-			},
-			rules: {
-				userName: [{
-					validator: checkUserName,
-					trigger: 'blur'
-				}],
-				password: [{
-					validator: checkPassword,
-					trigger: 'blur'
-				}],
-				confirmPassword: [{
-					validator: checkConfirmPassword,
-					trigger: 'blur'
-				}]
-			}
-		};
-	},
-	methods: {
-		submitForm(formName) {
-			this.$refs[formName].validate((valid) => {
-				if (valid) {
-					this.$http({
-						url: "/register",
-						method: 'post',
-						data: this.registerForm
-					})
-						.then(() => {
-							// 注册成功后自动登录
-							return this.$http({
-								url: "/login",
-								method: 'post',
-								data: {
-									terminal: this.$enums.TERMINAL_TYPE.WEB,
-									userName: this.registerForm.userName,
-									password: this.registerForm.password
-								}
-							})
-						})
-						.then((data) => {
-							saveLoginSession(data, {
-								autoLogin: true,
-								userName: this.registerForm.userName
-							});
-							this.$message.success(`注册成功，欢迎使用${process.env.VUE_APP_NAME}`);
-							this.$router.push("/home/chat");
-						})
-				}
-			});
-		},
-	}
-}
-</script>
+<script>import{saveLoginSession}from'../api/auth.js';import emblemTex from"@/assets/image/emblem_deep.png";const T3='https://unpkg.com/three@0.160.0/build/three.min.js'
+export default{name:'register',data(){return{mx:0,my:0,f:{userName:'',password:'',confirmPassword:''},err:{userName:'',password:'',confirmPassword:''}}},methods:{mv(e){const r=e.currentTarget.getBoundingClientRect();this.mx=(e.clientX/r.width-.5)*2;this.my=(e.clientY/r.height-.5)*2},register(){let ok=!0;if(!this.f.userName){this.err.userName='请输入用户名';ok=!1}else{this.err.userName=''}if(!this.f.password){this.err.password='请输入密码';ok=!1}else{this.err.password=''}if(!this.f.confirmPassword){this.err.confirmPassword='请确认密码';ok=!1}else if(this.f.confirmPassword!==this.f.password){this.err.confirmPassword='两次密码输入不一致';ok=!1}else{this.err.confirmPassword=''}if(!ok)return;this.$http({url:'/register',method:'post',data:this.f}).then(()=>this.$http({url:'/login',method:'post',data:{terminal:1,userName:this.f.userName,password:this.f.password}})).then(d=>{saveLoginSession(d,{autoLogin:!0,userName:this.f.userName});this.$message.success('注册成功');this.$router.push('/home/chat')})},
+init3(th){const el=this.$refs.bg,W=el.clientWidth,H=el.clientHeight,R=new th.WebGLRenderer({antialias:!0,alpha:!0});R.setSize(W,H);R.setPixelRatio(Math.min(devicePixelRatio,2));R.toneMapping=th.ACESFilmicToneMapping;R.toneMappingExposure=1.1;el.appendChild(R.domElement)
+const S=new th.Scene();S.background=new th.Color('#ebeef7');S.fog=new th.Fog('#ebeef7',32,130)
+const C=new th.PerspectiveCamera(44,W/H,.5,200);C.position.set(0,2,26);C.lookAt(0,0,0)
+S.add(new th.AmbientLight('#d8ddf2',2.6));const dl=new th.DirectionalLight('#fff',3);dl.position.set(6,16,8);S.add(dl);S.add(new th.DirectionalLight('#9999dd',1.4).translateX(-5).translateY(2).translateZ(-3))
+const gc=document.createElement('canvas');gc.width=gc.height=512;const gx=gc.getContext('2d');gx.strokeStyle='rgba(56,32,200,.08)';gx.lineWidth=1
+for(let i=0;i<=512;i+=34){gx.beginPath();gx.moveTo(i,0);gx.lineTo(i,512);gx.stroke();gx.beginPath();gx.moveTo(0,i);gx.lineTo(512,i);gx.stroke()}
+const gt=new th.CanvasTexture(gc);gt.wrapS=gt.wrapT=th.RepeatWrapping;gt.repeat.set(6,6)
+const fl=new th.Mesh(new th.PlaneGeometry(110,110),new th.MeshBasicMaterial({map:gt,transparent:!0,opacity:.42,side:th.DoubleSide,depthWrite:!1}));fl.rotation.x=-Math.PI/2;fl.position.y=-6;S.add(fl)
+const AU=new th.Group();S.add(AU);const ac=['#5846E8','#7668F2','#4432D0','#6858EC','#3624C0']
+for(let i=0;i<5;i++){const vs='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fs='uniform float t;uniform vec3 c;uniform float ix;varying vec2 vUv;void main(){float d=abs(vUv.y-.5)*2.;float w=sin(vUv.x*12.+t*.42+ix)*.34+cos(vUv.x*7.-t*.26+ix*2.)*.26+sin(vUv.x*20.-t*.32+ix)*.18;float a=smoothstep(.94,0.,d)*(.15+w*.1)*.5;gl_FragColor=vec4(c,a);}',p=new th.Mesh(new th.PlaneGeometry(52,18),new th.ShaderMaterial({uniforms:{t:{value:0},c:{value:new th.Color(ac[i])},ix:{value:i}},vertexShader:vs,fragmentShader:fs,transparent:!0,depthWrite:!1,side:th.DoubleSide}));p.position.set((i-2)*9,-.6+i*.4,-5-i*6);p.rotation.x=-.25;AU.add(p)}
+const RN=[];[2.2,3.5,5.].forEach((r,i)=>{const t=new th.Mesh(new th.TorusGeometry(r,.011,16,150),new th.MeshBasicMaterial({color:new th.Color().setHSL(.67,.5,.43+i*.13),transparent:!0,opacity:.25-i*.06,side:th.DoubleSide,depthWrite:!1}));t.rotation.x=Math.PI/2+(i-1)*.08;t.userData={s:.05+i*.022};S.add(t);RN.push(t)})
+const PR=[];for(let ri=0;ri<4;ri++){const pg=new th.BufferGeometry(),cnt=100+ri*28,ps=new Float32Array(cnt*3),cs=new Float32Array(cnt*3),r=4.4+ri*3.;for(let i=0;i<cnt;i++){const a=(i/cnt)*Math.PI*2,y=(Math.random()-.5)*6;ps[i*3]=Math.cos(a)*(r+(Math.random()-.5)*2.5);ps[i*3+1]=y;ps[i*3+2]=Math.sin(a)*(r+(Math.random()-.5)*2.5);const cc=new th.Color().setHSL(.67,.55,.43+Math.random()*.3);cs[i*3]=cc.r;cs[i*3+1]=cc.g;cs[i*3+2]=cc.b}pg.setAttribute('position',new th.BufferAttribute(ps,3));pg.setAttribute('color',new th.BufferAttribute(cs,3));const pm=new th.Points(pg,new th.PointsMaterial({size:.06,vertexColors:!0,transparent:!0,opacity:.22,blending:th.AdditiveBlending,depthWrite:!1}));pm.userData={s:.03+ri*.01};S.add(pm);PR.push(pm)}
+const FT=[];for(let i=0;i<9;i++){const gs=[new th.IcosahedronGeometry(.1,1),new th.OctahedronGeometry(.08,0),new th.TetrahedronGeometry(.09,0),new th.TorusKnotGeometry(.07,.025,36,6)],m=new th.Mesh(gs[i%4],new th.MeshStandardMaterial({color:new th.Color().setHSL(.66,.45,.37+i*.06),metalness:.4,roughness:.62,side:th.DoubleSide})),ang=(i/9)*Math.PI*2,dist=7.+i*.5;m.position.set(Math.cos(ang)*dist,(Math.random()-.5)*7,Math.sin(ang)*dist);m.userData={bx:m.position.x,bz:m.position.z,by:m.position.y,ph:i,dist};S.add(m);FT.push(m)}
+S.add(new th.Mesh(new th.CylinderGeometry(.02,.02,42,8),new th.MeshBasicMaterial({color:'#6040e0',transparent:!0,opacity:.045,depthWrite:!1})))
+const gl=new th.Mesh(new th.RingGeometry(.9,2.8,64),new th.MeshBasicMaterial({color:'#7050e0',side:th.DoubleSide,transparent:!0,opacity:.045,depthWrite:!1}));gl.rotation.x=-Math.PI/2;gl.position.y=.06;S.add(gl)
+const EMB=new th.Group();EMB.add(new th.Mesh(new th.CircleGeometry(2.2,128),new th.MeshBasicMaterial({color:0xF5F7F9,side:th.DoubleSide,depthWrite:!1})));const ei=new Image();ei.src=emblemTex;ei.onload=()=>{const tt=new th.Texture(ei);tt.magFilter=th.LinearFilter;tt.minFilter=th.LinearFilter;tt.generateMipmaps=!1;tt.needsUpdate=!0;EMB.add(new th.Mesh(new th.CircleGeometry(2.2,128),new th.MeshBasicMaterial({map:tt,transparent:!0,side:th.DoubleSide,depthWrite:!1})))};EMB.position.set(0,5.6,5);S.add(EMB)
+const mkT=(txt,sz,w,h)=>{const cv=document.createElement("canvas");cv.width=w;cv.height=h;const cx=cv.getContext("2d");cx.fillStyle="#051040";cx.font="bold 86px Microsoft YaHei,PingFang SC,sans-serif";const chars=txt.split("");const totalWidth=cx.measureText(txt).width;const extraSpacing=20;const fullWidth=totalWidth+extraSpacing*(chars.length-1);let x=(w-fullWidth)/2;chars.forEach(ch=>{cx.fillText(ch,x,h/2);x+=cx.measureText(ch).width+extraSpacing});const tt=new th.CanvasTexture(cv);tt.minFilter=th.LinearFilter;tt.magFilter=th.LinearFilter;return tt};
+const mkTL=(txt,sz,w,h)=>{const cv=document.createElement("canvas");cv.width=w;cv.height=h;const cx=cv.getContext("2d");cx.fillStyle="rgba(5,16,64,.28)";cx.font=sz+" Microsoft YaHei,PingFang SC,sans-serif";cx.textAlign="center";cx.textBaseline="middle";cx.fillText(txt,w/2,h/2);const tt=new th.CanvasTexture(cv);tt.minFilter=th.LinearFilter;tt.magFilter=th.LinearFilter;return tt};
+const T3D=new th.Group();const tp=new th.Mesh(new th.PlaneGeometry(12.5,1.8),new th.MeshBasicMaterial({map:mkT("创建账号","bold 86px",1024,160),transparent:!0,side:th.DoubleSide,depthWrite:!1}));tp.position.set(0,2.4,4);T3D.add(tp);const fp=new th.Mesh(new th.PlaneGeometry(6,.6),new th.MeshBasicMaterial({map:mkTL("加入太原理工大学校园社区","22px",640,56),transparent:!0,side:th.DoubleSide,depthWrite:!1}));fp.position.set(0,-4.8,4);T3D.add(fp);S.add(T3D);
+const ck=new th.Clock(),af=()=>{if(!this._alive)return;requestAnimationFrame(af);const t=ck.getElapsedTime(),mx=this.mx*.5,my=this.my*.5;AU.children.forEach(p=>{p.material.uniforms.t.value=t});RN.forEach(r=>{r.rotation.z+=r.userData.s*.2});PR.forEach(p=>{p.rotation.y+=p.userData.s});FT.forEach(f=>{f.position.x=f.userData.bx+Math.sin(t*.3+f.userData.ph)*2.2;f.position.z=f.userData.bz+Math.cos(t*.27+f.userData.ph)*2.2;f.position.y=f.userData.by+Math.sin(t*.5+f.userData.ph*1.2)*1.6;f.rotation.x+=.004;f.rotation.y+=.005});gl.scale.setScalar(1+Math.sin(t*.7)*.22);C.lookAt(0,0,0);R.render(S,C)};this._alive=!0;af();const rs=()=>{const w=el.clientWidth,h=el.clientHeight;R.setSize(w,h);C.aspect=w/h;C.updateProjectionMatrix()};window.addEventListener('resize',rs);this._clean=()=>{this._alive=!1;window.removeEventListener('resize',rs);R.dispose()}}},mounted(){const s=document.createElement('script');s.src=T3;s.onload=()=>{this.init3(window.THREE)};document.head.appendChild(s)},beforeDestroy(){if(this._clean)this._clean();this._alive=!1}}</script>
 
 <style scoped lang="scss">
-.register {
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	background: #fff;
-	overflow: hidden;
-
-	.auth-bg {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-	}
-
-	.auth-bg__base,
-	.auth-bg__glows,
-	.auth-bg__panels,
-	.auth-bg__dots {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-	}
-
-	.auth-bg__base {
-		background: linear-gradient(135deg,
-				#d4e2f8 0%,
-				#dce8fa 25%,
-				#e6eefb 50%,
-				#eef2fc 75%,
-				#f8f9fd 100%);
-	}
-
-	.auth-bg__glows {
-		background-image:
-			radial-gradient(ellipse 70% 50% at 85% 15%, rgba(220, 235, 255, 0.6) 0%, transparent 55%),
-			radial-gradient(ellipse 60% 45% at 10% 75%, rgba(230, 240, 255, 0.5) 0%, transparent 50%),
-			radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 45%);
-	}
-
-	.auth-bg__dots {
-		opacity: 0.4;
-		background-image: radial-gradient(circle, rgba(200, 218, 248, 0.35) 1px, transparent 1px);
-		background-size: 24px 24px;
-	}
-
-	.auth-bg__panels {
-		opacity: 0.5;
-		background-image:
-			repeating-linear-gradient(115deg,
-				transparent 0,
-				transparent 60px,
-				rgba(190, 210, 245, 0.12) 60px,
-				rgba(190, 210, 245, 0.12) 65px),
-			repeating-linear-gradient(25deg,
-				transparent 0,
-				transparent 90px,
-				rgba(200, 218, 248, 0.08) 90px,
-				rgba(200, 218, 248, 0.08) 95px);
-	}
-
-	.content {
-		position: relative;
-		z-index: 1;
-		width: 380px;
-		min-height: 460px;
-		padding: 32px 36px;
-		background: rgba(255, 255, 255, 0.88);
-		backdrop-filter: blur(24px);
-		-webkit-backdrop-filter: blur(24px);
-		border-radius: 28px;
-		border: 1px solid rgba(255, 255, 255, 0.95);
-		box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
-		overflow-y: auto;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.form {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-	}
-
-	.form-header {
-		flex-shrink: 0;
-		text-align: left;
-		margin-bottom: 20px;
-	}
-
-	.form-title {
-		margin: 0 0 6px;
-		font-size: 26px;
-		font-weight: 700;
-		letter-spacing: 0.5px;
-		line-height: 1.3;
-		color: var(--im-color-primary);
-	}
-
-	.form-subtitle {
-		margin: 0;
-		font-size: var(--im-font-size);
-		color: var(--im-text-color-light);
-		line-height: 1.5;
-	}
-
-	.form-body {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 1;
-		min-height: 280px;
-
-		::v-deep .el-form-item {
-			margin-bottom: 18px;
-
-			.el-input__inner {
-				height: 52px;
-				border-radius: 50px;
-				border: 1px solid rgba(0, 0, 0, 0.06);
-				background: #fff;
-				transition: border-color 0.2s ease, box-shadow 0.2s ease;
-				padding-left: 48px;
-				font-size: var(--im-font-size-large);
-
-				&:focus {
-					border-color: rgba(0, 0, 0, 0.1);
-					box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8);
-				}
-
-				&::placeholder {
-					color: var(--im-text-color-lighter);
-					font-size: var(--im-font-size);
-				}
-			}
-
-			.el-input__prefix {
-				left: 18px;
-
-				.el-input__icon {
-					color: var(--im-color-primary-light-3);
-					font-size: 18px;
-				}
-			}
-		}
-	}
-
-	.submit-btn {
-		width: 100%;
-		height: 52px;
-		margin-top: 8px;
-		border-radius: 50px;
-		border: none;
-		color: #fff;
-		font-size: var(--im-font-size-larger);
-		font-weight: 600;
-		letter-spacing: 2px;
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-		&:hover {
-			transform: translateY(-1px);
-		}
-	}
-
-	.footer-links {
-		flex-shrink: 0;
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		margin-top: 10px;
-		padding: 0 4px;
-	}
-
-	.link {
-		text-decoration: none;
-		color: var(--im-text-color-light);
-		font-size: var(--im-font-size-small);
-		transition: color 0.2s ease;
-
-		&:hover {
-			color: var(--im-color-primary);
-		}
-	}
-}
+.root{width:100%;height:100%;position:relative;overflow:hidden}
+.bg{position:absolute;inset:0;z-index:0}
+.ui{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:24px;animation:in .75s cubic-bezier(.22,.61,.36,1) both}
+@keyframes in{0%{opacity:0}100%{opacity:1}}
+.em{width:120px;height:120px;border-radius:50%;pointer-events:none;animation:ei .7s cubic-bezier(.22,.61,.36,1) both}
+.t3d-title{width:100%;height:50px;pointer-events:none}
+.t3d-foot{width:100%;height:20px;pointer-events:none}
+@keyframes ei{0%{opacity:0;translate:0 16px}100%{opacity:1;translate:0 0}}
+.cd{width:450px;background:rgba(96,60,230,.03);backdrop-filter:blur(50px);-webkit-backdrop-filter:blur(50px);border-radius:26px;padding:34px 38px 20px;border:1px solid rgba(96,48,240,.06);box-shadow:0 0 48px rgba(96,48,240,.025),inset 0 1px 0 rgba(255,255,255,.15);animation:ci .55s .2s cubic-bezier(.22,.61,.36,1) both;transition:transform .4s cubic-bezier(.4,0,.2,1),box-shadow .4s ease,background .4s ease;&:hover{transform:translateY(-4px);box-shadow:0 16px 52px rgba(96,48,240,.06),inset 0 1px 0 rgba(255,255,255,.2);background:rgba(96,60,230,.05)}}
+@keyframes ci{0%{opacity:0;translate:0 14px}100%{opacity:1;translate:0 0}}
+@keyframes feIn{0%{opacity:0;translate:0 -4px}100%{opacity:1;translate:0 0}}
+.li{animation:ri .38s calc(.28s + var(--n)*.065s) cubic-bezier(.22,.61,.36,1) both}
+@keyframes ri{0%{opacity:0;translate:0 10px}100%{opacity:1;translate:0 0}}
+::v-deep .el-input__inner{height:54px;border-radius:16px;border:1px solid rgba(96,48,240,.15);background:rgba(96,60,230,.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding-left:48px;font-size:16px;font-weight:700;color:#14142B;transition:all .35s cubic-bezier(.4,0,.2,1);&::placeholder{color:#14142B;font-weight:700;opacity:.45}&:focus{background:rgba(96,60,230,.06);border-color:rgba(96,48,240,.3);box-shadow:0 0 32px rgba(96,48,240,.05),0 4px 14px rgba(96,48,240,.02),inset 0 1px 0 rgba(255,255,255,.1)}}
+.iw{position:relative;display:block}.iw .el-icon-user,.iw .el-icon-lock{position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:2;color:#14142B;opacity:.5;font-size:16px;pointer-events:none;width:16px;text-align:center}
+.iw .el-input__inner{padding-left:48px !important}
+::v-deep .el-form-item{margin-bottom:16px}
+.bt{width:100%;height:54px;margin-top:4px;border-radius:16px;font-size:16px;font-weight:600;letter-spacing:6px;border:none;position:relative;overflow:hidden;background:transparent;transition:all .6s cubic-bezier(.25,.1,.25,1);&::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#5B48E8,#3824D0);z-index:0;opacity:.92;transition:all .6s cubic-bezier(.25,.1,.25,1)}&::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);transform:translateX(-100%)}&:hover{translate:0 -1px;box-shadow:0 6px 20px rgba(56,36,208,.1);&::before{opacity:1}&::after{transform:translateX(100%);transition:transform 1.2s cubic-bezier(.25,.1,.25,1)}}&:active{translate:0 0}::v-deep span{position:relative;z-index:2}}
+.lk{display:block;text-align:center;text-decoration:none;font-size:14px;font-weight:500;color:rgba(40,28,80,.5);transition:all .2s;b{font-weight:700}&:hover{color:rgba(58,36,208,.65);b{letter-spacing:1px}}}
+.fe{color:#D4786B;font-size:12px;line-height:1.4;padding:6px 0 0 6px;text-align:left;font-weight:500;animation:feIn .25s ease both}
+@media(max-width:500px){.cd{width:92vw}}
 </style>

@@ -5,14 +5,13 @@
 				<el-input class="search-text" size="small" placeholder="搜索" v-model="searchText">
 					<i class="el-icon-search el-input__icon" slot="prefix"> </i>
 				</el-input>
-				<el-button plain class="add-btn" icon="el-icon-plus" title="添加好友"
-					@click="onShowAddFriend()"></el-button>
+				<el-button plain class="add-btn" icon="el-icon-plus" title="添加好友" @click="onShowAddFriend()"></el-button>
 				<add-friend :dialogVisible="showAddFriend" @close="onCloseAddFriend"></add-friend>
 			</div>
 			<el-scrollbar class="friend-items">
 				<div v-for="(friends, i) in friendValues" :key="i">
 					<div class="letter">{{ friendKeys[i] }}</div>
-					<div v-for="(friend) in friends" :key="friend.id">
+					<div v-for="friend in friends" :key="friend.id">
 						<friend-item :friend="friend" :active="friend.id === activeFriend.id"
 							@chat="onSendMessage(friend)" @delete="onDelFriend(friend)"
 							@click.native="onActiveItem(friend)">
@@ -23,280 +22,170 @@
 			</el-scrollbar>
 		</resizable-aside>
 		<el-container class="container">
-			<div class="header" v-show="userInfo.id">
-				{{ userInfo.nickName }}
-			</div>
-			<div v-show="userInfo.id">
-				<div class="friend-info">
-					<head-image :size="160" :name="userInfo.nickName" :url="userInfo.headImage" radius="10%"
-						@click.native="showFullImage()"></head-image>
-					<div>
-						<div class="info-item">
-							<el-descriptions title="好友信息" class="description" :column="1">
-								<el-descriptions-item label="用户名">{{ userInfo.userName }}
-								</el-descriptions-item>
-								<el-descriptions-item label="昵称">{{ userInfo.nickName }}
-								</el-descriptions-item>
-								<el-descriptions-item label="性别">{{ userInfo.sex == 0 ? "男" : "女"
-								}}</el-descriptions-item>
-								<el-descriptions-item label="签名">{{ userInfo.signature }}</el-descriptions-item>
-							</el-descriptions>
-						</div>
-						<div class="btn-group">
-							<el-button v-show="isFriend" icon="el-icon-position" type="primary"
-								@click="onSendMessage(activeFriend)">发消息</el-button>
-							<el-button v-show="!isFriend" icon="el-icon-plus" type="primary"
-								@click="onAddFriend(userInfo)">加为好友</el-button>
-							<el-button v-show="isFriend" icon="el-icon-delete" type="danger"
-								@click="onDelFriend(userInfo)">删除好友</el-button>
+			<transition name="fd" mode="out-in">
+				<div class="detail" v-if="userInfo.id" :key="detailKey">
+					<div class="det-avatar">
+						<head-image :size="100" :name="userInfo.nickName" :url="userInfo.headImage" radius="24px" @click.native="showFullImage()"></head-image>
+					</div>
+					<h2 class="det-name">{{ userInfo.nickName }}</h2>
+					<p class="det-username">@{{ userInfo.userName }}</p>
+					<p class="det-sig" v-if="userInfo.signature">"{{ userInfo.signature }}"</p>
+					<div class="det-meta">
+						<div class="meta-item">
+							<i class="el-icon-male" v-if="userInfo.sex==0"></i>
+							<i class="el-icon-female" v-else></i>
+							<span>{{ userInfo.sex == 0 ? "男" : "女" }}</span>
 						</div>
 					</div>
+					<div class="det-actions">
+						<el-button v-show="isFriend" size="large" icon="el-icon-chat-dot-round" type="primary" round @click="onSendMessage(activeFriend)">发消息</el-button>
+						<el-button v-show="!isFriend" size="large" icon="el-icon-plus" type="primary" round @click="onAddFriend(userInfo)">加为好友</el-button>
+						<el-button v-show="isFriend" size="large" icon="el-icon-delete" type="danger" round plain @click="onDelFriend(userInfo)">删除好友</el-button>
+					</div>
 				</div>
-			</div>
+				<div class="empty-detail" v-else key="e">
+					<i class="iconfont icon-friend" style="font-size:48px;opacity:.12;margin-bottom:16px"></i>
+					<p>选择一个好友查看详情</p>
+				</div>
+			</transition>
 		</el-container>
 	</el-container>
 </template>
 
 <script>
-import FriendItem from "../components/friend/FriendItem.vue";
-import AddFriend from "../components/friend/AddFriend.vue";
-import HeadImage from "../components/common/HeadImage.vue";
-import ResizableAside from "../components/common/ResizableAside.vue";
-import { pinyin } from 'pinyin-pro';
+import FriendItem from "../components/friend/FriendItem.vue"
+import AddFriend from "../components/friend/AddFriend.vue"
+import HeadImage from "../components/common/HeadImage.vue"
+import ResizableAside from "../components/common/ResizableAside.vue"
+import { pinyin } from 'pinyin-pro'
 
 export default {
 	name: "friend",
-	components: {
-		FriendItem,
-		AddFriend,
-		HeadImage,
-		ResizableAside
-	},
+	components: { FriendItem, AddFriend, HeadImage, ResizableAside },
 	data() {
 		return {
 			searchText: "",
 			showAddFriend: false,
+			detailKey: 0,
 			userInfo: {},
 			activeFriend: {}
 		}
 	},
 	methods: {
-		onShowAddFriend() {
-			this.showAddFriend = true;
-		},
-		onCloseAddFriend() {
-			this.showAddFriend = false;
-		},
+		onShowAddFriend() { this.showAddFriend = true },
+		onCloseAddFriend() { this.showAddFriend = false },
 		onActiveItem(friend) {
-			this.activeFriend = friend;
-			this.loadUserInfo(friend.id);
+			this.detailKey++
+			this.activeFriend = friend
+			this.userInfo = {}
+			this.loadUserInfo(friend.id)
 		},
 		onDelFriend(friend) {
 			this.$confirm(`确认删除'${friend.nickName}',并清空聊天记录吗?`, '确认解除?', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
+				confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
 			}).then(async () => {
-				await this.$http({
-					url: `/friend/delete/${friend.id}`,
-					method: 'delete'
-				})
-				this.friendStore.removeFriend(friend.id);
-				// 删除会话
+				await this.$http({ url: `/friend/delete/${friend.id}`, method: 'delete' })
+				this.friendStore.removeFriend(friend.id)
 				const data = { chatId: friend.id }
-				await this.$http({
-					url: `/message/private/deleteChat`,
-					method: 'delete',
-					data: data
-				});
+				await this.$http({ url: `/message/private/deleteChat`, method: 'delete', data })
 				const convKey = this.$db.buildConversationKey(this.$enums.CONVERSATION_TYPE.PRIVATE, friend.id)
-				await this.chatStore.remove(convKey);
-				this.$message.success("删除好友成功");
+				await this.chatStore.remove(convKey)
+				this.$message.success("删除好友成功")
 			})
 		},
 		onAddFriend(user) {
-			this.$http({
-				url: "/friend/add",
-				method: "post",
-				params: {
-					friendId: user.id
-				}
-			}).then(() => {
-				this.$message.success("添加成功，对方已成为您的好友");
-				const friend = {
-					id: user.id,
-					nickName: user.nickName,
-					headImage: user.headImageThumb,
-					online: user.online,
-					deleted: false,
-					version: 0
-				}
-				this.friendStore.addFriend(friend);
+			this.$http({ url: "/friend/add", method: "post", params: { friendId: user.id } }).then(() => {
+				this.$message.success("添加成功，对方已成为您的好友")
+				this.friendStore.addFriend({ id: user.id, nickName: user.nickName, headImage: user.headImageThumb, online: user.online, deleted: false, version: 0 })
 			})
 		},
 		async onSendMessage(friend) {
 			const convKey = this.$db.buildConversationKey(this.$enums.CONVERSATION_TYPE.PRIVATE, friend.id)
-			const chatInfo = {
-				key: convKey,
-				type: this.$enums.CONVERSATION_TYPE.PRIVATE,
-				targetId: friend.id,
-				showName: friend.nickName,
-				headImage: friend.headImage,
-				isDnd: friend.isDnd
-			};
-			await this.chatStore.openChat(chatInfo);
-			await this.chatStore.moveTop(convKey);
-			this.chatStore.setActive(convKey);
-			this.$router.push("/home/chat");
+			const chatInfo = { key: convKey, type: this.$enums.CONVERSATION_TYPE.PRIVATE, targetId: friend.id, showName: friend.nickName, headImage: friend.headImage, isDnd: friend.isDnd }
+			await this.chatStore.openChat(chatInfo)
+			await this.chatStore.moveTop(convKey)
+			this.chatStore.setActive(convKey)
+			this.$router.push("/home/chat")
 		},
-		showFullImage() {
-			if (this.userInfo.headImage) {
-				this.$eventBus.$emit("openFullImage", this.userInfo.headImage);
-			}
-		},
+		showFullImage() { if (this.userInfo.headImage) this.$eventBus.$emit("openFullImage", this.userInfo.headImage) },
 		updateFriendInfo() {
 			if (this.isFriend) {
-				// store的数据不能直接修改，深拷贝一份store的数据
-				const friend = JSON.parse(JSON.stringify(this.activeFriend));
-				friend.headImage = this.userInfo.headImageThumb;
-				friend.nickName = this.userInfo.nickName;
-				this.chatStore.updateFromFriend(friend);
-				this.friendStore.updateFriend(friend);
+				const friend = JSON.parse(JSON.stringify(this.activeFriend))
+				friend.headImage = this.userInfo.headImageThumb
+				friend.nickName = this.userInfo.nickName
+				this.chatStore.updateFromFriend(friend)
+				this.friendStore.updateFriend(friend)
 			}
 		},
 		loadUserInfo(id) {
-			// 获取好友用户信息
-			this.$http({
-				url: `/user/find/${id}`,
-				method: 'GET'
-			}).then((userInfo) => {
-				this.userInfo = userInfo;
-				this.updateFriendInfo();
+			this.$http({ url: `/user/find/${id}`, method: 'GET' }).then(userInfo => {
+				this.userInfo = userInfo
+				this.updateFriendInfo()
 			})
 		},
 		firstLetter(strText) {
-			// 使用pinyin-pro库将中文转换为拼音
-			let pinyinOptions = {
-				toneType: 'none', // 无声调
-				type: 'normal' // 普通拼音
-			};
-			let pyText = pinyin(strText, pinyinOptions);
-			return pyText[0];
+			const opt = { toneType: 'none', type: 'normal' }
+			return pinyin(strText, opt)[0]
 		},
-		isEnglish(character) {
-			return /^[A-Za-z]+$/.test(character);
-		}
+		isEnglish(character) { return /^[A-Za-z]+$/.test(character) }
 	},
 	computed: {
-		isFriend() {
-			return this.friendStore.isFriend(this.userInfo.id);
-		},
+		isFriend() { return this.friendStore.isFriend(this.userInfo.id) },
 		friendMap() {
-			// 按首字母分组
-			let map = new Map();
-			this.friendStore.friends.forEach((f) => {
-				if (f.deleted || (this.searchText && !f.nickName.includes(this.searchText))) {
-					return;
-				}
-				let letter = this.firstLetter(f.nickName).toUpperCase();
-				// 非英文一律为#组
-				if (!this.isEnglish(letter)) {
-					letter = "#"
-				}
-				if (f.online) {
-					letter = '在线'
-				}
-				if (map.has(letter)) {
-					map.get(letter).push(f);
-				} else {
-					map.set(letter, [f]);
-				}
+			let map = new Map()
+			this.friendStore.friends.forEach(f => {
+				if (f.deleted || (this.searchText && !f.nickName.includes(this.searchText))) return
+				let letter = this.firstLetter(f.nickName).toUpperCase()
+				if (!this.isEnglish(letter)) letter = "#"
+				if (f.online) letter = '在线'
+				if (map.has(letter)) map.get(letter).push(f)
+				else map.set(letter, [f])
 			})
-			// 排序
-			let arrayObj = Array.from(map);
-			arrayObj.sort((a, b) => {
-				// #组在最后面
-				if (a[0] == '#' || b[0] == '#') {
-					return b[0].localeCompare(a[0])
-				}
-				return a[0].localeCompare(b[0])
-			})
-			map = new Map(arrayObj.map(i => [i[0], i[1]]));
-			return map;
+			let arrayObj = Array.from(map)
+			arrayObj.sort((a, b) => a[0] == '#' || b[0] == '#' ? b[0].localeCompare(a[0]) : a[0].localeCompare(b[0]))
+			return new Map(arrayObj.map(i => [i[0], i[1]]))
 		},
-		friendKeys() {
-			return Array.from(this.friendMap.keys());
-		},
-		friendValues() {
-			return Array.from(this.friendMap.values());
-		}
+		friendKeys() { return Array.from(this.friendMap.keys()) },
+		friendValues() { return Array.from(this.friendMap.values()) }
 	}
 }
 </script>
 
-<style lang="scss" scoped>
-.friend-page {
-
-	.header {
-		height: 50px;
-		display: flex;
-		align-items: center;
-		padding: 0 8px;
-
-		.add-btn {
-			padding: 5px !important;
-			margin: 5px;
-			font-size: 16px;
-			border-radius: 50%;
-		}
-	}
-
-	.friend-items {
-		flex: 1;
-
-		.letter {
-			text-align: left;
-			font-size: var(--im-larger-size-larger);
-			padding: 5px 15px;
-			color: var(--im-text-color-light);
-		}
-	}
+<style scoped lang="scss">
+.friend-page { background: transparent;
+  .header { height: 50px; display: flex; align-items: center; padding: 0 8px;
+    .add-btn { padding: 5px !important; margin: 5px; font-size: 16px; border-radius: 50% }
+  }
+  .friend-items { flex: 1;
+    .letter { text-align: left; font-size: 12px; padding: 6px 15px 4px; color: rgba(55,72,199,.35) }
+  }
 }
 
-.container {
-	display: flex;
-	flex-direction: column;
+.container { display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background:#2c2c2e;  -webkit-backdrop-filter: blur(16px) }
 
-	.header {
-		height: 50px;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0 12px;
-		font-size: var(--im-font-size-larger);
-		border-bottom: var(--im-border);
-		box-sizing: border-box;
-	}
+.empty-detail { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--im-text-color-lighter); font-size: 14px }
 
-	.friend-info {
-		display: flex;
-		padding: 50px 80px 20px 80px;
-		text-align: center;
+.detail { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 32px }
+.fd-enter-active { transition: opacity .25s ease, transform .28s cubic-bezier(.22,.61,.36,1) }
+.fd-leave-active { transition: opacity .15s ease, transform .18s cubic-bezier(.55,0,1,1) }
+.fd-enter { opacity: 0; transform: translateY(12px) }
+.fd-leave-to { opacity: 0; transform: translateY(-4px) }
 
-		.info-item {
-			margin-left: 20px;
-			background-color: #ffffff;
-			border: 1px #ddd solid;
-		}
-
-		.description {
-			padding: 20px 20px 0 20px;
-		}
-	}
-
-	.btn-group {
-		text-align: left !important;
-		padding: 20px;
-	}
+.det-avatar { margin-bottom: 20px; filter: drop-shadow(0 6px 22px rgba(48,0,240,.12)) }
+.det-name { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 1px; color: var(--im-text-color) }
+.det-username { margin: 6px 0 10px; font-size: 14px; color: var(--im-text-color-lighter) }
+.det-sig { margin: 0 0 14px; font-size: 14px; color: var(--im-text-color-light); font-style: italic; max-width: 320px; text-align: center }
+.det-meta { margin-bottom: 24px; display: flex; gap: 16px;
+  .meta-item { display: flex; align-items: center; gap: 4px; font-size: 14px; color: var(--im-text-color-light);
+    .el-icon-male { color: #4A90D9; font-size: 18px }
+    .el-icon-female { color: #E85D75; font-size: 18px }
+  }
+}
+.det-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  .el-button { transition: all .35s cubic-bezier(.4,0,.2,1);
+    &:hover { ; box-shadow: 0 10px 26px rgba(255,255,255,.08) }
+  }
 }
 </style>

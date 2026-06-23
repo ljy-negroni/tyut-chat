@@ -230,17 +230,19 @@ export default {
 
 <style lang="scss">
 .chat-message-item {
-	padding: 3px 10px;
-	border-radius: 10px;
+	padding: 2px 14px;
+	border-radius: 8px;
+	transition: background 0.3s ease;
 
 	&.active {
-		background: var(--im-background-active-dark);
+		background: rgba(255,255,255,.04);
 	}
 
 	.message-tip {
-		line-height: 50px;
+		line-height: 44px;
 		font-size: var(--im-font-size-small);
-		color: var(--im-text-color-light);
+		color: var(--im-text-color-lighter);
+		user-select: none;
 	}
 
 	.message-normal {
@@ -248,13 +250,13 @@ export default {
 		font-size: 0;
 		padding-left: 48px;
 		min-height: 50px;
-		margin-top: 10px;
+		margin-top: 8px;
 
 		.head-image {
 			position: absolute;
-			width: 40px;
-			height: 40px;
-			top: 0;
+			width: 38px;
+			height: 38px;
+			top: 2px;
 			left: 0;
 		}
 
@@ -267,17 +269,22 @@ export default {
 				color: var(--im-text-color-light);
 				font-size: var(--im-font-size);
 				line-height: 20px;
+				margin-bottom: 3px;
 
 				span {
 					margin-right: 12px;
+
+					&:first-child {
+						font-weight: 500;
+						color: var(--im-text-color);
+					}
 				}
 			}
 
 			.message-bottom {
 				display: inline-block;
-				padding-right: 300px;
-				padding-left: 5px;
-
+				padding-right: 280px;
+				padding-left: 4px;
 
 				.message-content-wrapper {
 					position: relative;
@@ -285,20 +292,21 @@ export default {
 					align-items: flex-end;
 
 					.sending {
-						width: 25px;
-						height: 25px;
+						width: 22px;
+						height: 22px;
+						margin-right: 4px;
 
 						.circular {
-							width: 25px;
-							height: 25px;
+							width: 22px;
+							height: 22px;
 						}
 					}
 
 					.send-fail {
-						color: #e45050;
-						font-size: 30px;
+						color: #FF3B30;
+						font-size: 22px;
 						cursor: pointer;
-						margin: 0 5px;
+						margin: 0 4px;
 					}
 				}
 
@@ -306,23 +314,25 @@ export default {
 					flex: 1;
 					display: inline-block;
 					position: relative;
-					line-height: 26px;
-					padding: 6px 10px;
-					background-color: var(--im-background);
-					border-radius: 10px;
+					line-height: 24px;
+					padding: 8px 14px;
+					background-color: #2c2c2e;
+					border-radius: 4px 14px 14px 14px;
 					font-size: var(--im-font-size);
 					text-align: left;
 					white-space: pre-wrap;
 					word-break: break-word;
-
+					color: var(--im-text-color);
+					box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 				}
 
 				.message-image {
-					border-radius: 8px;
-					border: 2px solid var(--im-color-primary-light-9);
+					border-radius: 12px;
+					border: 1px solid rgba(255, 255, 255, 0.08);
 					overflow: hidden;
 					cursor: pointer;
 					background: var(--im-background);
+					box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 				}
 
 				.message-file {
@@ -332,16 +342,17 @@ export default {
 					align-items: center;
 					cursor: pointer;
 					margin-bottom: 2px;
-					background: var(--im-background);
 
 					.chat-file-box {
 						display: flex;
 						flex-wrap: nowrap;
 						align-items: center;
-						min-height: 60px;
-						box-shadow: var(--im-box-shadow-light);
-						border-radius: 4px;
-						padding: 10px 15px;
+						min-height: 56px;
+						box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+						border-radius: 10px;
+						padding: 10px 14px;
+						background: #FFFFFF;
+						border: 1px solid var(--im-color-primary-light-6);
 
 						.chat-file-info {
 							flex: 1;
@@ -352,79 +363,77 @@ export default {
 
 							.chat-file-name {
 								display: inline-block;
-								min-width: 160px;
-								max-width: 220px;
-								font-size: 14px;
+								min-width: 140px;
+								max-width: 200px;
+								font-size: 13px;
 								margin-bottom: 4px;
 								white-space: pre-wrap;
 								word-break: break-all;
+								font-weight: 500;
 							}
 
 							.chat-file-size {
-								font-size: var(--im-font-size-smaller);
-								color: var(--im-text-color-light);
+								font-size: 11px;
+								color: var(--im-text-color-lighter);
 							}
 						}
 
 						.chat-file-icon {
-							font-size: 44px;
-							color: #d42e07;
+							font-size: 40px;
+							color: #FF3B30;
 						}
 					}
-
-					.send-fail {
-						color: #e60c0c;
-						font-size: 30px;
-						cursor: pointer;
-						margin: 0 20px;
-					}
-
 				}
 
 				.message-voice {
-					font-size: 14px;
 					cursor: pointer;
 
 					audio {
-						height: 45px;
-						padding: 5px 0;
+						height: 42px;
+						padding: 4px 0;
 					}
 				}
 
 				.chat-action {
 					display: flex;
 					align-items: center;
+					color: var(--im-text-color);
 
 					.iconfont {
 						cursor: pointer;
-						font-size: 22px;
-						padding-right: 8px;
+						font-size: 20px;
+						padding-right: 6px;
+						color: var(--im-color-primary-light-2);
+
+						&:hover {
+							color: var(--im-color-primary);
+						}
 					}
 				}
 
 				.message-status {
-					margin-top: 3px;
+					margin-top: 2px;
 					display: block;
 
 					.chat-readed {
-						font-size: 12px;
-						color: var(--im-text-color-light);
+						font-size: 11px;
+						color: var(--im-text-color-lighter);
 					}
 
 					.chat-unread {
-						font-size: var(--im-font-size-smaller);
-						color: var(--im-color-danger);
+						font-size: 11px;
+						color: #FF9500;
 					}
 				}
 
 				.chat-receipt {
-					font-size: var(--im-font-size-smaller);
+					font-size: 11px;
 					cursor: pointer;
-					color: var(--im-text-color-light);
+					color: var(--im-text-color-lighter);
 
 					.icon-ok {
-						font-size: 20px;
-						color: var(--im-color-sucess);
+						font-size: 18px;
+						color: var(--im-color-success);
 					}
 				}
 
@@ -435,7 +444,6 @@ export default {
 				}
 			}
 		}
-
 
 		&.message-mine {
 			text-align: right;
@@ -460,29 +468,35 @@ export default {
 				}
 
 				.message-bottom {
-					padding-left: 180px;
-					padding-right: 5px;
+					padding-left: 160px;
+					padding-right: 4px;
 
 					.message-content-wrapper {
 						flex-direction: row-reverse;
 					}
 
 					.message-text {
-						background-color: var(--im-color-primary-light-2);
-						color: #fff;
+						background: #0a84ff;
+						color: #FFFFFF;
+						border-radius: 14px 4px 14px 14px;
+						box-shadow: none;
 					}
 
 					.chat-action {
 						flex-direction: row-reverse;
 
 						.iconfont {
+							color: var(--im-color-primary-light-3);
 							transform: rotateY(180deg);
+
+							&:hover {
+								color: #FFFFFF;
+							}
 						}
 					}
 				}
 			}
 		}
-
 	}
 }
 </style>

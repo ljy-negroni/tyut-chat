@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-dialogDrag title="是否加入通话?" :visible.sync="isShow" width="400px">
+	<el-dialog v-dialogDrag title="是否加入通话?" :visible.sync="isShow" width="400px" :append-to-body="true" :modal-append-to-body="true">
 		<div class="rtc-group-join">
 			<div class="host-info">
 				<head-image :name="rtcInfo.host.nickName" :url="rtcInfo.host.headImage" :size="80"></head-image>

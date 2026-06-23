@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-dialogDrag class="setting" title="设置" :visible.sync="visible" width="420px" :before-close="onClose">
+	<el-dialog v-dialogDrag class="setting" title="设置" :visible.sync="visible" width="420px" :before-close="onClose" :append-to-body="true" :modal-append-to-body="true">
 		<el-form :model="userInfo" label-width="80px" :rules="rules" ref="settingForm" size="small">
 			<el-form-item label="头像" style="margin-bottom: 0 !important;">
 				<file-upload class="avatar-uploader" :action="imageAction" :showLoading="true" :maxSize="maxSize"
@@ -110,7 +110,7 @@ export default {
 		--width: 112px;
 
 		.el-upload {
-			border: 1px dashed #d9d9d9 !important;
+			border: 1px dashed rgba(255, 255, 255, 0.16) !important;
 			border-radius: 6px;
 			cursor: pointer;
 			position: relative;
@@ -118,12 +118,12 @@ export default {
 		}
 
 		.el-upload:hover {
-			border-color: #409EFF;
+			border-color: #0a84ff;
 		}
 
 		.avatar-uploader-icon {
 			font-size: 24px;
-			color: #8c939d;
+			color: rgba(255, 255, 255, 0.28);
 			width: var(--width);
 			height: var(--width);
 			line-height: var(--width);
