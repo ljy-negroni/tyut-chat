@@ -153,11 +153,22 @@ export default {
 
 <style scoped lang="scss">
 .friend-page { background: transparent;
-  .header { height: 50px; display: flex; align-items: center; padding: 0 8px;
-    .add-btn { padding: 5px !important; margin: 5px; font-size: 16px; border-radius: 50% }
+  .header { height: 50px; display: flex; align-items: center; padding: 0 10px;
+    .add-btn { padding: 5px !important; margin: 5px; font-size: 16px; border-radius: 50%;
+      background: transparent; border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.5);
+      &:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+    }
+  }
+  ::v-deep .header .el-input__inner {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.8);
+    &::placeholder { color: rgba(255,255,255,0.25); }
+    &:focus { border-color: rgba(255,255,255,0.18); }
   }
   .friend-items { flex: 1;
-    .letter { text-align: left; font-size: 12px; padding: 6px 15px 4px; color: rgba(55,72,199,.35) }
+    .letter { text-align: left; font-size: 12px; padding: 6px 15px 4px; color: rgba(255,255,255,0.25); }
   }
 }
 

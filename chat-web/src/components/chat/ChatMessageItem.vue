@@ -276,7 +276,7 @@ export default {
 
 					&:first-child {
 						font-weight: 500;
-						color: var(--im-text-color);
+						color: #1c1c1e;
 					}
 				}
 			}
@@ -316,14 +316,14 @@ export default {
 					position: relative;
 					line-height: 24px;
 					padding: 8px 14px;
-					background-color: #2c2c2e;
-					border-radius: 4px 14px 14px 14px;
+					background-color: #e9e9eb;
+					border-radius: 8px 18px 18px 18px;
 					font-size: var(--im-font-size);
 					text-align: left;
 					white-space: pre-wrap;
 					word-break: break-word;
-					color: var(--im-text-color);
-					box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+					color: #1c1c1e;
+					
 				}
 
 				.message-image {
@@ -478,7 +478,7 @@ export default {
 					.message-text {
 						background: #0a84ff;
 						color: #FFFFFF;
-						border-radius: 14px 4px 14px 14px;
+						border-radius: 18px 8px 18px 18px;
 						box-shadow: none;
 					}
 

@@ -3,8 +3,8 @@
 		<div class="chat-left">
 			<head-image :url="conversation.headImage" :name="conversation.showName" :size="42"
 				:id="isPrivate ? conversation.targetId : 0" :isShowUserInfo="false" :online="online"></head-image>
-			<div v-show="!conversation.isDnd && conversation.unreadCount > 0" class="unread-text">{{
-				conversation.unreadCount }}</div>
+			<div v-show="!conversation.isDnd && conversation.unreadCount > 0" class="unread-badge">{{
+				unreadLabel }}</div>
 		</div>
 		<div class="chat-right">
 			<div class="chat-name">
@@ -97,6 +97,10 @@ export default {
 			})
 			return items;
 		},
+		unreadLabel() {
+				const c = this.conversation.unreadCount;
+				return c > 99 ? '99+' : c;
+			},
 		online() {
 			if (this.isPrivate) {
 				let friend = this.friendStore.findFriend(this.conversation.targetId);
@@ -148,25 +152,23 @@ export default {
 		align-items: center;
 		flex-shrink: 0;
 
-		.unread-text {
+		.unread-badge {
 			position: absolute;
-			background-color: #FF3B30;
+			background: #FF3B30;
 			right: -6px;
 			top: -6px;
 			color: #FFFFFF;
-			border-radius: 10px;
-			padding: 1px 5px;
+			border-radius: 9px;
+			padding: 0 5px;
 			font-size: 10px;
-			font-weight: 700;
+			font-weight: 600;
 			text-align: center;
 			white-space: nowrap;
-			border: 2px solid #1c1c1e;
 			min-width: 18px;
 			height: 18px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			box-shadow: none;
 			z-index: 2;
 		}
 	}

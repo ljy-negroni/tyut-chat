@@ -10,9 +10,6 @@
 				<i class="el-icon-monitor online" v-show="friend.onlineWeb" title="电脑设备在线">
 					<span class="online-icon"></span>
 				</i>
-				<i class="el-icon-mobile-phone online" v-show="friend.onlineApp" title="移动设备在线">
-					<span class="online-icon"></span>
-				</i>
 			</div>
 		</div>
 		<right-menu ref="rightMenu" @select="onSelectMenu"></right-menu>
@@ -110,9 +107,9 @@ export default {
 
 		.friend-online {
 			.online {
-				font-weight: bold;
+				color: rgba(255,255,255,0.45);
 				padding-right: 2px;
-				font-size: 16px;
+				font-size: 14px;
 				position: relative;
 			}
 
@@ -120,11 +117,11 @@ export default {
 				position: absolute;
 				right: 0;
 				bottom: 0;
-				width: 6px;
-				height: 6px;
-				background: limegreen;
+				width: 5px;
+				height: 5px;
+				background: #30d158;
 				border-radius: 50%;
-				border: 1px solid white;
+				
 			}
 		}
 	}
