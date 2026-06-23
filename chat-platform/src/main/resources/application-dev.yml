@@ -11,9 +11,9 @@ spring:
 
 minio:
   endpoint: http://127.0.0.1:9000 #内网地址
-  domain: http://192.168.2.67:9000  #外网访问地址
-  accessKey: minioadmin
-  secretKey: minioadmin
+  domain: http://${MINIO_DOMAIN:localhost}:9000  #外网访问地址（本机测试用localhost，多设备用IP）
+  accessKey: admin
+  secretKey: admin123456
   bucketName: tyut-chat
   imagePath: image
   filePath: file

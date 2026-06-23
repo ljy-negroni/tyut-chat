@@ -50,9 +50,9 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
         if (!minioSerivce.bucketExists(minioProps.getBucketName())) {
             // 创建bucket
             minioSerivce.makeBucket(minioProps.getBucketName());
-            // 公开bucket
-            minioSerivce.setBucketPublic(minioProps.getBucketName());
         }
+        // 公开bucket（每次启动确保公开，避免旧bucket权限丢失）
+        minioSerivce.setBucketPublic(minioProps.getBucketName());
     }
 
     @Override
