@@ -8,8 +8,8 @@
 			<div class="info-card">
 				<div class="header">
 					<div class="nick-name">{{ user.nickName }}</div>
-					<div v-if="user.sex == 0" class="icon iconfont icon-man" style="color: darkblue;"></div>
-					<div v-if="user.sex == 1" class="icon iconfont icon-girl" style="color: darkred;"></div>
+					<div v-if="user.sex == 0" class="icon iconfont icon-man" style="color: #4A90D9;"></div>
+					<div v-if="user.sex == 1" class="icon iconfont icon-girl" style="color: #E85D75;"></div>
 				</div>
 				<div class="info-item">
 					用户名: {{ user.userName }}
@@ -127,7 +127,7 @@ export default {
 .user-info {
 	position: absolute;
 	width: 300px;
-	background-color: white;
+	background-color: #2c2c2e;
 	box-shadow: var(--im-box-shadow);
 	border-radius: 4px;
 	padding: 15px;

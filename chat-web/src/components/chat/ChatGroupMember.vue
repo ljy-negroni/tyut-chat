@@ -49,7 +49,7 @@ export default {
 	box-sizing: border-box;
 
 	&.active {
-		background: #E1EAF7;
+		background: #2c2c2e;
 	}
 
 	.name {

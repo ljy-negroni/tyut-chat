@@ -436,7 +436,7 @@ export default {
 
   .rtc-video-box {
     position: relative;
-    background-color: #eeeeee;
+    background-color: #1c1c1e;
 
     .rtc-video-friend {
       height: 70vh;

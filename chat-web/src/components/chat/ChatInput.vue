@@ -489,16 +489,16 @@ export default {
 			display: block;
 			max-width: 200px;
 			max-height: 100px;
-			border: 1px solid #e6e6e6;
+			border: 1px solid rgba(255,255,255,.08);
 			cursor: pointer;
 		}
 
 		.chat-file-container {
 			max-width: 65%;
 			padding: 10px;
-			border: 2px solid #587ff0;
+			border: 1px solid rgba(255,255,255,.08);
 			display: flex;
-			background: #eeeC;
+			background: #2c2c2e;
 			border-radius: 10px;
 
 			.file-position-left {
@@ -510,7 +510,7 @@ export default {
 				.el-icon-document {
 					font-size: 40px;
 					text-align: center;
-					color: #d42e07;
+					color: var(--im-color-danger);
 				}
 			}
 
@@ -520,7 +520,7 @@ export default {
 				.file-name {
 					font-size: 16px;
 					font-weight: 600;
-					color: #66b1ff;
+					color: var(--im-color-primary);
 				}
 
 				.file-size {
@@ -531,14 +531,14 @@ export default {
 		}
 
 		.chat-at-user {
-			color: #00f;
+			color: var(--im-color-primary);
 			border-radius: 3px;
 		}
 	}
 
 	.edit-container>div:nth-of-type(1):after {
 		content: '请输入消息（按Ctrl+Enter键换行）';
-		color: gray;
+		color: rgba(255,255,255,.28);
 	}
 
 	.edit-container.not-empty>div:nth-of-type(1):after {

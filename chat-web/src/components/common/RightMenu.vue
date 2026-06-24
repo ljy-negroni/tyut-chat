@@ -55,72 +55,36 @@ export default {
 </script>
 
 <style lang="scss">
-.right-menu-mask {
-	position: fixed;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 9999;
-}
+  .right-menu-mask {
+    position: fixed; left: 0; top: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%; z-index: 9999;
+  }
 
-.right-menu {
-	position: fixed;
-	border-radius: 12px;
-	overflow: hidden;
-	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-	background: rgba(255, 255, 255, 0.95);
-	backdrop-filter: blur(20px);
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	z-index: 10000;
+  .right-menu {
+    position: fixed; border-radius: 12px; overflow: hidden;
+    box-shadow: none; background: #2c2c2e;
+    border: 1px solid rgba(255, 255, 255, 0.06); z-index: 10000;
 
-	.menu-container {
-		padding: 8px 0;
-		min-width: 120px;
+    .menu-container {
+      padding: 8px 0; min-width: 120px;
 
-		.menu-item {
-			display: flex;
-			align-items: center;
-			padding: 8px 16px;
-			cursor: pointer;
-			transition: all 0.2s ease;
-			position: relative;
-			font-size: 14px;
-			color: var(--im-text-color);
+      .menu-item {
+        display: flex; align-items: center; padding: 8px 16px;
+        cursor: pointer; transition: background-color 0.2s ease;
+        position: relative; font-size: 14px;
+        color: rgba(255,255,255,0.72);
 
-			&:hover {
-				background: var(--im-background-active);
-				color: var(--im-color-primary);
-			}
+        &:hover { background: #3a3a3c; color: var(--im-color-primary); }
 
-			&.danger {
-				color: var(--im-color-danger);
+        &.danger {
+          color: var(--im-color-danger);
+          &:hover { background: rgba(255,69,58,0.15); color: var(--im-color-danger); }
+          &:active { background: rgba(255,69,58,0.25); }
+        }
 
-				&:hover {
-					background: rgba(245, 108, 108, 0.1);
-					color: var(--im-color-danger);
-				}
-
-				&:active {
-					background: rgba(245, 108, 108, 0.2);
-					transform: scale(0.98);
-				}
-			}
-
-			.menu-icon {
-				font-size: 16px;
-				margin-right: 8px;
-				width: 16px;
-				text-align: center;
-			}
-
-			.menu-text {
-				flex: 1;
-				font-weight: 500;
-			}
-		}
-	}
-}
+        .menu-icon { font-size: 16px; margin-right: 8px; width: 16px; text-align: center; }
+        .menu-text { flex: 1; font-weight: 500; }
+      }
+    }
+  }
 </style>

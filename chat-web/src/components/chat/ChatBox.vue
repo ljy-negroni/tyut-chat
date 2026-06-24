@@ -870,17 +870,17 @@ export default {
 			color: var(--im-color-primary);
 			font-size: 12px;
 			font-weight: 600;
-			background: #FFFFFF;
+			background: #2c2c2e;
 			padding: 8px 18px;
 			border-radius: 20px;
 			cursor: pointer;
 			z-index: 99;
-			box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+			box-shadow: none;
 			transition: all 0.25s ease;
 
 			&:hover {
 				transform: translateY(-1px);
-				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+				box-shadow: none;
 			}
 		}
 
@@ -972,8 +972,8 @@ export default {
 	}
 
 	.side-box {
-		border-left: 1px solid var(--im-color-primary-light-7);
-		background: #FFFFFF;
+		border-left: 1px solid rgba(255,255,255,.06);
+		background: #1c1c1e;
 	}
 
 }

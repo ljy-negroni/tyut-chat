@@ -20,3 +20,6 @@
 # 工具元数据与本地产物
 /.spec-workflow/
 /.claude/
+_.gitignore
+dump.rdb
+logs/

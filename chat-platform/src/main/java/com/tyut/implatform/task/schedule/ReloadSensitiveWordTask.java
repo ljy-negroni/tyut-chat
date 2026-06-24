@@ -20,7 +20,7 @@ public class ReloadSensitiveWordTask {
 
     @Scheduled(fixedRate = 60000)
     public void run() {
-        log.info("【定时任务】重新装载敏感词...");
+        log.debug("【定时任务】重新装载敏感词...");
         sensitiveFilterUtil.reload();
     }
 }

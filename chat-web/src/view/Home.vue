@@ -30,12 +30,6 @@
 					</div>
 
 					<div class="botoom">
-						<div class="bottom-item" @click="onSwtichFullScreen">
-							<i class="el-icon-full-screen"></i>
-						</div>
-						<div class="bottom-item" @click="showSetting">
-							<span class="icon iconfont icon-setting" style="font-size: 20px"></span>
-						</div>
 						<div class="bottom-item" @click="onExit()" title="退出">
 							<span class="icon iconfont icon-exit"></span>
 						</div>
@@ -853,7 +847,7 @@ export default {
 					text-align: center;
 					white-space: nowrap;
 					border: 2px solid #1c1c1e;
-					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+					box-shadow: none;
 					min-width: 18px;
 					height: 18px;
 					display: flex;

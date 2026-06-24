@@ -76,7 +76,7 @@ export default defineStore('friendStore', {
 			this.friendMap.clear();
 		},
 		async pullFriends() {
-			const version = Math.max(...this.friends.map(f => f.version || 0));
+			const version = Math.max(0, ...this.friends.map(f => f.version || 0));
 			const friends = await http({ url: '/friend/list?version=' + version });
 			this.resetOnline(friends);
 			this.append(friends);

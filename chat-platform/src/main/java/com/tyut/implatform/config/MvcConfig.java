@@ -1,6 +1,7 @@
 package com.tyut.implatform.config;
 
 import com.tyut.implatform.interceptor.AuthInterceptor;
+import com.tyut.implatform.interceptor.RateLimitInterceptor;
 import com.tyut.implatform.interceptor.XssInterceptor;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +17,11 @@ public class MvcConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
     private final XssInterceptor xssInterceptor;
+    private final RateLimitInterceptor rateLimitInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(rateLimitInterceptor).addPathPatterns("/**");
         registry.addInterceptor(xssInterceptor).addPathPatterns("/**").excludePathPatterns("/error");
         registry.addInterceptor(authInterceptor).addPathPatterns("/**")
             .excludePathPatterns("/login", "/logout", "/register", "/captcha", "/refreshToken","/*/upload", "/swagger/**", "/v3/api-docs/**",

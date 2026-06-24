@@ -152,7 +152,7 @@ export default {
 		height: 0;
 		border-top: 15px solid transparent;
 		border-bottom: 15px solid transparent;
-		border-right: 15px solid #ccc;
+		border-right: 15px solid #3a3a3c;
 
 		.arrow-left-inner {
 			position: absolute;
@@ -174,7 +174,7 @@ export default {
 		height: 0;
 		border-top: 15px solid transparent;
 		border-bottom: 15px solid transparent;
-		border-left: 15px solid #ccc;
+		border-left: 15px solid #3a3a3c;
 
 		.arrow-right-inner {
 			position: absolute;

@@ -49,7 +49,7 @@ export default {
 		position: absolute;
 		right: -8px;
 		top: -8px;
-		color: darkred;
+		color: var(--im-color-danger);
 		font-size: 20px;
 		cursor: pointer;
 	}

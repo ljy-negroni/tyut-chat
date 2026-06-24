@@ -276,7 +276,7 @@ export default {
 
 					&:first-child {
 						font-weight: 500;
-						color: #1c1c1e;
+						color: rgba(255,255,255,.50);
 					}
 				}
 			}
@@ -316,13 +316,13 @@ export default {
 					position: relative;
 					line-height: 24px;
 					padding: 8px 14px;
-					background-color: #e9e9eb;
+					background-color: #2c2c2e;
 					border-radius: 8px 18px 18px 18px;
 					font-size: var(--im-font-size);
 					text-align: left;
 					white-space: pre-wrap;
 					word-break: break-word;
-					color: #1c1c1e;
+					color: rgba(255,255,255,.92);
 					
 				}
 
@@ -332,7 +332,7 @@ export default {
 					overflow: hidden;
 					cursor: pointer;
 					background: var(--im-background);
-					box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: none;
 				}
 
 				.message-file {
@@ -348,10 +348,10 @@ export default {
 						flex-wrap: nowrap;
 						align-items: center;
 						min-height: 56px;
-						box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: none;
 						border-radius: 10px;
 						padding: 10px 14px;
-						background: #FFFFFF;
+						background: #2c2c2e;
 						border: 1px solid var(--im-color-primary-light-6);
 
 						.chat-file-info {

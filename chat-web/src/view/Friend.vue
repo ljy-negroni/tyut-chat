@@ -184,7 +184,7 @@ export default {
 .fd-enter { opacity: 0; transform: translateY(12px) }
 .fd-leave-to { opacity: 0; transform: translateY(-4px) }
 
-.det-avatar { margin-bottom: 20px; filter: drop-shadow(0 6px 22px rgba(48,0,240,.12)) }
+.det-avatar { margin-bottom: 20px; filter: none; }
 .det-name { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 1px; color: var(--im-text-color) }
 .det-username { margin: 6px 0 10px; font-size: 14px; color: var(--im-text-color-lighter) }
 .det-sig { margin: 0 0 14px; font-size: 14px; color: var(--im-text-color-light); font-style: italic; max-width: 320px; text-align: center }
@@ -195,8 +195,6 @@ export default {
   }
 }
 .det-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-  .el-button { transition: all .35s cubic-bezier(.4,0,.2,1);
-    &:hover { ; box-shadow: 0 10px 26px rgba(255,255,255,.08) }
-  }
+  .el-button { transition: background-color 0.2s ease; }
 }
 </style>

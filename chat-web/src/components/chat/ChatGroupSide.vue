@@ -234,7 +234,7 @@ export default {
         box-sizing: border-box;
 
         &:hover {
-          border: #aaaaaa solid 1px;
+          border: 1px solid rgba(255,255,255,.25);
         }
       }
 

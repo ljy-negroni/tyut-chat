@@ -7,7 +7,7 @@
         </el-input>
       </div>
       <div class="chat-loading" v-if="loading" v-loading="true" element-loading-text="消息接收中..."
-        element-loading-spinner="el-icon-loading" element-loading-background="#F9F9F9" element-loading-size="24">
+        element-loading-spinner="el-icon-loading" element-loading-background="rgba(28,28,30,0.94)" element-loading-size="24">
       </div>
       <virtual-scroller class="scroll-box" :items="showConversations">
         <template v-slot="{ item }">

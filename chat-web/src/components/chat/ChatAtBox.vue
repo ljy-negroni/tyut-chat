@@ -127,7 +127,7 @@ export default {
 	position: fixed;
 	width: 200px;
 	height: 300px;
-	background-color: #fff;
+	background-color: #2c2c2e; border: 1px solid rgba(255,255,255,.08);
 	box-shadow: var(--im-box-shadow);
 }
 </style>

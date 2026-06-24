@@ -10,7 +10,7 @@ $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaH
 // macOS Vibrancy · Element UI 组件定制
 // ============================================
 
-// --- 按钮 （macOS Vibrancy：纯色、无渐变、无阴影）---
+// --- 按钮 ---
 .el-button {
   border-radius: 8px;
   font-weight: 500;
@@ -47,9 +47,42 @@ $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaH
       color: rgba(255, 255, 255, 0.95);
     }
   }
+
+  &.el-button--danger {
+    background: #ff453a;
+    border-color: transparent;
+    color: #fff;
+
+    &:hover {
+      background: #ff5e54;
+      border-color: transparent;
+    }
+
+    &.is-plain {
+      background: rgba(255, 69, 58, 0.12);
+      border-color: rgba(255, 69, 58, 0.30);
+      color: #ff453a;
+
+      &:hover {
+        background: rgba(255, 69, 58, 0.20);
+        border-color: rgba(255, 69, 58, 0.45);
+      }
+    }
+  }
+
+  &.el-button--warning {
+    background: #ff9f0a;
+    border-color: transparent;
+    color: #fff;
+
+    &:hover {
+      background: #ffb340;
+      border-color: transparent;
+    }
+  }
 }
 
-// --- 输入框 （macOS Vibrancy：纯黑底 + 1px 白框）---
+// --- 输入框 ---
 .el-input__inner {
   border-radius: 8px;
   transition: border-color 0.2s ease;
@@ -83,21 +116,20 @@ $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaH
   }
 }
 
+// --- disabled 输入框 ---
+.el-input.is-disabled .el-input__inner,
+.el-textarea.is-disabled .el-textarea__inner {
+  background: #2c2c2e;
+  border-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.40);
+  cursor: not-allowed;
+}
 
-	// --- disabled 输入框（覆盖 Element UI 默认白底）---
-	.el-input.is-disabled .el-input__inner,
-	.el-textarea.is-disabled .el-textarea__inner {
-	  background: #2c2c2e;
-	  border-color: rgba(255, 255, 255, 0.06);
-	  color: rgba(255, 255, 255, 0.40);
-	  cursor: not-allowed;
-	}
-
-// --- 对话框 ---
+// --- Toast 消息 ---
 .el-message {
   z-index: 99999999 !important;
   background: #2c2c2e !important;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   min-width: unset !important;
   border-radius: 12px !important;
@@ -106,8 +138,24 @@ $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaH
   .el-message__content {
     color: rgba(255, 255, 255, 0.90) !important;
   }
+
+  &.el-message--success {
+    background: #1a3a24 !important;
+    border-color: rgba(48, 209, 88, 0.25) !important;
+  }
+
+  &.el-message--warning {
+    background: #3a2a10 !important;
+    border-color: rgba(255, 159, 10, 0.25) !important;
+  }
+
+  &.el-message--error {
+    background: #3a1a16 !important;
+    border-color: rgba(255, 69, 58, 0.25) !important;
+  }
 }
 
+// --- 对话框 ---
 .el-dialog {
   border-radius: 14px;
   overflow: hidden;
@@ -129,6 +177,11 @@ $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaH
   top: 18px;
   right: 24px;
   font-size: 18px;
+
+  .el-dialog__close {
+    color: rgba(255, 255, 255, 0.40);
+    &:hover { color: rgba(255, 255, 255, 0.72); }
+  }
 }
 
 .el-dialog__body {
@@ -141,17 +194,74 @@ $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaH
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-// --- 消息提示 ---
+// --- 消息确认框 ($confirm / $alert / $prompt) ---
 .el-message-box {
   border-radius: 14px;
   background: #2c2c2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  .el-message-box__header {
+    padding: 16px 24px 0;
+    border-bottom: none;
+  }
 
   .el-message-box__title {
+    font-size: 16px;
+    font-weight: 600;
     color: rgba(255, 255, 255, 0.92);
+  }
+
+  .el-message-box__headerbtn {
+    top: 16px;
+    right: 20px;
+    .el-message-box__close {
+      color: rgba(255, 255, 255, 0.30);
+      &:hover { color: rgba(255, 255, 255, 0.60); }
+    }
+  }
+
+  .el-message-box__content {
+    padding: 8px 24px 16px;
   }
 
   .el-message-box__message {
     color: rgba(255, 255, 255, 0.72);
+  }
+
+  .el-message-box__input {
+    .el-input__inner {
+      background: #1c1c1e;
+      border-color: rgba(255, 255, 255, 0.10);
+      color: rgba(255, 255, 255, 0.90);
+    }
+  }
+
+  .el-message-box__status {
+    &.el-icon-warning {
+      color: #ff9f0a;
+    }
+    &.el-icon-error {
+      color: #ff453a;
+    }
+    &.el-icon-success {
+      color: #30d158;
+    }
+  }
+
+  .el-message-box__btns {
+    padding: 8px 24px 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    .el-button {
+      border-radius: 8px;
+      padding: 9px 20px;
+    }
+  }
+
+  .el-message-box__errormsg {
+    color: #ff453a;
   }
 }
 
@@ -215,17 +325,9 @@ $--font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaH
   padding: 0 3px !important;
   color: white !important;
 
-  &.el-tag--primary {
-    background: $--color-primary;
-  }
-
-  &.el-tag--warning {
-    background: $--color-warning;
-  }
-
-  &.el-tag--danger {
-    background: $--color-danger;
-  }
+  &.el-tag--primary { background: $--color-primary; }
+  &.el-tag--warning { background: $--color-warning; }
+  &.el-tag--danger  { background: $--color-danger; }
 }
 
 // --- 输入 ---
