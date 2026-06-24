@@ -1,0 +1,383 @@
+<html><head><meta charset="utf-8"><style>
+body{font-family:"Microsoft YaHei",sans-serif;font-size:12pt;line-height:1.8;color:#1c1c1e;max-width:800px;margin:40px auto;padding:0 20px}
+h1{font-size:22pt;border-bottom:2px solid #333;padding-bottom:8px;margin-top:32px}
+h2{font-size:16pt;margin-top:28px;color:#2c2c2e}
+h3{font-size:13pt;margin-top:20px;color:#3a3a3c}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:11pt}
+th,td{border:1px solid #ccc;padding:6px 10px;text-align:left}
+th{background:#f0f0f2;font-weight:600}
+blockquote{background:#f8f8f8;border-left:3px solid #ccc;margin:10px 0;padding:6px 14px;color:#555}
+code{background:#eee;padding:1px 4px;border-radius:3px;font-size:10pt}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;font-size:10pt;overflow-x:auto}
+hr{border:none;border-top:1px solid #e0e0e0;margin:24px 0}
+ul{margin:6px 0;padding-left:20px}
+li{margin:2px 0}
+</style></head><body>
+<h1>李俊毅 个人开发日志</h1>
+<blockquote>项目：TYUT CHAT（太原理工大学校园即时通讯平台）</blockquote>
+<blockquote>角色：全栈开发工程师</blockquote>
+<blockquote>开发周期：2026.06.15 — 2026.06.24</blockquote>
+<blockquote>开发模式：单人全栈，从零构建</blockquote>
+<hr/>
+<h2>2026.06.15（需求分析与架构设计）</h2>
+<h3>当日工作计划</h3>
+<li>完成项目需求分析文档编写</li>
+<li>完成系统架构设计与技术选型</li>
+<li>确定模块划分与依赖关系</li>
+<li>搭建基础开发环境</li>
+<h3>当日工作内容</h3>
+<p><b>1. 需求分析（2 小时）</b></p>
+<li>分析课设要求，明确项目目标：构建面向太原理工大学师生的校园即时通讯 Web 应用</li>
+<li>梳理核心功能需求：用户注册登录、私聊消息、群聊消息、图片/文件/语音发送、音视频通话（WebRTC）、好友管理、群组管理、消息撤回删除、敏感词过滤</li>
+<li>撰写《需求分析文档》，包含功能需求矩阵、非功能需求（性能、安全、可扩展性）、数据流图</li>
+<p><b>2. 系统架构设计（2 小时）</b></p>
+<li>确定采用 B/S 架构 + 微服务思想，后端拆分为 4 个 Maven 模块：</li>
+<p>  - <code>chat-common</code>：公共包，定义共享枚举、工具类、JWT 工具</p>
+<p>  - <code>chat-client</code>：消息推送 SDK，封装 Redis 队列写入逻辑，供 platform 调用</p>
+<p>  - <code>chat-server</code>：WebSocket 推送服务，基于 Netty，消费 Redis 队列向客户端推送消息</p>
+<p>  - <code>chat-platform</code>：业务平台服务，基于 Spring Boot 3.3，提供 REST API</p>
+<li>前端独立工程 `chat-web`，Vue 2 + Element UI + Pinia 状态管理</li>
+<li>依赖方向严格单向：common ← client ← platform，common ← server</li>
+<p><b>3. 技术选型（1 小时）</b></p>
+<li>后端：Spring Boot 3.3、Netty 4.x（WebSocket 长连接）、MyBatis-Plus 3.5（ORM）、Druid（连接池）、Redis + Redisson（缓存/分布式锁/消息队列）、MinIO（对象存储）、JWT（无状态认证）、Knife4j（API 文档）</li>
+<li>前端：Vue 2.7、Element UI 2.15、Pinia 2.1（状态管理）、Axios（HTTP 请求）、Three.js 0.160（3D 背景）、SCSS（样式预处理）</li>
+<li>存储：MySQL 8.0（关系型数据）、Redis 6.2（缓存/消息队列）、MinIO（图片/文件/语音）</li>
+<li>构建：Maven 多模块 + JDK 17</li>
+<p><b>4. 开发环境搭建（2 小时）</b></p>
+<li>安装配置 JDK 17，设置 JAVA_HOME 环境变量</li>
+<li>安装 Maven 3.9，配置 settings.xml 镜像源为阿里云</li>
+<li>安装 MySQL 8.0，创建数据库 `im_platform_open`，设置字符集 utf8mb4</li>
+<li>安装 Docker Desktop（Windows 11 Home，WSL 2 引擎），拉取并启动 Redis 6.2 容器（端口 6379）</li>
+<li>拉取并启动 MinIO 容器（端口 9000/9001），数据目录挂载到 E 盘</li>
+<li>初始化 Git 仓库，配置 .gitignore 忽略 node_modules、target、*.iml 等</li>
+<h3>遇到的问题及解决方法</h3>
+<table>
+<tr><th>问题</th><th>原因</th><th>解决方法</th></tr>
+<tr><td>Redis 启动后无法连接</td><td>Docker 容器未绑定端口</td><td>`-p 6379:6379` 映射端口</td></tr>
+<tr><td>MinIO Access Key 认证失败</td><td>配置文件中密钥与容器不一致</td><td>统一使用 admin/admin123456</td></tr>
+<tr><td>Windows Home 版不支持 Hyper-V</td><td>系统版本限制</td><td>使用 WSL 2 引擎替代</td></tr>
+</table>
+<h3>AI 使用记录</h3>
+<li>未使用</li>
+<hr/>
+<h2>2026.06.16（数据库设计与后端基础搭建）</h2>
+<h3>当日工作计划</h3>
+<li>完成数据库 ER 图设计与建表 SQL</li>
+<li>搭建 Spring Boot 多模块项目骨架</li>
+<li>完成用户注册登录模块</li>
+<li>配置 JWT 认证拦截器</li>
+<h3>当日工作内容</h3>
+<p><b>1. 数据库设计（2 小时）</b></p>
+<li>设计 8 张核心业务表：</li>
+<p>  - <code>im_user</code>：用户表（id, user_name, nick_name, password, head_image, sex, signature, is_banned, reason, created_at）</p>
+<p>  - <code>im_friend</code>：好友关系表（id, user_id, friend_id, friend_nick_name, friend_head_image, is_dnd, version）</p>
+<p>  - <code>im_group</code>：群组表（id, group_name, avatar, owner_id, announcement, max_members, is_banned）</p>
+<p>  - <code>im_group_member</code>：群成员表（id, group_id, user_id, user_nick_name, head_image, role, is_dnd, version）</p>
+<p>  - <code>im_private_message</code>：私聊消息表（id, send_id, recv_id, type, content, status, send_time）</p>
+<p>  - <code>im_group_message</code>：群聊消息表（id, group_id, send_id, type, content, status, send_time）</p>
+<p>  - <code>im_sensitive_word</code>：敏感词表（id, content, enabled）</p>
+<p>  - <code>im_message_deletion</code>：消息删除记录表</p>
+<li>编写 DDL 脚本，使用 InnoDB 引擎，utf8mb4 字符集，合理建立索引（user_name 唯一索引、send_time 查询索引）</li>
+<li>编写版本化 SQL 脚本存放于 `db/更新脚本/`</li>
+<p><b>2. Maven 多模块项目搭建（1.5 小时）</b></p>
+<li>创建根 pom.xml，声明 Spring Boot 3.3、MyBatis-Plus 3.5、Hutool 5.8.28、MinIO 8.5 等版本</li>
+<li>创建 chat-common 模块：定义 IMTerminalType 枚举、JwtUtil 工具类、IMClient 接口</li>
+<li>创建 chat-client 模块：实现 IMClient，封装 Redis List 的消息入队操作</li>
+<li>创建 chat-server 模块：配置 Netty WebSocket 服务端（端口 8878），实现 ChannelHandler 处理连接/断开/消息转发</li>
+<li>创建 chat-platform 模块：配置 Spring Boot Web 应用（端口 8088），集成 MyBatis-Plus、Druid、Redis、Knife4j</li>
+<p><b>3. 用户认证模块开发（3 小时）</b></p>
+<li>编写 User 实体类，使用 MyBatis-Plus 注解映射 im_user 表</li>
+<li>编写 UserMapper 接口，继承 BaseMapper<User></li>
+<li>编写 UserService 接口与 UserServiceImpl 实现：</li>
+<p>  - <code>register()</code>：校验用户名唯一性、敏感词过滤、BCrypt 密码加密、写入数据库</p>
+<p>  - <code>login()</code>：查询用户、验证密码、生成 JWT accessToken + refreshToken</p>
+<p>  - <code>refreshToken()</code>：验证 refreshToken 有效性，颁发新 token</p>
+<p>  - <code>modifyPassword()</code>：旧密码验证后更新</p>
+<li>编写 JwtProperties 配置类，读取 application.yml 中的 secret 与过期时间</li>
+<li>编写 AuthInterceptor 拦截器，从请求头提取 accessToken，验证签名，存放 SessionContext</li>
+<li>编写 MvcConfig，注册拦截器并配置白名单（/login, /register, /refreshToken, /captcha, Swagger 路径）</li>
+<li>编写 LoginController，提供 POST /login、POST /register、PUT /refreshToken、PUT /modifyPwd</li>
+<h3>遇到的问题及解决方法</h3>
+<table>
+<tr><th>问题</th><th>原因</th><th>解决方法</th></tr>
+<tr><td>MyBatis-Plus 启动报错</td><td>未排除旧版 mybatis-spring</td><td>手动指定 3.0.5 版本</td></tr>
+<tr><td>JWT 解析失败</td><td>secret 配置未注入</td><td>在 JwtProperties 添加 @ConfigurationProperties</td></tr>
+<tr><td>Knife4j 文档页面 404</td><td>Spring Boot 3.x 路径变更</td><td>使用 openapi3-jakarta 版本</td></tr>
+</table>
+<h3>AI 使用记录</h3>
+<li>未使用</li>
+<hr/>
+<h2>2026.06.17（消息系统与 WebSocket 推送）</h2>
+<h3>当日工作计划</h3>
+<li>完成 WebSocket 推送服务（chat-server）</li>
+<li>实现私聊消息发送与接收流程</li>
+<li>实现消息已读/未读状态同步</li>
+<li>实现 Redis 消息队列跨节点路由</li>
+<h3>当日工作内容</h3>
+<p><b>1. Netty WebSocket 服务端（3 小时）</b></p>
+<li>编写 WebSocketServer 启动类，绑定端口 8878，配置 BossGroup/WorkerGroup 线程池</li>
+<li>编写 IMChannelHandler，处理 channelActive（连接建立）、channelInactive（断开）、channelRead（消息读取）</li>
+<li>编写 LoginProcessor，解析客户端登录帧，绑定 userId 与 Channel 映射关系，存入本地 ConcurrentHashMap</li>
+<li>编写 PrivateMessageProcessor，处理私聊消息的转发逻辑：</li>
+<p>  - 接收方在线 → 直接通过 WebSocket 推送</p>
+<p>  - 接收方离线 → 不处理，等待对方上线后拉取历史</p>
+<p><b>2. 消息推送链路（2 小时）</b></p>
+<li>设计 Redis List 消息队列模型：每台 chat-server 实例持有独立的队列 key `im:unread:{serverId}`</li>
+<li>用户登录时，在 Redis 中记录 `im:user_server:{userId}` → serverId 映射</li>
+<li>Platform 发送消息时：查询接收方所在 server → 将消息 JSON 写入对应 Redis List</li>
+<li>Server 消费线程：定时 BLPOP 自己的队列，取出消息后通过 WebSocket 推送给目标用户</li>
+<p><b>3. 私聊消息 API（2 小时）</b></p>
+<li>编写 PrivateMessageController，提供：</li>
+<p>  - POST /message/private/send：发送私聊消息</p>
+<p>  - GET /message/private/history：拉取历史消息（分页，按时间倒序）</p>
+<p>  - DELETE /message/private/delete：删除单条消息</p>
+<p>  - PUT /message/private/recall：撤回消息（2 分钟内）</p>
+<li>编写 PrivateMessageService 实现，处理消息体序列化、敏感词过滤、状态流转（SENDING → DELIVERED → READED）</li>
+<p><b>4. 消息状态管理（1.5 小时）</b></p>
+<li>定义 MESSAGE_STATUS 枚举：FAILED(-2)、SENDING(-1)、PENDING(0)、DELIVERED(1)、RECALL(2)、READED(3)</li>
+<li>实现已读回执：客户端收到消息后发送 ACK 帧，服务端更新消息状态为 DELIVERED</li>
+<li>实现已读上报：用户进入会话时发送 READ 帧，服务端批量更新该会话所有消息为 READED</li>
+<h3>遇到的问题及解决方法</h3>
+<table>
+<tr><th>问题</th><th>原因</th><th>解决方法</th></tr>
+<tr><td>WebSocket 连接频繁断开</td><td>Netty 未配置心跳</td><td>添加 IdleStateHandler，60s 读写空闲发送 PING</td></tr>
+<tr><td>消息乱序问题</td><td>异步推送未排队</td><td>使用 LinkedBlockingQueue 顺序处理同一用户的推送</td></tr>
+<tr><td>大消息体导致 OOM</td><td>图片 base64 直接存消息体</td><td>图片改为上传 MinIO，消息体只存 URL</td></tr>
+</table>
+<h3>AI 使用记录</h3>
+<li>未使用</li>
+<hr/>
+<h2>2026.06.18（文件上传、群聊与 WebRTC）</h2>
+<h3>当日工作计划</h3>
+<li>集成 MinIO 对象存储，实现文件/图片上传</li>
+<li>实现群聊消息功能</li>
+<li>搭建 WebRTC 音视频通话信令服务</li>
+<h3>当日工作内容</h3>
+<p><b>1. MinIO 集成（2 小时）</b></p>
+<li>编写 MinioProperties 配置类：endpoint、accessKey、secretKey、bucketName、imagePath、filePath、videoPath</li>
+<li>编写 MinioService 工具类：</li>
+<p>  - <code>bucketExists()</code>：检查 bucket 是否存在</p>
+<p>  - <code>makeBucket()</code>：创建 bucket</p>
+<p>  - <code>setBucketPublic()</code>：设置 bucket 公开读策略（JSON Policy 格式）</p>
+<p>  - <code>upload()</code>：上传文件，生成 UUID 文件名，返回访问 URL</p>
+<p>  - <code>remove()</code>：删除文件</p>
+<li>编写 FileController：POST /image/upload、POST /file/upload，返回缩略图与原图 URL</li>
+<li>使用 Thumbnailator 生成图片缩略图（宽度 300px），减小前端加载压力</li>
+<p><b>2. 群聊功能（2.5 小时）</b></p>
+<li>编写 Group 实体类、GroupMember 实体类、GroupMessage 实体类</li>
+<li>编写 GroupService 实现：创建群聊、邀请成员、踢出成员、修改群公告、解散群聊</li>
+<li>编写 GroupMessageService 实现：群消息发送、@提醒、群消息历史拉取</li>
+<li>编写 GroupMessageProcessor（chat-server 端）：群消息广播逻辑，遍历群成员列表逐个推送</li>
+<p><b>3. WebRTC 信令服务（2.5 小时）</b></p>
+<li>编写 WebrtcPrivateController，处理一对一通话信令：呼叫、接受、拒绝、挂断、ICE Candidate 交换</li>
+<li>编写 WebrtcGroupController，处理多人通话：创建房间、加入房间、退出房间、Offer/Answer/Candidate 中继</li>
+<li>信令消息通过 WebSocket 而非 HTTP 传输，减少延迟</li>
+<li>配置 STUN 服务器（Google STUN），NAT 穿透</li>
+<h3>遇到的问题及解决方法</h3>
+<table>
+<tr><th>问题</th><th>原因</th><th>解决方法</th></tr>
+<tr><td>MinIO 上传后图片无法访问</td><td>bucket 默认私有</td><td>调用 setBucketPublic 设置为公开读</td></tr>
+<tr><td>群消息广播性能差</td><td>循环逐个推送阻塞线程</td><td>改用线程池异步推送</td></tr>
+<tr><td>WebRTC 连接失败（同一局域网）</td><td>缺少 TURN 服务器</td><td>先使用 Google STUN 验证，TODO：部署自建 TURN</td></tr>
+</table>
+<h3>AI 使用记录</h3>
+<li>未使用</li>
+<hr/>
+<h2>2026.06.22（验证码系统、安全加固、环境配置本地化）</h2>
+<h3>当日工作计划</h3>
+<li>实现图形验证码功能，防止机器人注册</li>
+<li>将数据库密码等敏感配置改为环境变量占位</li>
+<li>解决 MinIO 生产环境配置问题</li>
+<h3>当日工作内容</h3>
+<p><b>1. 图形验证码系统（3 小时）</b></p>
+<li>在 chat-platform pom.xml 中添加 Hutool 5.8.28 依赖（使用 CaptchaUtil 工具类）</li>
+<li>编写 CaptchaController 控制器：</li>
+<p>  - GET /captcha：调用 <code>CaptchaUtil.createLineCaptcha(120, 42, 4, 20)</code> 生成 4 位数字线段干扰验证码</p>
+<p>  - 生成 UUID 作为 key，将验证码文本存入 Redis：<code>SET captcha:{uuid} code EX 300</code>（5 分钟过期）</p>
+<p>  - 返回 JSON：<code>{captchaKey: uuid, captchaImage: base64Data}</code>（图片 Base64 编码，直接嵌入 img 标签）</p>
+<li>修改 RegisterDTO：新增 `captchaKey`（@NotEmpty）、`captchaCode`（@NotEmpty）字段</li>
+<li>修改 LoginDTO：新增 `captchaKey`、`captchaCode` 字段（非必填，兼容自动登录场景）</li>
+<li>修改 UserServiceImpl.register()：从 Redis 读取验证码文本，忽略大小写比对，校验后删除 key 防止复用</li>
+<li>修改 UserServiceImpl.login()：仅当 captchaKey 非空时校验验证码（注册后自动登录场景不过验证码）</li>
+<li>修改 MvcConfig 拦截器白名单：添加 `/captcha` 路径，允许未登录时获取验证码</li>
+<li>前端 Login.vue 与 Register.vue 各添加验证码输入框 + 图片展示区，图片点击可刷新</li>
+<p><b>2. 配置文件安全加固（1 小时）</b></p>
+<li>将 application-dev.yml 中的硬编码数据库连接信息改为环境变量占位：</li>
+<p>  - <code>url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/...</code></p>
+<p>  - <code>username: ${MYSQL_USER:root}</code></p>
+<p>  - <code>password: ${MYSQL_PASSWORD:root}</code></p>
+<li>Redis 连接同理：`host: ${REDIS_HOST:localhost}`、`port: ${REDIS_PORT:6379}`</li>
+<li>MinIO 外网访问 domain 改为：`http://${MINIO_DOMAIN:localhost}:9000`</li>
+<p><b>3. MinIO 配置修复与测试（1.5 小时）</b></p>
+<li>发现 FileServiceImpl 初始化逻辑缺陷：`setBucketPublic()` 仅在 bucket 首次创建时调用，若 bucket 已存在则跳过，导致重启后 bucket 权限丢失</li>
+<li>修改逻辑：将 `setBucketPublic()` 移到 `if (!bucketExists)` 外部，确保每次启动都调用</li>
+<li>测试：上传图片 → 浏览器直接访问 URL → 确认 200 响应</li>
+<li>发现 MinIO domain 写死为旧 IP 192.168.2.67，改为环境变量后当前 IP 为 192.168.31.52（WiFi DHCP 变化）</li>
+<h3>遇到的问题及解决方法</h3>
+<table>
+<tr><th>问题</th><th>原因</th><th>解决方法</th></tr>
+<tr><td>验证码图片不显示（前端）</td><td>AuthInterceptor 拦截了未登录的 /captcha 请求</td><td>MvcConfig 添加 /captcha 白名单</td></tr>
+<tr><td>验证码图片 URL 错误 ERR_INVALID_URL</td><td>Hutool getImageBase64Data() 已含 `data:image/png;base64,` 前缀，前端又拼接了一次</td><td>前端去掉前缀拼接，直接使用返回值</td></tr>
+<tr><td>图片外网访问超时</td><td>MinIO domain 指向旧 IP</td><td>改为环境变量 ${MINIO_DOMAIN}，默认 localhost</td></tr>
+<tr><td>平台重启后图片 403</td><td>setBucketPublic 只在创建时调用</td><td>移到 if 外，每次启动都执行</td></tr>
+</table>
+<h3>AI 使用记录</h3>
+<li>Claude Code：辅助生成 CaptchaController 代码框架、协助调试前端验证码图片加载问题、修改 MvcConfig 配置</li>
+<hr/>
+<h2>2026.06.23（前端 UI 全面升级 —— macOS Vibrancy 暗色主题）</h2>
+<h3>当日工作计划</h3>
+<li>完成品牌视觉重塑（太理朋友圈 → TYUT CHAT）</li>
+<li>登录/注册页整体重设计（暗色玻璃风格 + 3D 粒子背景）</li>
+<li>聊天界面气泡样式统一</li>
+<li>全局 UI 细节打磨（在线状态、未读徽标、搜索框、头像）</li>
+<h3>当日工作内容</h3>
+<p><b>1. 品牌重塑（1 小时）</b></p>
+<li>设计并绘制全新 SVG Logo：纯黑圆角方底（#0a0a0c）+ 双层白色聊天气泡 + 白色渐变输入指示点。保留原有聊天气泡造型，去除蓝紫渐变，适配暗色主题</li>
+<li>修改 public/index.html：`<title>` 改为「TYUT CHAT」，`<meta name="theme-color">` 改为 `#0a0a0c`，`<meta name="description">` 更新</li>
+<li>修改 .env.development 与 .env.production 中的 VUE_APP_NAME 为「TYUT CHAT」</li>
+<li>修改后端 SwaggerConfig：接口文档标题、描述、联系人全部改为 TYUT CHAT</li>
+<li>全局代码搜索替换「太理朋友圈」→「TYUT CHAT」</li>
+<p><b>2. 登录/注册页 macOS Vibrancy 暗色重设计（5 小时）</b></p>
+<p>*布局重构：*</p>
+<li>弃用原有居中单栏布局，改为左品牌 + 右表单分栏（CSS Flexbox，响应式 @media 768px 断点切换为上下排列）</li>
+<li>左侧品牌区：衬线字体 "TYUT CHAT" 标题（Georgia / Noto Serif SC，clamp(36px, 5vw, 64px) 响应式字号），副标题"太原理工大学 · 校园社区"（白色 0.45 透明），描述文字"连接校园每一刻"（白色 0.28 透明）</li>
+<li>右侧面板区：暗灰毛玻璃卡片 `rgba(28,28,30,0.72)` + `backdrop-filter: blur(60px)` + `-webkit-backdrop-filter: blur(60px)`，圆角 16px，1px 白色透明边框 `rgba(255,255,255,0.08)`</li>
+<p>*Three.js 3D 粒子背景改造：*</p>
+<li>场景背景从浅紫 #ebeef7 改为纯黑 #0a0a0c，雾效同步</li>
+<li>环境光从紫调 #d8ddf2 改为中性灰白 #333344（克制亮度）</li>
+<li>浮动几何体（12 个 Icosahedron/Octahedron/Tetrahedron/TorusKnot）：颜色从亮蓝紫 HSL（0.67, 0.45, 0.4+）改为极淡灰 HSL（0.6, 0.08, 0.22+），金属度 0.3，粗糙度 0.7</li>
+<li>粒子环（4 层共 800+ 粒子）：颜色从亮紫改为灰白 HSL（0.6, 0.04, 0.35+），透明度 0.18，叠加混合</li>
+<li>极光丝带（5 层 ShaderMaterial）：颜色从紫系 `['#5846E8','#7668F2','#4432D0','#6858EC','#3624C0']` 改为无彩色灰系 `['#3a3a44','#4a4a55','#353544','#454555','#3d3d48']`</li>
+<li>光环（3 层 Torus）：颜色饱和度降至 0.05</li>
+<li>移除：校徽 3D 纹理（emblemTex）、3D 文字覆盖（"太理朋友圈"/"创建账号"标题 + "加入太原理工大学校园社区"/"连接校园每一刻"副标题）、圆形校徽底衬、网格地板</li>
+<li>保留：鼠标跟随相机微移（lerp 插值）、浮动体正弦轨迹动画、粒子自转、光环旋转</li>
+<li>新增：vignette 暗角遮罩（径向渐变，增强左侧文字对比度）</li>
+<p>*表单组件 macOS 风格化：*</p>
+<li>输入框：深色半透明底 `rgba(28,28,30,0.6)`，1px `rgba(255,255,255,0.1)` 边框，10px 圆角，白色 0.88 透明度文字，placeholder 白色 0.25，focus 时边框变亮至 0.22</li>
+<li>按钮：纯色 `#3a3a3c` 背景，无渐变无阴影，白色 0.9 文字，hover 微亮至 `#4a4a4c`，active 变暗至 `#2c2c2e`，transition 0.2s ease</li>
+<li>验证码图片：48px 高度，10px 圆角，1px 白色透明边框，hover 边框变亮</li>
+<li>复选框：暗底白色边框，选中态白色半透明填充</li>
+<li>链接文字：白色 0.35 透明，hover 变亮</li>
+<p><b>3. 聊天界面风格统一（2.5 小时）</b></p>
+<p>*消息气泡：*</p>
+<li>对方消息（.message-text）：浅灰白底 `#e9e9eb`（iMessage 经典色），黑字 `#1c1c1e`，圆角 `8px 18px 18px 18px`，去阴影</li>
+<li>自己消息（.message-mine .message-text）：macOS 蓝底 `#0a84ff`，白字 `#FFFFFF`，圆角 `18px 8px 18px 18px`</li>
+<p>*侧边栏搜索框：*</p>
+<li>Chat.vue、Friend.vue、Group.vue 三处搜索框统一风格</li>
+<li>暗底 `rgba(255,255,255,0.06)`，1px `rgba(255,255,255,0.08)` 边框，8px 圆角，白色半透明文字</li>
+<li>添加按钮（好友/群聊）：透明底 + 白色边框，hover 变亮</li>
+<p>*在线状态指示器：*</p>
+<li>替换亮绿色 `#00ff00` / `limegreen` 为 macOS 标准绿 `#30d158`</li>
+<li>好友列表：移除移动设备在线图标（el-icon-mobile-phone），保留电脑在线图标（el-icon-monitor），颜色改为白色 0.45 透明</li>
+<li>头像角标：绿点 12px → 保持尺寸，背景改 #30d158</li>
+<p>*未读消息徽标：*</p>
+<li>类名从 unread-text 重构为 unread-badge</li>
+<li>样式：红底 `#FF3B30`，白字，18px 高度，9px 半圆圆角，flex 居中</li>
+<li>逻辑：≤99 显示原数字，>99 显示 "99+"（新增 unreadLabel 计算属性）</li>
+<p>*Friend.vue 分组字母标签：*</p>
+<li>颜色从紫色 `rgba(55,72,199,0.35)` 改为白色 0.25 透明</li>
+<p><b>4. 默认头像系统改造（0.5 小时）</b></p>
+<li>弃用原有 6 色鲜艳调色板（绿、红、粉、紫、黄、蓝）</li>
+<li>设计 8 色 macOS Vibrancy 暗色调色板：`#3a3a3c` / `#4a4a58` / `#3d3848` / `#3c4450` / `#484842` / `#463a3e` / `#3e4248` / `#45404c`</li>
+<li>文字从黑字改为白字 `rgba(255,255,255,0.88)`</li>
+<li>背景色根据用户名 hashCode 取模分配</li>
+<li>去除非 .avatar-text 的 color: white 硬编码（改为内联样式）</li>
+<h3>遇到的问题及解决方法</h3>
+<table>
+<tr><th>问题</th><th>原因</th><th>解决方法</th></tr>
+<tr><td>Three.js 场景颜色漂移</td><td>灯光 + fog + background 色温不一致</td><td>统一为 #0a0a0c + 中性灰白灯光</td></tr>
+<tr><td>Safari 毛玻璃不生效</td><td>缺少 -webkit-backdrop-filter 前缀</td><td>添加 webkit 前缀</td></tr>
+<tr><td>ChatItem 布局错位</td><td>CSS display:flex→inline-block 替换扩散</td><td>git checkout 恢复，精准替换仅 .unread-badge</td></tr>
+<tr><td>浮动粒子在亮底上看不清</td><td>原紫色粒子在新暗底上可见</td><td>改为灰白粒子，提高对比度</td></tr>
+<tr><td>el-icon-key 不存在</td><td>Element UI 2.x 无此图标</td><td>改为 el-icon-picture-outline</td></tr>
+</table>
+<h3>AI 使用记录</h3>
+<li>Claude Code：辅助设计 macOS Vibrancy 风格方案、具体化 CSS Token 值、定位 Safari 兼容性问题、Three.js 场景色彩调整建议</li>
+<hr/>
+<h2>2026.06.24（文档编写、代码整理与提交）</h2>
+<h3>当日工作计划</h3>
+<li>整理所有 Git 提交历史，按功能拆分 commit</li>
+<li>编写个人开发日志（本文档）</li>
+<li>编写前端 UI 改造计划书</li>
+<li>整理课设文档归档</li>
+<h3>当日工作内容</h3>
+<p><b>1. Git 提交整理（1 小时）</b></p>
+<li>回顾全部改动，按功能模块拆分为独立 commit（遵循"一个 commit 只做一件事"原则）：</li>
+<p>  1. MinIO 配置修复：bucket 公开权限 + domain 环境变量化</p>
+<p>  2. 图形验证码功能：Hutool + Redis + 前后端联调</p>
+<p>  3. 品牌重塑：TYUT CHAT 全量替换 + 黑底 Logo + 头像暗调色板</p>
+<p>  4. 登录注册页 macOS Vibrancy 暗色重设计</p>
+<p>  5. UI 风格统一：iMessage 白泡 + macOS 绿点 + 暗色搜索框 + 红点徽标</p>
+<p>  6. 更新前端 UI 改造计划书</p>
+<p>  7. 整理课设文档归档</p>
+<p>  8. 提交前端依赖版本锁定文件</p>
+<p>  9. 编写个人开发日志</p>
+<li>全部推送至 GitHub</li>
+<p><b>2. 文档编写（2 小时）</b></p>
+<li>编写《前端 UI 改造计划书》（docs/plan/PLAN.md）：包含已完成项、待完成项、影响范围、风险评估</li>
+<li>编写《李俊毅个人开发日志》（本文档）：按日记录工作计划、工作内容、问题解决、AI 使用情况</li>
+<li>将《系统设计文档》与《需求分析文档》从项目根目录移至 docs/课设文档/ 归档</li>
+<p><b>3. 代码质量复查（1 小时）</b></p>
+<li>确认所有敏感信息已移除（密码使用环境变量占位）</li>
+<li>确认 .gitignore 生效（target/、node_modules/、*.iml 不入库）</li>
+<li>确认前端编译通过（npm run serve 无报错）</li>
+<li>确认后端编译通过（mvn compile 无报错）</li>
+<h3>遇到的问题及解决方法</h3>
+<li>无重大技术问题。文档结构梳理耗时较长，后续考虑使用自动化文档生成工具。</li>
+<h3>AI 使用记录</h3>
+<li>Claude Code：辅助编写个人开发日志与项目计划书、协助 Git 提交拆分</li>
+<hr/>
+<h2>技术总结</h2>
+<h3>项目架构</h3>
+<pre>
+tyut-chat/
+├── chat-common/          # 公共包：枚举、工具类
+├── chat-client/           # 推送 SDK：Redis 队列写入
+├── chat-server/           # WebSocket 推送服务（Netty，端口 8878）
+├── chat-platform/         # 业务平台服务（Spring Boot，端口 8088）
+│   ├── controller/        # REST 控制器（Login、File、Friend、Group、Message、Captcha 等）
+│   ├── service/           # 业务逻辑层
+│   ├── mapper/            # MyBatis-Plus 数据访问层
+│   ├── entity/            # 数据库实体
+│   ├── dto/               # 数据传输对象
+│   ├── vo/                # 视图对象
+│   ├── config/            # Spring 配置（Redis、MinIO、JWT、MVC、Swagger）
+│   ├── interceptor/       # 认证拦截器、XSS 拦截器
+│   └── thirdparty/        # 第三方服务封装（MinIO）
+└── chat-web/              # Vue 2 前端
+    ├── src/view/          # 页面组件（Login、Register、Chat、Friend、Group、Home）
+    ├── src/components/    # 通用组件（HeadImage、ChatItem、ChatMessageItem、FriendItem 等）
+    ├── src/api/           # API 层（axios 封装、WebSocket 客户端、auth 工具）
+    ├── src/store/         # Pinia 状态管理
+    └── src/assets/        # 静态资源（iconfont、emoji、style）
+</pre>
+<h3>核心技术亮点</h3>
+<p>1. <b>跨节点消息推送</b>：基于 Redis List 实现多 chat-server 实例的消息路由，每个节点独立消费自己的队列</p>
+<p>2. <b>无状态认证</b>：JWT 双 token 机制（accessToken 短期 + refreshToken 长期），支持自动续期</p>
+<p>3. <b>图形验证码</b>：Hutool 线段干扰 + Redis 5 分钟过期 + 一次性使用</p>
+<p>4. <b>对象存储</b>：MinIO 自建 OSS，bucket 公开读策略，图片自动缩略图</p>
+<p>5. <b>3D 粒子背景</b>：Three.js 原生 WebGL，多面体浮动 + 粒子环 + Shader 极光丝带，性能优化（requestAnimationFrame + lerp 平滑）</p>
+<p>6. <b>macOS Vibrancy 设计系统</b>：暗色层级（#0a0a0c → #1c1c1e → #2c2c2e → #3a3a3c）、系统级 backdrop-blur、1px 半透明边框、无渐变无大阴影</p>
+<h3>统计数据</h3>
+<li>后端 Java 文件：约 70 个（entity/dto/vo/controller/service/mapper/config/thirdparty）</li>
+<li>前端 Vue 组件：约 20 个</li>
+<li>数据库表：8 张</li>
+<li>REST API 端点：约 30 个</li>
+<li>WebSocket 消息类型：20+ 种</li>
+<li>Git 提交：9 个（2026.06.23 — 06.24）</li>
+<li>代码总行数：约 15,000 行（含注释与空行）</li>
+<hr/>
+<blockquote>📸 **待补充截图清单**（请准备后告知，我将插入文档对应位置）：</blockquote>
+<blockquote>1. 项目整体目录结构截图（IDEA 项目树）</blockquote>
+<blockquote>2. 登录页面完整截图（暗色背景 + 右侧玻璃面板 + TYUT CHAT 品牌区 + 验证码）</blockquote>
+<blockquote>3. 注册页面完整截图</blockquote>
+<blockquote>4. 聊天主界面截图（左侧会话列表 + 右侧 iMessage 风格气泡）</blockquote>
+<blockquote>5. 未读消息红色圆点徽标特写（含 99+ 显示）</blockquote>
+<blockquote>6. 在线状态绿色小点特写（#30d158）</blockquote>
+<blockquote>7. 好友列表页面截图</blockquote>
+<blockquote>8. 群聊详情页面截图</blockquote>
+<blockquote>9. MinIO 控制台截图（bucket 与文件列表）</blockquote>
+<blockquote>10. Redis 客户端截图（captcha key 示例）</blockquote>
+<blockquote>11. 数据库 ER 图或 Navicat 表结构截图</blockquote>
+<blockquote>12. API 文档页面截图（Knife4j / Swagger）</blockquote>
+</body></html>
