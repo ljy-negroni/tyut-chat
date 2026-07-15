@@ -23,7 +23,7 @@
 						<div v-if="isTextMessage" class="msg-body-col">
 							<div v-if="quoteData" class="message-quote">
 								<div class="quote-title">{{ quoteData.senderName }}</div>
-								<div class="quote-text">{{ quoteData.content }}</div>
+								<div class="quote-text" v-html="quoteData.content"></div>
 							</div>
 							<span class="message-text" v-html="htmlText"></span>
 						</div>
@@ -209,13 +209,17 @@ export default {
 		isReaded() {
 			return this.message.status == this.$enums.MESSAGE_STATUS.READED || this.conversation.maxReadedId >= this.message.id
 		},
-		quoteData() {
-			try {
-				const c = typeof this.message.content === 'string' ? JSON.parse(this.message.content) : this.message.content;
-				if (c && c.quote) return c.quote;
-			} catch(e) {}
-			return null;
-		},
+				quoteData() {
+					try {
+						const c = typeof this.message.content === 'string' ? JSON.parse(this.message.content) : this.message.content;
+						if (c && c.quote) {
+							c.quote.content = this.$str.html2Escape(c.quote.content);
+							c.quote.content = this.$emo.transform(c.quote.content, 'emoji-small');
+							return c.quote;
+						}
+					} catch(e) {}
+					return null;
+				},
 		htmlText() {
 			let raw = this.message.content;
 			try {
