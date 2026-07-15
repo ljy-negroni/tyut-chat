@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { compressImage } from "../../api/imageCompress.js";
 export default {
   name: "publishFeed",
   data() {
@@ -78,11 +79,12 @@ export default {
       files.forEach(file => this.uploadImage(file));
       e.target.value = "";
     },
-    uploadImage(file) {
+    async uploadImage(file) {
       const idx = this.imageList.length;
       this.imageList.push({ url: "", uploading: true });
+      const compressed = await compressImage(file, { maxWidth: 1920, quality: 0.8 });
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressed);
       this.$http({
         url: "/image/upload?isPermanent=true",
         data: formData,
