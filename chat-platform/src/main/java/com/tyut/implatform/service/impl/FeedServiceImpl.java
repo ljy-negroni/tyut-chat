@@ -141,7 +141,8 @@ public class FeedServiceImpl extends ServiceImpl<FeedMapper, Feed> implements Fe
         vo.setId(comment.getId());
         vo.setUserId(session.getUserId());
         vo.setNickName(session.getNickName());
-        vo.setHeadImage(session.getHeadImage());
+        UserVO commentUser = userService.findUserById(session.getUserId());
+        vo.setHeadImage(commentUser != null ? commentUser.getHeadImageThumb() : "");
         vo.setContent(comment.getContent());
         vo.setCreatedTime(comment.getCreatedTime());
         return vo;

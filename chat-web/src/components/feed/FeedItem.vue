@@ -5,7 +5,7 @@
       <head-image :name="feed.nickName" :url="feed.headImage" :size="40" @click.native="$emit('userClick', feed.userId)" />
       <div class="header-info">
         <span class="nick-name">{{ feed.nickName }}</span>
-        <span class="time">{{ $date.formatTime(feed.createdTime) }}</span>
+        <span class="time">{{ $date.toTimeText(feed.createdTime) }}</span>
       </div>
       <el-dropdown v-if="isOwner" trigger="click" class="more-btn" @command="handleCommand">
         <span class="el-icon-more"></span>
