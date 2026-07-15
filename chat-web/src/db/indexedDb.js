@@ -97,6 +97,17 @@ class ImIndexedDB extends DB {
 		return this.db.messages.where("convKey").equals(convKey).toArray();
 	}
 
+	async searchMessages(keyword) {
+		const all = await this.db.messages.toArray();
+		const kw = keyword.toLowerCase();
+		return all.filter(m =>
+			!m.deleted && m.content && (
+				(typeof m.content === 'string' && m.content.toLowerCase().includes(kw)) ||
+				(m.content.id && String(m.content.id).includes(kw))
+			)
+		);
+	}
+
 	async findAllFriends() {
 		return await this.db.friends.toArray();
 	}

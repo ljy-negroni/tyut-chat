@@ -2,9 +2,10 @@
   <el-container class="chat-page">
     <resizable-aside :default-width="260" :min-width="200" :max-width="500" storage-key="chat-aside-width">
       <div class="header">
-        <el-input class="search-text" size="small" placeholder="搜索" v-model="searchText">
+        <el-input class="search-text" size="small" placeholder="搜索会话" v-model="searchText">
           <i class="el-icon-search el-input__icon" slot="prefix"> </i>
         </el-input>
+        <el-button class="search-msg-btn" size="small" icon="el-icon-search" title="搜索消息" @click="$refs.searchMsg.open()"></el-button>
       </div>
       <div class="chat-loading" v-if="loading" v-loading="true" element-loading-text="消息接收中..."
         element-loading-spinner="el-icon-loading" element-loading-background="rgba(28,28,30,0.94)" element-loading-size="24">
@@ -19,6 +20,7 @@
     <el-container>
       <chat-box v-if="activeConv" :conversation="activeConv"></chat-box>
     </el-container>
+    <search-message ref="searchMsg" @select="onSearchSelect"></search-message>
   </el-container>
 </template>
 
@@ -27,6 +29,7 @@ import ChatItem from "../components/chat/ChatItem.vue";
 import ChatBox from "../components/chat/ChatBox.vue";
 import ResizableAside from "../components/common/ResizableAside.vue";
 import VirtualScroller from "../components/common/VirtualScroller.vue";
+import SearchMessage from "../components/chat/SearchMessage.vue";
 
 export default {
   name: "chat",
@@ -34,7 +37,8 @@ export default {
     ChatItem,
     ChatBox,
     ResizableAside,
-    VirtualScroller
+    VirtualScroller,
+    SearchMessage
   },
   data() {
     return {
@@ -80,6 +84,13 @@ export default {
     },
     onTop(conv) {
       this.chatStore.setTop(conv.key, !conv.isTop)
+    },
+    async onSearchSelect(item) {
+      // 切换到目标会话
+      this.chatStore.setActive(item.convKey);
+      // 定位到消息
+      await this.$nextTick();
+      this.chatStore.locateToMessage(item.convKey, item);
     },
     onDnd(conv) {
       if (this.isPrivate(conv)) {
@@ -148,6 +159,11 @@ export default {
     display: flex;
     align-items: center;
     padding: 0 10px;
+    .search-msg-btn {
+      margin-left: 6px; border: none; background: transparent;
+      color: rgba(255,255,255,0.35); font-size: 15px;
+      &:hover { color: rgba(255,255,255,0.7); }
+    }
   }
 
   ::v-deep .header .el-input__inner {
