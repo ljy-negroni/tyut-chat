@@ -14,9 +14,12 @@
           <i class="el-icon-picture-outline empty-icon"></i>
           <p>暂无动态，去发布第一条吧</p>
         </div>
-        <div v-for="feed in feeds" :key="feed.id" class="feed-card">
-          <!-- 动态卡片由 Issue #5 实现 -->
-        </div>
+        <feed-item
+          v-for="feed in feeds"
+          :key="feed.id"
+          :feed="feed"
+          @deleted="onFeedDeleted"
+        />
       </div>
       <!-- 加载更多 -->
       <div class="load-more" v-if="hasMore">
@@ -29,9 +32,10 @@
 
 <script>
 import PublishFeed from "../components/feed/PublishFeed.vue";
+import FeedItem from "../components/feed/FeedItem.vue";
 export default {
   name: "moments",
-  components: { PublishFeed },
+  components: { PublishFeed, FeedItem },
   data() {
     return {
       feeds: [],
@@ -46,8 +50,27 @@ export default {
       this.feeds = [];
       this.loadTimeline();
     },
-    loadTimeline() {},
-    loadMore() {}
+    loadTimeline() {
+      this.loadingMore = true;
+      this.$http({
+        url: '/feed/timeline',
+        params: { page: this.page, size: 10 }
+      }).then(data => {
+        this.feeds = this.page === 1 ? data : [...this.feeds, ...data];
+        this.hasMore = data.length === 10;
+        this.page++;
+      }).finally(() => { this.loadingMore = false; });
+    },
+    loadMore() {
+      if (this.loadingMore || !this.hasMore) return;
+      this.loadTimeline();
+    },
+    onFeedDeleted(feedId) {
+      this.feeds = this.feeds.filter(f => f.id !== feedId);
+    }
+  },
+  mounted() {
+    this.loadTimeline();
   }
 }
 </script>
