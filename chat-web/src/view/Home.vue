@@ -26,6 +26,11 @@
 									<span class="icon iconfont icon-group" style="font-size: 28px"></span>
 								</div>
 							</router-link>
+							<router-link class="link" v-bind:to="'/home/moments'">
+								<div class="menu-item">
+									<span class="icon iconfont" style="font-size:24px">&#x25C9;</span>
+								</div>
+							</router-link>
 						</div>
 					</div>
 

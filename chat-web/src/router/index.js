@@ -41,6 +41,11 @@ export default new VueRouter({
         name: "GROUP",
         path: "/home/group",
         component: () => import("../view/Group"),
+      },
+      {
+        name: "Moments",
+        path: "/home/moments",
+        component: () => import("../view/Moments"),
       }
     ]
   }
