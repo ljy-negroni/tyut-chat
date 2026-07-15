@@ -38,7 +38,7 @@ export default defineStore('chatStore', {
 			this.conversationMap.clear();
 			this.conversations.forEach(conv => this.conversationMap.set(conv.key, conv));
 			this.refreshDnd();
-			this.startSortTimer();
+			this.doSort();
 		},
 		append(conversations) {
 			conversations.forEach(conv => {
@@ -170,6 +170,7 @@ export default defineStore('chatStore', {
 				}
 			}
 			await getDB().saveConversationAndMessage([conv], [m])
+			this.scheduleSort();
 		},
 		async updateMessage(convKey, m) {
 			const conv = this.conversationMap.get(convKey);
@@ -549,6 +550,7 @@ export default defineStore('chatStore', {
 				conv.optTime = new Date().getTime();
 				await getDB().saveConversation(conv);
 			}
+			this.scheduleSort();
 		},
 		async readedMessage(convKey, messageId) {
 			const conv = this.conversationMap.get(convKey);
@@ -649,10 +651,12 @@ export default defineStore('chatStore', {
 				}
 			})
 		},
-		startSortTimer() {
+		scheduleSort() {
+			if (this._sortTimer) clearTimeout(this._sortTimer);
+			this._sortTimer = setTimeout(() => this.sort(), 300);
+		},
+		doSort() {
 			this.sort();
-			this.sortTimer && clearInterval(this.sortTimer);
-			this.sortTimer = setInterval(() => this.sort(), 1000)
 		},
 		sort() {
 			this.conversations.sort((conv1, conv2) => {
