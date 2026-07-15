@@ -20,11 +20,13 @@
 				</div>
 				<div class="message-bottom" @contextmenu.prevent="showRightMenu($event)">
 					<div ref="chatMsgBox" class="message-content-wrapper">
-						<div v-if="quoteData" class="message-quote">
-							<div class="quote-title">{{ quoteData.senderName }}</div>
-							<div class="quote-text">{{ quoteData.content }}</div>
+						<div v-if="isTextMessage" class="msg-body-col">
+							<div v-if="quoteData" class="message-quote">
+								<div class="quote-title">{{ quoteData.senderName }}</div>
+								<div class="quote-text">{{ quoteData.content }}</div>
+							</div>
+							<span class="message-text" v-html="htmlText"></span>
 						</div>
-						<span class="message-text" v-if="isTextMessage" v-html="htmlText"></span>
 						<div class="message-image" v-else-if="message.type == $enums.MESSAGE_TYPE.IMAGE"
 							@click="showFullImageBox()">
 							<img :style="imageStyle" :src="contentData.thumbUrl" loading="lazy" />
@@ -306,10 +308,24 @@ export default {
 				padding-right: 280px;
 				padding-left: 4px;
 
-				.message-content-wrapper {
-					position: relative;
-					display: flex;
-					align-items: flex-end;
+										.message-content-wrapper {
+											position: relative;
+											display: flex;
+											align-items: flex-end;
+
+											.msg-body-col {
+												display: flex;
+												flex-direction: column;
+												align-items: flex-start;
+											}
+
+											.message-quote {
+									margin-bottom: 4px; padding: 6px 10px;
+									background: rgba(0,0,0,0.2); border-left: 3px solid rgba(255,255,255,0.3);
+									border-radius: 4px; max-width: 280px;
+									.quote-title { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 2px; }
+									.quote-text { font-size: 12px; color: rgba(255,255,255,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+								}
 
 					.sending {
 						width: 22px;
