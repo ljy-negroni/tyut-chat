@@ -9,10 +9,31 @@ const http = axios.create({
 	withCredentials: true
 })
 
+/** token 刷新状态 */
+let isRefreshing = false
+/** 等待刷新完成的请求队列 */
+let refreshQueue = []
+
+/** 执行队列中的请求 */
+function resolveQueue(newToken) {
+	refreshQueue.forEach(({ resolve }) => resolve(newToken))
+	refreshQueue = []
+}
+
+/** 拒绝队列中的请求 */
+function rejectQueue(err) {
+	refreshQueue.forEach(({ reject }) => reject(err))
+	refreshQueue = []
+}
+
 /**
  * 请求拦截
  */
 http.interceptors.request.use(config => {
+	// refreshToken 请求不附加 accessToken，避免循环
+	if (config.url === '/refreshToken') {
+		return config
+	}
 	let accessToken = sessionStorage.getItem("accessToken");
 	if (accessToken) {
 		config.headers.accessToken = encodeURIComponent(accessToken);
@@ -31,27 +52,51 @@ http.interceptors.response.use(async response => {
 	} else if (response.data.code == 400) {
 		location.href = "/";
 	} else if (response.data.code == 401) {
+		// refreshToken 请求本身 401 → 直接跳登录，不再尝试刷新
+		if (response.config.url === '/refreshToken') {
+			location.href = "/";
+			return Promise.reject(response.data);
+		}
 		console.log("token失效，尝试重新获取")
 		let refreshToken = getRefreshToken();
 		if (!refreshToken) {
 			location.href = "/";
 			return Promise.reject(response.data);
 		}
-		// 发送请求, 进行刷新token操作, 获取新的token
-		const data = await http({
-			method: 'put',
-			url: '/refreshToken',
-			headers: {
-				refreshToken: refreshToken
-			}
-		}).catch(() => {
+
+		// 如果正在刷新，把当前请求加入队列等待
+		if (isRefreshing) {
+			return new Promise((resolve, reject) => {
+				refreshQueue.push({ resolve, reject })
+			}).then(newToken => {
+				response.config.headers.accessToken = encodeURIComponent(newToken);
+				return http(response.config)
+			})
+		}
+
+		isRefreshing = true
+		try {
+			const data = await axios({
+				method: 'put',
+				url: process.env.VUE_APP_BASE_API + '/refreshToken',
+				headers: { refreshToken: refreshToken }
+			}).then(res => {
+				if (res.data.code == 200) {
+					return res.data.data
+				}
+				throw new Error('refresh failed')
+			})
+			saveTokens(data);
+			isRefreshing = false
+			resolveQueue(data.accessToken)
+			response.config.headers.accessToken = encodeURIComponent(data.accessToken);
+			return http(response.config)
+		} catch (e) {
+			isRefreshing = false
+			rejectQueue(e)
 			location.href = "/";
 			return Promise.reject(response.data);
-		})
-		saveTokens(data);
-		response.config.headers.accessToken = encodeURIComponent(data.accessToken);
-		// 重新发送刚才的请求
-		return http(response.config)
+		}
 	} else {
 		Message({
 			message: response.data.message,
