@@ -4,7 +4,7 @@
       <!-- 顶部标题栏 -->
       <div class="moments-header">
         <h1 class="moments-title">朋友圈</h1>
-        <el-button type="text" class="publish-btn" @click="showPublish = true">
+        <el-button type="text" class="publish-btn" @click="$refs.publishFeed.open()">
           <i class="el-icon-camera"></i> 发布动态
         </el-button>
       </div>
@@ -23,22 +23,30 @@
         <el-button type="text" :loading="loadingMore" @click="loadMore">加载更多</el-button>
       </div>
     </div>
+    <publish-feed ref="publishFeed" @published="onPublished"></publish-feed>
   </el-container>
 </template>
 
 <script>
+import PublishFeed from "../components/feed/PublishFeed.vue";
 export default {
   name: "moments",
+  components: { PublishFeed },
   data() {
     return {
       feeds: [],
-      showPublish: false,
       page: 1,
       hasMore: true,
       loadingMore: false
     }
   },
   methods: {
+    onPublished() {
+      this.page = 1;
+      this.feeds = [];
+      this.loadTimeline();
+    },
+    loadTimeline() {},
     loadMore() {}
   }
 }
