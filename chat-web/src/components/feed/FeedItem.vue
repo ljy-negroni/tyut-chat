@@ -7,12 +7,7 @@
         <span class="nick-name">{{ feed.nickName }}</span>
         <span class="time">{{ $date.toTimeText(feed.createdTime) }}</span>
       </div>
-      <el-dropdown v-if="isOwner" trigger="click" class="more-btn" @command="handleCommand">
-        <span class="el-icon-more"></span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="delete">删除</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <span v-if="isOwner" class="delete-btn" @click="confirmDelete">删除</span>
     </div>
 
     <!-- 文字内容 -->
@@ -118,14 +113,12 @@ export default {
         this.commentText = "";
       }).finally(() => { this.commenting = false; });
     },
-    handleCommand(cmd) {
-      if (cmd === "delete") {
-        this.$confirm("确定删除这条动态吗？", "提示", { type: "warning" })
-          .then(() => {
-            this.$http({ url: "/feed/" + this.feed.id, method: "delete" })
-              .then(() => { this.$emit("deleted", this.feed.id); });
-          });
-      }
+    confirmDelete() {
+      this.$confirm("确定删除这条动态吗？", "提示", { type: "warning" })
+        .then(() => {
+          this.$http({ url: "/feed/" + this.feed.id, method: "delete" })
+            .then(() => { this.$emit("deleted", this.feed.id); });
+        });
     },
     previewImage(url) {
       this.$eventBus.$emit("openFullImage", url);
@@ -146,7 +139,8 @@ export default {
   .header-info { margin-left: 10px; flex: 1; }
   .nick-name { display: block; font-size: 14px; font-weight: 600; color: var(--im-color-primary-light-3, #66b1ff); }
   .time { display: block; font-size: 12px; color: var(--im-text-color-secondary, #999); margin-top: 2px; }
-  .more-btn { font-size: 18px; color: var(--im-text-color-secondary); cursor: pointer; }
+  .delete-btn { font-size: 12px; color: var(--im-text-color-secondary); cursor: pointer; }
+  .delete-btn:hover { color: #ff6b6b; }
 }
 .feed-content {
   margin-bottom: 10px;
