@@ -51,7 +51,14 @@
 								<div title="回执消息" v-show="isGroup" class="icon iconfont icon-receipt"
 									:class="isReceipt ? 'chat-tool-active' : ''" @click="onSwitchReceipt">
 								</div>
-								<div title="发送语音" class="el-icon-microphone" @click="showRecordBox()">
+								<div title="发送语音（按住说话）" class="el-icon-microphone"
+									@mousedown.prevent="startHoldRecord"
+									@mouseup="stopHoldRecord"
+									@mouseleave="cancelHoldRecord"
+									@touchstart.prevent="startHoldRecord"
+									@touchend="stopHoldRecord"
+									@touchmove="onTouchMove"
+									:class="{ recording: holdRecording }">
 								</div>
 								<div title="语音通话" v-show="isPrivate" class="el-icon-phone-outline"
 									@click="showPrivateVideo('voice')">
@@ -62,6 +69,11 @@
 								<div title="视频通话" v-show="isPrivate" class="el-icon-video-camera"
 									@click="showPrivateVideo('video')">
 								</div>
+							</div>
+							<div v-if="holdRecording" class="hold-record-bar">
+								<i class="el-icon-microphone hold-mic-icon"></i>
+								<span class="hold-duration">{{ holdDuration }}s</span>
+								<span class="hold-hint">{{ holdCancel ? '松开取消' : '松开发送，上滑取消' }}</span>
 							</div>
 							<div class="send-content-area">
 								<ChatInput :ownerId="group.ownerId" ref="chatInputEditor" :group-members="groupMembers"
@@ -128,6 +140,12 @@ export default {
 			isReceipt: true,
 			quoteMessage: null,
 			showRecord: false, // 是否显示语音录制弹窗
+			holdRecording: false,
+			holdRecorder: null,
+			holdDuration: 0,
+			holdTimer: null,
+			holdCancel: false,
+			holdStartY: 0,
 			showSide: false, // 是否显示群聊信息栏
 			activeMessageLocalId: '', //选中消息
 			reqQueue: [], // 等待发送的请求队列
@@ -280,6 +298,70 @@ export default {
 		},
 		onEmotion(emoText) {
 			this.$refs.chatInputEditor.insertEmoji(emoText);
+		},
+		startHoldRecord(e) {
+			if (this.holdRecording) return;
+			this.holdRecording = true;
+			this.holdCancel = false;
+			this.holdDuration = 0;
+			this.holdStartY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+			import('js-audio-recorder').then(mod => {
+				const Recorder = mod.default || mod;
+				this.holdRecorder = new Recorder();
+				this.holdRecorder.start().then(() => {
+					this.holdTimer = setInterval(() => {
+						this.holdDuration = parseInt(this.holdRecorder.duration);
+					}, 200);
+				}).catch(err => {
+					this.$message.error('麦克风不可用: ' + err);
+					this.resetHoldRecord();
+				});
+			});
+		},
+		onTouchMove(e) {
+			if (!this.holdRecording) return;
+			const y = e.touches[0].clientY;
+			this.holdCancel = (this.holdStartY - y) > 60;
+		},
+		cancelHoldRecord() {
+			if (this.holdRecording && this.holdDuration < 0.5) {
+				this.resetHoldRecord();
+			}
+		},
+		async stopHoldRecord() {
+			if (!this.holdRecording) return;
+			if (this.holdTimer) clearInterval(this.holdTimer);
+			if (this.holdRecorder) {
+				this.holdRecorder.pause();
+				if (this.holdCancel || this.holdDuration < 0.5) {
+					this.holdRecorder.destroy();
+					this.resetHoldRecord();
+					return;
+				}
+				const wav = this.holdRecorder.getWAVBlob();
+				this.holdRecorder.destroy();
+				this.resetHoldRecord();
+				// upload and send
+				const formData = new FormData();
+				formData.append('file', wav, Date.now() + '.wav');
+				try {
+					const url = await this.$http.post('/file/upload', formData, {
+						headers: { 'Content-Type': 'multipart/form-data' }
+					});
+					await this.onSendRecord({ duration: this.holdDuration, url: url });
+				} catch(e) {
+					this.$message.error('语音发送失败');
+				}
+			} else {
+				this.resetHoldRecord();
+			}
+		},
+		resetHoldRecord() {
+			this.holdRecording = false;
+			this.holdCancel = false;
+			this.holdDuration = 0;
+			if (this.holdTimer) clearInterval(this.holdTimer);
+			if (this.holdRecorder) { this.holdRecorder.destroy(); this.holdRecorder = null; }
 		},
 		showRecordBox() {
 			this.showRecord = true;
@@ -1011,4 +1093,14 @@ export default {
 	.quote-preview-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 	.quote-preview-close { cursor: pointer; font-size: 14px; color: rgba(255,255,255,0.3); margin-left: 8px; }
 	.quote-preview-close:hover { color: rgba(255,255,255,0.7); }
+.hold-record-bar {
+		display: flex; align-items: center; justify-content: center; gap: 10px;
+		padding: 12px; background: rgba(255,59,48,0.12);
+		border-radius: 8px 8px 0 0; margin: 0 12px;
+	}
+	.hold-mic-icon { font-size: 18px; color: #ff3b30; animation: pulse 1s infinite; }
+	@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+	.hold-duration { font-size: 16px; font-weight: 600; color: #ff3b30; min-width: 36px; }
+	.hold-hint { font-size: 12px; color: rgba(255,255,255,0.4); }
+	.el-icon-microphone.recording { color: #ff3b30 !important; }
 </style>
