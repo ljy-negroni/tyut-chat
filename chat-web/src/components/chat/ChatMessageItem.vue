@@ -20,6 +20,10 @@
 				</div>
 				<div class="message-bottom" @contextmenu.prevent="showRightMenu($event)">
 					<div ref="chatMsgBox" class="message-content-wrapper">
+						<div v-if="quoteData" class="message-quote">
+							<div class="quote-title">{{ quoteData.senderName }}</div>
+							<div class="quote-text">{{ quoteData.content }}</div>
+						</div>
 						<span class="message-text" v-if="isTextMessage" v-html="htmlText"></span>
 						<div class="message-image" v-else-if="message.type == $enums.MESSAGE_TYPE.IMAGE"
 							@click="showFullImageBox()">
@@ -174,6 +178,10 @@ export default {
 		menuItems() {
 			let items = [];
 			items.push({
+				key: 'QUOTE',
+				name: '引用'
+			});
+			items.push({
 				key: 'DELETE',
 				name: '删除',
 				danger: true
@@ -199,9 +207,21 @@ export default {
 		isReaded() {
 			return this.message.status == this.$enums.MESSAGE_STATUS.READED || this.conversation.maxReadedId >= this.message.id
 		},
+		quoteData() {
+			try {
+				const c = typeof this.message.content === 'string' ? JSON.parse(this.message.content) : this.message.content;
+				if (c && c.quote) return c.quote;
+			} catch(e) {}
+			return null;
+		},
 		htmlText() {
+			let raw = this.message.content;
+			try {
+				const c = typeof raw === 'string' ? JSON.parse(raw) : raw;
+				if (c && c.text !== undefined) raw = c.text;
+			} catch(e) {}
 			let color = this.message.selfSend ? 'white' : '';
-			let text = this.$str.html2Escape(this.message.content)
+			let text = this.$str.html2Escape(raw)
 			text = this.$url.replaceURLWithHTMLLinks(text, color)
 			return this.$emo.transform(text, 'emoji-normal')
 		},

@@ -15,7 +15,7 @@
 										@call="onCall(m.type)" :mine="m.sendId == mine.id" :headImage="headImage(m)"
 										:showName="showName(m)" :group="group" :conversation="conversation" :message="m"
 										:groupMemberMap="groupMemberMap" @resend="onResendMessage"
-										@delete="deleteMessage" @recall="recallMessage">
+										@delete="deleteMessage" @recall="recallMessage" @quote="setQuoteMessage">
 									</chat-message-item>
 								</div>
 							</div>
@@ -25,6 +25,10 @@
 							有人@我 </div>
 						<div v-else-if="!chatStore.isInBottom" class="locate-tip" @click="onScrollToBottom">
 							{{ chatStore.newMessageSize > 0 ? chatStore.newMessageSize + '条新消息' : '回到底部' }}
+						</div>
+						<div v-if="quoteMessage" class="quote-preview-bar">
+							<span class="quote-preview-text">引用 {{ quoteMessage.showName || quoteMessage.sendNickName }}：{{ quotePreviewContent }}</span>
+							<i class="el-icon-close quote-preview-close" @click="cancelQuote"></i>
 						</div>
 						<el-footer height="220px" class="im-chat-footer">
 							<div class="chat-tool-bar">
@@ -122,6 +126,7 @@ export default {
 			userInfo: {},
 			groupId: null,
 			isReceipt: true,
+			quoteMessage: null,
 			showRecord: false, // 是否显示语音录制弹窗
 			showSide: false, // 是否显示群聊信息栏
 			activeMessageLocalId: '', //选中消息
@@ -388,13 +393,33 @@ export default {
 			this.$nextTick(() => this.$refs.chatInputEditor.focus());
 			this.scrollToBottom();
 		},
+		setQuoteMessage(msg) {
+			this.quoteMessage = msg;
+		},
+		cancelQuote() {
+			this.quoteMessage = null;
+		},
 		async sendTextMessage(sendText, atUserIds) {
 			if (!sendText.trim()) {
 				return;
 			}
+			let textContent = sendText;
+			if (this.quoteMessage) {
+				textContent = JSON.stringify({
+					text: sendText,
+					quote: {
+						id: this.quoteMessage.id || this.quoteMessage.localId,
+						senderName: this.quoteMessage.showName || this.quoteMessage.sendNickName || '',
+						content: typeof this.quoteMessage.content === 'string'
+							? (() => { try { const c = JSON.parse(this.quoteMessage.content); return c.text || c; } catch(e) { return this.quoteMessage.content; } })()
+							: (this.quoteMessage.content || '')
+					}
+				});
+				this.quoteMessage = null;
+			}
 			const message = {
 				localId: this.$nextSnowflakeId(),
-				content: sendText,
+				content: textContent,
 				type: this.$enums.MESSAGE_TYPE.TEXT
 			}
 			// 填充对方id
@@ -977,4 +1002,13 @@ export default {
 	}
 
 }
+.quote-preview-bar {
+		display: flex; align-items: center; justify-content: space-between;
+		padding: 8px 16px; background: rgba(255,255,255,0.06);
+		border-top: 1px solid rgba(255,255,255,0.06);
+		font-size: 12px; color: rgba(255,255,255,0.5);
+	}
+	.quote-preview-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	.quote-preview-close { cursor: pointer; font-size: 14px; color: rgba(255,255,255,0.3); margin-left: 8px; }
+	.quote-preview-close:hover { color: rgba(255,255,255,0.7); }
 </style>
